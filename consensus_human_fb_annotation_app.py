@@ -259,6 +259,24 @@ html, body, .stApp {
     font-size: 0.82rem !important;
 }
 
+/* ── Sticky left panel, scrollable right panel ── */
+[data-testid="stHorizontalBlock"]:has(.anchor-panel) {
+    align-items: flex-start !important;
+    max-height: calc(100vh - 180px) !important;
+}
+[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:first-child {
+    position: sticky !important;
+    top: 0.5rem !important;
+    align-self: flex-start !important;
+    flex-shrink: 0 !important;
+}
+[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child {
+    overflow-y: auto !important;
+    max-height: calc(100vh - 180px) !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
 /* save result area */
 .save-result {
     background: var(--surface2);
