@@ -578,12 +578,31 @@ with col_anchor:
     st.markdown(f"""
     <div class="anchor-panel">
       <div class="anchor-label">🔒 Anchor — Reviewing</div>
-      <div class="anchor-idx">#{anchor_feedback_idx} &nbsp;·&nbsp; {anchor_i+1} / {n}</div>
+      <div class="anchor-idx">#{anchor_feedback_idx} &nbsp;·&nbsp; {anchor_i} / {n - 1}</div>
       <div class="anchor-text">{anchor_text}</div>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
+
+    # Jump to specific feedback (0-based index to match #0, #1, ...)
+    jump_c1, jump_c2 = st.columns([1, 3])
+    with jump_c1:
+        st.caption("Go to #")
+    with jump_c2:
+        jump_to = st.number_input(
+            "Jump to feedback",
+            min_value=0,
+            max_value=n - 1,
+            value=anchor_i,
+            step=1,
+            format="%d",
+            key=f"jump_{paper_id}",
+            label_visibility="collapsed",
+        )
+    if jump_to != anchor_i:
+        st.session_state.anchor_idx = int(jump_to)
+        st.rerun()
 
     nav_c1, nav_c2 = st.columns(2)
     with nav_c1:
@@ -592,7 +611,12 @@ with col_anchor:
             st.rerun()
     with nav_c2:
         if st.button("Next →", use_container_width=True):
-            st.session_state.anchor_idx = min(n - 1, anchor_i + 1)
+            if anchor_i >= n - 1 and paper_idx < total_papers - 1:
+                # At last feedback of current paper → move to next paper
+                st.session_state.paper_idx = paper_idx + 1
+                st.session_state.anchor_idx = 0
+            else:
+                st.session_state.anchor_idx = min(n - 1, anchor_i + 1)
             st.rerun()
 
     # ── Basket ───────────────────────────────────────────────────────────────
