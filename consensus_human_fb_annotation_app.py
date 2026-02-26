@@ -13,7 +13,7 @@ from google.oauth2 import service_account
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Duplicate Feedback Annotator",
+    page_title="Feedback Consensus Annotator",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -426,7 +426,7 @@ init_state()
 if not st.session_state.annotator_name or not str(st.session_state.annotator_name).strip():
     st.markdown("### 👤 Enter your name to begin")
     st.caption("This will be recorded with your annotations when you submit.")
-    name = st.text_input("Annotator name", placeholder="e.g. Alice, annotator_01", label_visibility="collapsed")
+    name = st.text_input("Annotator name", placeholder="e.g. Chani Jung", label_visibility="collapsed")
     if st.button("Continue"):
         if name and str(name).strip():
             st.session_state.annotator_name = str(name).strip()
@@ -467,7 +467,7 @@ pct = int(reviewed_papers / total_papers * 100) if total_papers else 0
 
 st.markdown(f"""
 <div class="top-bar">
-  <h1>⬡ Duplicate Feedback Annotator</h1>
+  <h1>⬡ Feedback Consensus Annotator</h1>
   <span class="progress-info">
     <span style="color:var(--accent); margin-right:0.8rem;">👤 {annotator_name}</span>
     Papers annotated: {reviewed_papers} / {total_papers}
