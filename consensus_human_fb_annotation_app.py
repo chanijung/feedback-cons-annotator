@@ -342,10 +342,15 @@ def submit_to_gsheet(annotator_name: str) -> tuple[bool, str]:
         spreadsheet = gc.open_by_key(sheet_id)
         worksheet = spreadsheet.worksheet(sheet_name)
         existing = worksheet.get_all_values()
-        # Ensure header row exists
-        if not existing:
-            worksheet.append_row(["annotator_name", "paper_id", "pairs", "timestamp"])
-            existing = [["annotator_name", "paper_id", "pairs", "timestamp"]]
+        header = ["annotator_name", "paper_id", "pairs", "timestamp"]
+        # Consider sheet "blank" if empty or all rows have only empty cells
+        is_blank = not existing or all(
+            all(not str(c).strip() for c in (row if isinstance(row, (list, tuple)) else [row]))
+            for row in existing
+        )
+        if is_blank:
+            worksheet.update("A1:D1", [header])
+            existing = [header]
         # Find row indices: skip header (row 0), data rows start at index 1
         def find_row(ann: str, pid: str) -> int | None:
             for i in range(1, len(existing)):
