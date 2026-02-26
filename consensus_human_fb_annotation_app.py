@@ -375,8 +375,8 @@ def submit_to_gsheet(annotator_name: str) -> tuple[bool, str]:
 
 # ── SESSION STATE ─────────────────────────────────────────────────────────────
 
-_REPO_ROOT = Path(__file__).resolve().parents[2]
-DATA_PATH = _REPO_ROOT / "data" / "human_annotation" / "inter_human_annotation_sheet.csv"
+_PROJECT_ROOT = Path(__file__).resolve().parent
+DATA_PATH = _PROJECT_ROOT / "data" / "inter_human_annotation_sheet.csv"
 
 @st.cache_data
 def load_data(path: str) -> pd.DataFrame:
