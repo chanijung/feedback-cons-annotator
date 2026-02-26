@@ -1,0 +1,5 @@
+# Duplicate Feedback Annotator (Streamlit + Google Sheets)
+streamlit>=1.28.0
+pandas>=2.0.0
+gspread>=6.0.0
+google-auth>=2.0.0
