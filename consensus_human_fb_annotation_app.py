@@ -425,6 +425,42 @@ def submit_to_gsheet(annotator_name: str) -> tuple[bool, str]:
         return False, str(e)
 
 
+def load_pairs_from_gsheet(annotator_name: str) -> dict:
+    """Load annotations from Google Sheet for the given annotator.
+    Returns {paper_id: set of frozensets} or empty dict on error."""
+    gc = get_gsheet_client()
+    if gc is None:
+        return {}
+    try:
+        raw = st.secrets["SPREADSHEET_ID"].strip()
+        sheet_id = raw.split("/d/")[1].split("/")[0] if "/d/" in raw else raw
+        sheet_name = st.secrets.get("SHEET_NAME", "Sheet1")
+        spreadsheet = gc.open_by_key(sheet_id)
+        worksheet = spreadsheet.worksheet(sheet_name)
+        rows = worksheet.get_all_values()
+        if not rows or len(rows) < 2:
+            return {}
+        # Skip header; rows: [annotator_name, paper_id, pairs_json, timestamp]
+        result = {}
+        ann = str(annotator_name).strip()
+        for row in rows[1:]:
+            if len(row) < 3:
+                continue
+            if str(row[0]).strip() != ann:
+                continue
+            pid = str(row[1]).strip()
+            pairs_str = str(row[2]).strip()
+            if not pid or not pairs_str:
+                continue
+            parsed = parse_existing_pairs(pairs_str)
+            if parsed:
+                result[pid] = set(frozenset(p) for p in parsed if len(p) == 2)
+        return result
+    except Exception as e:
+        logging.exception("Load from Google Sheets failed: %s", e)
+        return {}
+
+
 # ── SESSION STATE ─────────────────────────────────────────────────────────────
 
 _PROJECT_ROOT = Path(__file__).resolve().parent
@@ -481,6 +517,12 @@ if not st.session_state.annotator_name or not str(st.session_state.annotator_nam
 
 annotator_name = st.session_state.annotator_name
 
+# ── LOAD FROM GOOGLE SHEETS (on refresh / fresh session) ──────────────────────
+if not st.session_state.pairs and get_gsheet_client():
+    loaded = load_pairs_from_gsheet(annotator_name)
+    if loaded:
+        st.session_state.pairs = loaded
+
 # ── FILE UPLOAD (if no CSV found) ─────────────────────────────────────────────
 if st.session_state.df is None:
     st.markdown("### 📂 Upload `inter_human_annotation_sheet.csv` to begin")
@@ -496,8 +538,12 @@ df = st.session_state.df
 paper_ids = df["paper_id"].tolist()
 paper_labels = []
 for _, row in df.iterrows():
+    pid = row["paper_id"]
     title = str(row.get("title", "")).strip()
-    label = title[:55] + "…" if len(title) > 55 else title if title else str(row["paper_id"])
+    label = title[:55] + "…" if len(title) > 55 else title if title else str(pid)
+    is_annotated = pid in st.session_state.pairs and len(st.session_state.pairs[pid]) > 0
+    if is_annotated:
+        label = f"✓ {label}"
     paper_labels.append(label)
 
 # Progress across all papers
