@@ -1,3 +1,4 @@
+import logging
 import streamlit as st
 import pandas as pd
 import json
@@ -303,6 +304,12 @@ def parse_existing_pairs(val) -> list[list[int]]:
 
 # ── GOOGLE SHEETS ─────────────────────────────────────────────────────────────
 
+_SHEETS_SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive",
+]
+
+
 def get_gsheet_client():
     """Build gspread client from Streamlit secrets. Returns None if not configured."""
     try:
@@ -310,7 +317,9 @@ def get_gsheet_client():
             return None
         sa = st.secrets["gcp_service_account"]
         creds_dict = dict(sa) if hasattr(sa, "keys") else sa
-        creds = service_account.Credentials.from_service_account_info(creds_dict)
+        creds = service_account.Credentials.from_service_account_info(
+            creds_dict, scopes=_SHEETS_SCOPES
+        )
         return gspread.authorize(creds)
     except Exception:
         return None
@@ -370,6 +379,7 @@ def submit_to_gsheet(annotator_name: str) -> tuple[bool, str]:
             msg_parts.append(f"{appended} added")
         return True, f"Submitted to Google Sheets: {', '.join(msg_parts)}."
     except Exception as e:
+        logging.exception("Google Sheets submit failed: %s", e)
         return False, str(e)
 
 
