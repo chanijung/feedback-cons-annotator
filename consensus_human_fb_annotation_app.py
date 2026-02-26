@@ -1,4 +1,6 @@
+import html
 import logging
+
 import streamlit as st
 import pandas as pd
 import json
@@ -193,6 +195,41 @@ html, body, .stApp {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.75rem;
     margin: 0.15rem;
+}
+
+/* ── Paper info ── */
+.paper-info {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-top: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.paper-info-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+.paper-abstract {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: #ffffff;
+    margin-bottom: 0.6rem;
+}
+.paper-pdf-link {
+    font-size: 0.85rem;
+}
+.paper-pdf-link a {
+    color: var(--accent);
+    text-decoration: none;
+}
+.paper-pdf-link a:hover {
+    text-decoration: underline;
 }
 
 /* ── Buttons ── */
@@ -399,6 +436,13 @@ def load_data(path: str) -> pd.DataFrame:
 
 
 def init_state():
+    # Restore annotator name from URL query param or session
+    if "annotator_name" not in st.session_state:
+        q = st.query_params.get("annotator")
+        if q and str(q).strip():
+            st.session_state.annotator_name = str(q).strip()
+        else:
+            st.session_state.annotator_name = ""
     if "df" not in st.session_state:
         # Try default path, else require upload
         if DATA_PATH.exists():
@@ -414,8 +458,6 @@ def init_state():
         st.session_state.pairs = {}
     if "search_query" not in st.session_state:
         st.session_state.search_query = ""
-    if "annotator_name" not in st.session_state:
-        st.session_state.annotator_name = ""
     if "submit_success" not in st.session_state:
         st.session_state.submit_success = None
 
@@ -429,7 +471,9 @@ if not st.session_state.annotator_name or not str(st.session_state.annotator_nam
     name = st.text_input("Annotator name", placeholder="e.g. Chani Jung", label_visibility="collapsed")
     if st.button("Continue"):
         if name and str(name).strip():
-            st.session_state.annotator_name = str(name).strip()
+            name_clean = str(name).strip()
+            st.session_state.annotator_name = name_clean
+            st.query_params["annotator"] = name_clean
             st.rerun()
         else:
             st.warning("Please enter your name.")
@@ -465,16 +509,25 @@ reviewed_papers = sum(
 
 pct = int(reviewed_papers / total_papers * 100) if total_papers else 0
 
-st.markdown(f"""
-<div class="top-bar">
-  <h1>⬡ Feedback Consensus Annotator</h1>
-  <span class="progress-info">
-    <span style="color:var(--accent); margin-right:0.8rem;">👤 {annotator_name}</span>
-    Papers annotated: {reviewed_papers} / {total_papers}
-    <span class="progress-wrap"><span class="progress-fill" style="width:{pct}%"></span></span>
-  </span>
-</div>
-""", unsafe_allow_html=True)
+c1, c2 = st.columns([6, 1])
+with c1:
+    st.markdown(f"""
+    <div class="top-bar">
+      <h1>⬡ Feedback Consensus Annotator</h1>
+      <span class="progress-info">
+        <span style="color:var(--accent); margin-right:0.8rem;">👤 {annotator_name}</span>
+        Papers annotated: {reviewed_papers} / {total_papers}
+        <span class="progress-wrap"><span class="progress-fill" style="width:{pct}%"></span></span>
+      </span>
+    </div>
+    """, unsafe_allow_html=True)
+with c2:
+    if st.button("Change name", help="Use a different annotator name"):
+        del st.session_state.annotator_name
+        params = dict(st.query_params)
+        params.pop("annotator", None)
+        st.query_params = params
+        st.rerun()
 
 sel_label = st.selectbox(
     "Select Paper",
@@ -576,6 +629,20 @@ with col_anchor:
             if ps
         }
         st.markdown(f"<div class='save-result'>{json.dumps(result, indent=2)}</div>", unsafe_allow_html=True)
+
+    # ── Paper info (Abstract, PDF) ─────────────────────────────────────────────
+    abstract_raw = str(current_row.get("abstract", "") or "").strip()
+    pdf_url = str(current_row.get("pdf_url", "") or "").strip()
+    if abstract_raw or pdf_url:
+        abstract_escaped = html.escape(abstract_raw) if abstract_raw else ""
+        pdf_link_html = f'<a href="{html.escape(pdf_url)}" target="_blank" rel="noopener">📄 Open PDF</a>' if pdf_url else ""
+        st.markdown(f"""
+        <div class="paper-info">
+          <div class="paper-info-title">Paper</div>
+          {f'<div class="paper-abstract">{abstract_escaped}</div>' if abstract_escaped else ''}
+          {f'<div class="paper-pdf-link">{pdf_link_html}</div>' if pdf_link_html else ''}
+        </div>
+        """, unsafe_allow_html=True)
 
 # ─── Scroll list panel ───────────────────────────────────────────────────────
 with col_list:
