@@ -8,14 +8,14 @@
 
 | 모드 | 시트 탭 이름 | 기본값 | `secrets.toml` 키 |
 |------|--------------|--------|-------------------|
-| Human-Human (H-H) | 중복/동의 페어 | `Sheet1` | `SHEET_NAME` |
+| Human-Human (H-H) | 중복/동의 페어 | `HumanHuman` | `SHEET_NAME` |
 | Human-LLM (H-L) | Human–LLM consensus 페어 | `HumanLLM` | `SHEET_NAME_HL` |
 
 ---
 
 ## 2. HumanLLM 탭이 필요한 이유
 
-- **Human-Human** 결과는 기존 시트(예: `Sheet1`)에 저장됩니다.
+- **Human-Human** 결과는 기존 시트(예: `HumanHuman`)에 저장됩니다.
 - **Human-LLM** 결과는 별도 탭에 저장됩니다. 이유:
   1. 컬럼 구조는 같지만 데이터 의미가 다름 (H-H: duplicate pairs, H-L: consensus pairs)
   2. 나중에 분석 시 모드별로 분리해서 사용하기 쉬움
@@ -50,7 +50,7 @@
 
 ```toml
 SPREADSHEET_ID = "1ED9QuuQWiUjeq8IUyNTigGMJyuy3ffRV2KaHGKOIjoI"
-SHEET_NAME = "Sheet1"        # Human-Human 결과 탭
+SHEET_NAME = "HumanHuman"    # Human-Human 결과 탭
 SHEET_NAME_HL = "HumanLLM"   # Human-LLM 결과 탭 (직접 만든 탭 이름과 일치해야 함)
 ```
 
@@ -96,7 +96,7 @@ SHEET_NAME_HL = "HumanLLM"   # Human-LLM 결과 탭 (직접 만든 탭 이름과
 
 ```
 SPREADSHEET_ID = "your_sheet_id"
-SHEET_NAME = "Sheet1"
+SHEET_NAME = "HumanHuman"
 SHEET_NAME_HL = "HumanLLM"
 
 [gcp_service_account]

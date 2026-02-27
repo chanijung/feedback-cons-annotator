@@ -11,6 +11,7 @@ from pathlib import Path
 
 # Google Sheets integration (gspread + Service Account)
 import gspread
+from gspread.exceptions import WorksheetNotFound
 from google.oauth2 import service_account
 
 # ── Page config ──────────────────────────────────────────────────────────────
@@ -431,28 +432,33 @@ def submit_to_gsheet(annotator_name: str) -> tuple[bool, str]:
     try:
         raw = st.secrets["SPREADSHEET_ID"].strip()
         sheet_id = raw.split("/d/")[1].split("/")[0] if "/d/" in raw else raw
-        sheet_name = st.secrets.get("SHEET_NAME", "Sheet1")
+        sheet_name = st.secrets.get("SHEET_NAME", "HumanHuman")
         sheet_hl = st.secrets.get("SHEET_NAME_HL", "HumanLLM")
         spreadsheet = gc.open_by_key(sheet_id)
 
         msg_parts = []
+        try:
+            ws_main = spreadsheet.worksheet(sheet_name)
+        except WorksheetNotFound:
+            return False, f"Worksheet '{sheet_name}' not found. Create a tab with that name, or set SHEET_NAME in secrets to match your tab."
         u1, a1 = _submit_pairs_to_sheet(
-            spreadsheet.worksheet(sheet_name), annotator_name, st.session_state.pairs, is_hl=False
+            ws_main, annotator_name, st.session_state.pairs, is_hl=False
         )
         if u1 or a1:
             msg_parts.append(f"Human-Human: {u1 + a1}")
 
         try:
+            ws_hl = spreadsheet.worksheet(sheet_hl)
             u2, a2 = _submit_pairs_to_sheet(
-                spreadsheet.worksheet(sheet_hl), annotator_name, st.session_state.pairs_hl, is_hl=True
+                ws_hl, annotator_name, st.session_state.pairs_hl, is_hl=True
             )
             if u2 or a2:
                 msg_parts.append(f"Human-LLM: {u2 + a2}")
-        except Exception as e:
+        except WorksheetNotFound:
             if msg_parts:
-                msg_parts.append(f"(Human-LLM sheet '{sheet_hl}' not found or error: {e})")
+                msg_parts.append(f"(Human-LLM tab '{sheet_hl}' not found—create it or set SHEET_NAME_HL)")
             else:
-                raise
+                return False, f"Worksheet '{sheet_hl}' not found. Create a tab named '{sheet_hl}', or set SHEET_NAME_HL in secrets."
 
         if not msg_parts:
             return False, "No annotations to submit."
@@ -475,8 +481,16 @@ def load_pairs_from_gsheet(annotator_name: str) -> tuple[dict, dict]:
         spreadsheet = gc.open_by_key(sheet_id)
 
         # Human-Human
-        ws = spreadsheet.worksheet(st.secrets.get("SHEET_NAME", "Sheet1"))
-        rows = ws.get_all_values()
+        sheet_name = st.secrets.get("SHEET_NAME", "HumanHuman")
+        try:
+            ws = spreadsheet.worksheet(sheet_name)
+        except WorksheetNotFound:
+            logging.warning("Sheet '%s' not found, trying first tab", sheet_name)
+            try:
+                ws = spreadsheet.sheet1
+            except Exception:
+                ws = None
+        rows = ws.get_all_values() if ws else []
         for row in (rows[1:] if rows else []):
             if len(row) < 3 or str(row[0]).strip() != ann:
                 continue
