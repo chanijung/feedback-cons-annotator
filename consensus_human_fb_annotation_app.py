@@ -479,6 +479,23 @@ def load_pairs_from_gsheet(annotator_name: str) -> dict:
         return {}
 
 
+# ── ANNOTATOR ASSIGNMENT (12 papers × 3 annotators each, 4 people) ───────────────
+# Each paper: 3 annotators. Each person: 9 papers.
+_ANNOTATORS = ["chani", "jimin", "hyunwoo", "xuhui"]
+_ASSIGNMENT = {
+    "chani": [0, 1, 2, 4, 5, 6, 8, 9, 10],
+    "jimin": [0, 1, 3, 4, 5, 7, 8, 9, 11],
+    "hyunwoo": [0, 2, 3, 4, 6, 7, 8, 10, 11],
+    "xuhui": [1, 2, 3, 5, 6, 7, 9, 10, 11],
+}
+
+
+def get_assigned_paper_indices(annotator_name: str) -> list[int] | None:
+    """Return list of paper indices for this annotator, or None if not assigned."""
+    key = str(annotator_name).strip().lower()
+    return _ASSIGNMENT.get(key)
+
+
 # ── SESSION STATE ─────────────────────────────────────────────────────────────
 
 _PROJECT_ROOT = Path(__file__).resolve().parent
@@ -552,8 +569,20 @@ if st.session_state.df is None:
 
 df = st.session_state.df
 
+# ── FILTER BY ANNOTATOR ASSIGNMENT ────────────────────────────────────────────
+assigned_indices = get_assigned_paper_indices(annotator_name)
+if assigned_indices is not None:
+    df = df.iloc[assigned_indices].reset_index(drop=True)
+else:
+    st.warning(
+        f"Annotator '{annotator_name}' is not in the assignment list ({', '.join(_ANNOTATORS)}). "
+        "Showing all papers."
+    )
+
 # ── PAPER SELECTION ───────────────────────────────────────────────────────────
 paper_ids = df["paper_id"].tolist()
+if st.session_state.paper_idx >= len(paper_ids):
+    st.session_state.paper_idx = 0
 paper_labels = []
 for _, row in df.iterrows():
     pid = row["paper_id"]
