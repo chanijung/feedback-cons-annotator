@@ -330,6 +330,11 @@ def get_keywords(text: str) -> set[str]:
     return {w for w in words if w not in STOPWORDS}
 
 
+def count_word_overlap(anchor_keywords: set[str], text: str) -> int:
+    """Count overlapping words between anchor and text. Used for sorting."""
+    return len(anchor_keywords & get_keywords(text))
+
+
 def highlight(text: str, keywords: set[str]) -> str:
     """Wrap matching keywords in <span class='highlight-word'>"""
     if not keywords:
@@ -896,13 +901,19 @@ with col_list:
     st.markdown(f"""
     <div style='font-family:IBM Plex Mono,monospace; font-size:0.7rem; color:var(--text-dim);
                 text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.6rem;'>
-        {list_title}
+        {list_title} · sorted by word overlap ↓
     </div>
     """, unsafe_allow_html=True)
 
-    for fb_i, (fb_idx, fb_text) in enumerate(list_feedbacks):
-        if not matches_search(fb_text, search_q):
-            continue
+    # Filter by search, then sort by word overlap (desc) so high-overlap feedbacks appear first
+    items = [
+        (fb_i, fb_idx, fb_text)
+        for fb_i, (fb_idx, fb_text) in enumerate(list_feedbacks)
+        if matches_search(fb_text, search_q)
+    ]
+    items.sort(key=lambda x: count_word_overlap(anchor_keywords, x[2]), reverse=True)
+
+    for fb_i, fb_idx, fb_text in items:
 
         if mode == "human_human":
             pair_key = frozenset([anchor_feedback_idx, fb_idx])
