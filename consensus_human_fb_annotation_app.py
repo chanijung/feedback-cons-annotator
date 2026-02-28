@@ -260,22 +260,24 @@ html, body, .stApp {
     font-size: 0.82rem !important;
 }
 
-/* ── Sticky left panel, scrollable right panel ── */
+/* ── Sticky left panel, scrollable right panel (50/50 width) ── */
 [data-testid="stHorizontalBlock"]:has(.anchor-panel) {
     align-items: flex-start !important;
     max-height: calc(100vh - 180px) !important;
+}
+[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:first-child,
+[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
 }
 [data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:first-child {
     position: sticky !important;
     top: 0.5rem !important;
     align-self: flex-start !important;
-    flex-shrink: 0 !important;
 }
 [data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child {
     overflow-y: auto !important;
     max-height: calc(100vh - 180px) !important;
-    flex: 1 !important;
-    min-width: 0 !important;
     scrollbar-width: thin;
     scrollbar-color: var(--border) var(--surface);
 }
@@ -786,7 +788,7 @@ mode_label = "Human ↔ LLM Consensus" if mode == "human_llm" else "Human ↔ Hu
 st.caption(f"📌 {mode_label}")
 
 # Prev / Next / 맨위로 - above right panel (same 2:3 split as main layout)
-_nav_left, nav_right = st.columns([2, 3], gap="large")
+_nav_left, nav_right = st.columns([1, 1], gap="large")
 with nav_right:
     prev_col, next_col, scroll_col = st.columns([1, 1, 1])
     with prev_col:
@@ -796,7 +798,7 @@ with nav_right:
     with scroll_col:
         st.html(
             """<button type="button" id="scroll-to-top-btn" style="
-                font-size: 0.75rem; padding: 0.3rem 0.5rem;
+                font-size: 0.83rem; padding: 0.4rem 1rem; min-height: 2.5rem; line-height: 1.2; box-sizing: border-box;
                 background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
                 color: var(--text); cursor: pointer; font-family: inherit; width: 100%;
             ">Scroll to top</button>
@@ -842,7 +844,7 @@ if do_next:
     st.rerun()
 
 # ── LAYOUT: anchor | scroll list ─────────────────────────────────────────────
-col_anchor, col_list = st.columns([2, 3], gap="large")
+col_anchor, col_list = st.columns([1, 1], gap="large")
 
 # ─── Anchor panel ────────────────────────────────────────────────────────────
 with col_anchor:
