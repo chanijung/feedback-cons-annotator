@@ -822,26 +822,32 @@ with nav_right:
             unsafe_allow_javascript=True,
         )
 
+def _go_to(new_anchor: int, new_mode: str | None = None):
+    """Navigate to a new anchor index, keeping number_input widget in sync."""
+    if new_mode is not None:
+        st.session_state.annotation_mode = new_mode
+    st.session_state.anchor_idx = new_anchor
+    # Sync number_input stored state so it doesn't override anchor_idx on next render
+    target_mode = new_mode if new_mode is not None else mode
+    st.session_state[f"jump_{paper_id}_{target_mode}"] = new_anchor
+    st.rerun()
+
 if do_prev:
     if anchor_i <= 0 and mode == "human_llm":
-        st.session_state.annotation_mode = "human_human"
-        st.session_state.anchor_idx = n - 1
+        _go_to(n - 1, "human_human")
     else:
-        st.session_state.anchor_idx = max(0, anchor_i - 1)
-    st.rerun()
+        _go_to(max(0, anchor_i - 1))
 if do_next:
     if anchor_i >= n - 1:
         if mode == "human_human" and has_llm:
-            st.session_state.annotation_mode = "human_llm"
-            st.session_state.anchor_idx = 0
+            _go_to(0, "human_llm")
         else:
             st.session_state.annotation_mode = "human_human"
-            st.session_state.anchor_idx = 0
             if paper_idx < total_papers - 1:
                 st.session_state.paper_idx = paper_idx + 1
+            _go_to(0, "human_human")
     else:
-        st.session_state.anchor_idx = min(n - 1, anchor_i + 1)
-    st.rerun()
+        _go_to(min(n - 1, anchor_i + 1))
 
 # ── LAYOUT: anchor | scroll list ─────────────────────────────────────────────
 col_anchor, col_list = st.columns([1, 1], gap="large")
@@ -875,8 +881,7 @@ with col_anchor:
             label_visibility="collapsed",
         )
     if jump_to != anchor_i:
-        st.session_state.anchor_idx = int(jump_to)
-        st.rerun()
+        _go_to(int(jump_to))
 
     # ── Basket ───────────────────────────────────────────────────────────────
     if mode == "human_human":
