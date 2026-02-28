@@ -27,17 +27,17 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
 :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #22263a;
-    --border: #2e3250;
-    --accent: #5b8dee;
-    --accent2: #e05b8d;
-    --text: #d4d8f0;
-    --text-dim: #7a7f9a;
-    --highlight: rgba(91, 141, 238, 0.25);
-    --checked-bg: rgba(91, 141, 238, 0.12);
-    --checked-border: #5b8dee;
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface2: #eef0f4;
+    --border: #d1d5dc;
+    --accent: #2563eb;
+    --accent2: #c026d3;
+    --text: #1e293b;
+    --text-dim: #64748b;
+    --highlight: rgba(37, 99, 235, 0.15);
+    --checked-bg: rgba(37, 99, 235, 0.08);
+    --checked-border: #2563eb;
     --radius: 10px;
 }
 
@@ -162,8 +162,8 @@ html, body, .stApp {
     color: var(--text);
 }
 .highlight-word {
-    background: rgba(91,141,238,0.28);
-    color: #a8c4ff;
+    background: rgba(37,99,235,0.2);
+    color: #1d4ed8;
     border-radius: 3px;
     padding: 0 2px;
     font-weight: 500;
@@ -219,7 +219,7 @@ html, body, .stApp {
 .paper-abstract {
     font-size: 0.95rem;
     line-height: 1.55;
-    color: #ffffff;
+    color: #1e293b;
     margin-bottom: 0.6rem;
 }
 .paper-pdf-link {
@@ -276,6 +276,23 @@ html, body, .stApp {
     max-height: calc(100vh - 180px) !important;
     flex: 1 !important;
     min-width: 0 !important;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) var(--surface);
+}
+[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar {
+    width: 10px;
+}
+[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar-track {
+    background: var(--surface);
+    border-radius: 5px;
+}
+[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 5px;
+    border: 2px solid var(--surface);
+}
+[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar-thumb:hover {
+    background: var(--text-dim);
 }
 
 /* save result area */
@@ -395,7 +412,7 @@ def _submit_pairs_to_sheet(worksheet, annotator_name: str, pairs_dict: dict, is_
         for row in existing
     )
     if is_blank:
-        worksheet.update("A1:D1", [header])
+        worksheet.update([header], "A1:D1")
         existing = [header]
 
     def find_row(ann: str, pid: str) -> int | None:
@@ -421,7 +438,7 @@ def _submit_pairs_to_sheet(worksheet, annotator_name: str, pairs_dict: dict, is_
         row_data = [annotator_name, pid, pairs_str, timestamp]
         idx = find_row(annotator_name, pid)
         if idx is not None:
-            worksheet.update(f"A{idx + 1}:D{idx + 1}", [row_data])
+            worksheet.update([row_data], f"A{idx + 1}:D{idx + 1}")
             updated += 1
         else:
             worksheet.append_row(row_data)
@@ -584,9 +601,6 @@ def init_state():
     if "pairs_hl" not in st.session_state:
         # {(paper_id, human_idx): set of llm_idx} or {paper_id: {(h,l), ...}}
         st.session_state.pairs_hl = {}
-    if "theme" not in st.session_state:
-        st.session_state.theme = "dark"  # "dark" | "light"
-
 
 def _paper_has_llm(row) -> bool:
     """Check if row has valid llm_feedback."""
@@ -595,32 +609,6 @@ def _paper_has_llm(row) -> bool:
 
 
 init_state()
-
-# ── THEME (light/dark) - inject early ─────────────────────────────────────────
-def inject_theme_css(theme: str):
-    """Inject theme override CSS. Base is dark; override for light."""
-    if theme == "light":
-        st.markdown("""
-        <style>
-        :root {
-            --bg: #f5f6f8;
-            --surface: #ffffff;
-            --surface2: #eef0f4;
-            --border: #d1d5dc;
-            --accent: #2563eb;
-            --accent2: #c026d3;
-            --text: #1e293b;
-            --text-dim: #64748b;
-            --highlight: rgba(37, 99, 235, 0.15);
-            --checked-bg: rgba(37, 99, 235, 0.08);
-            --checked-border: #2563eb;
-        }
-        .paper-abstract { color: #1e293b !important; }
-        .highlight-word { background: rgba(37,99,235,0.2); color: #1d4ed8 !important; }
-        </style>
-        """, unsafe_allow_html=True)
-
-inject_theme_css(st.session_state.theme)
 
 # ── ANNOTATOR NAME (required) ──────────────────────────────────────────────────
 if not st.session_state.annotator_name or not str(st.session_state.annotator_name).strip():
@@ -706,7 +694,7 @@ reviewed_papers = sum(
 
 pct = int(reviewed_papers / total_papers * 100) if total_papers else 0
 
-c1, c2, c3 = st.columns([5, 1, 1])
+c1, c2 = st.columns([6, 1])
 with c1:
     st.markdown(f"""
     <div class="top-bar">
@@ -719,12 +707,6 @@ with c1:
     </div>
     """, unsafe_allow_html=True)
 with c2:
-    theme = st.session_state.theme
-    theme_label = "🌙 Dark mode: ON" if theme == "dark" else "☀️ Dark mode: OFF"
-    if st.button(theme_label, key="theme_toggle", help="Dark mode on/off"):
-        st.session_state.theme = "light" if theme == "dark" else "dark"
-        st.rerun()
-with c3:
     if st.button("Change name", help="Use a different annotator name"):
         del st.session_state.annotator_name
         params = dict(st.query_params)
@@ -803,14 +785,40 @@ def matches_search(text: str, q: str) -> bool:
 mode_label = "Human ↔ LLM Consensus" if mode == "human_llm" else "Human ↔ Human Duplicates"
 st.caption(f"📌 {mode_label}")
 
-# Prev/Next at top (before Mark buttons) so clicks register reliably
-_, nav_area, _ = st.columns([2, 1, 2])
-with nav_area:
-    prev_col, next_col = st.columns(2)
+# Prev / Next / 맨위로 - above right panel (same 2:3 split as main layout)
+_nav_left, nav_right = st.columns([2, 3], gap="large")
+with nav_right:
+    prev_col, next_col, scroll_col = st.columns([1, 1, 1])
     with prev_col:
         do_prev = st.button("← Prev", key="nav_prev", use_container_width=True)
     with next_col:
         do_next = st.button("Next →", key="nav_next", use_container_width=True)
+    with scroll_col:
+        st.html(
+            """<button type="button" id="scroll-to-top-btn" style="
+                font-size: 0.75rem; padding: 0.3rem 0.5rem;
+                background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+                color: var(--text); cursor: pointer; font-family: inherit; width: 100%;
+            ">Scroll to top</button>
+            <script>
+            (function(){
+                function scrollRightToTop(){
+                    var d = document;
+                    try { if (window.parent && window.parent !== window) d = window.parent.document; } catch(e) {}
+                    var blocks = d.querySelectorAll('[data-testid=\"stHorizontalBlock\"]');
+                    for (var i = 0; i < blocks.length; i++) {
+                        if (blocks[i].querySelector('.anchor-panel')) {
+                            var right = blocks[i].lastElementChild;
+                            if (right) { right.scrollTop = 0; break; }
+                        }
+                    }
+                }
+                var btn = document.getElementById('scroll-to-top-btn');
+                if (btn) btn.addEventListener('click', scrollRightToTop);
+            })();
+            </script>""",
+            unsafe_allow_javascript=True,
+        )
 
 if do_prev:
     if anchor_i <= 0 and mode == "human_llm":
