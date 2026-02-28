@@ -568,7 +568,7 @@ _DATA_ANNOTATION = _PROJECT_ROOT / "data" / "annotation_sheet.csv"
 _DATA_INTER_HUMAN = _PROJECT_ROOT / "data" / "inter_human_annotation_sheet.csv"
 DATA_PATH = _DATA_ANNOTATION if _DATA_ANNOTATION.exists() else _DATA_INTER_HUMAN
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def load_data(path: str) -> pd.DataFrame:
     return load_csv(path)
 
