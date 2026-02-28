@@ -128,7 +128,7 @@ html, body, .stApp {
     margin-bottom: 0.5rem;
 }
 .anchor-text {
-    font-size: 0.92rem;
+    font-size: 1rem;
     line-height: 1.65;
     color: var(--text);
 }
@@ -157,7 +157,7 @@ html, body, .stApp {
     margin-bottom: 0.35rem;
 }
 .card-text {
-    font-size: 0.88rem;
+    font-size: 0.96rem;
     line-height: 1.6;
     color: var(--text);
 }
