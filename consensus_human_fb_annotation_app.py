@@ -584,6 +584,8 @@ def init_state():
     if "pairs_hl" not in st.session_state:
         # {(paper_id, human_idx): set of llm_idx} or {paper_id: {(h,l), ...}}
         st.session_state.pairs_hl = {}
+    if "theme" not in st.session_state:
+        st.session_state.theme = "dark"  # "dark" | "light"
 
 
 def _paper_has_llm(row) -> bool:
@@ -593,6 +595,32 @@ def _paper_has_llm(row) -> bool:
 
 
 init_state()
+
+# ── THEME (light/dark) - inject early ─────────────────────────────────────────
+def inject_theme_css(theme: str):
+    """Inject theme override CSS. Base is dark; override for light."""
+    if theme == "light":
+        st.markdown("""
+        <style>
+        :root {
+            --bg: #f5f6f8;
+            --surface: #ffffff;
+            --surface2: #eef0f4;
+            --border: #d1d5dc;
+            --accent: #2563eb;
+            --accent2: #c026d3;
+            --text: #1e293b;
+            --text-dim: #64748b;
+            --highlight: rgba(37, 99, 235, 0.15);
+            --checked-bg: rgba(37, 99, 235, 0.08);
+            --checked-border: #2563eb;
+        }
+        .paper-abstract { color: #1e293b !important; }
+        .highlight-word { background: rgba(37,99,235,0.2); color: #1d4ed8 !important; }
+        </style>
+        """, unsafe_allow_html=True)
+
+inject_theme_css(st.session_state.theme)
 
 # ── ANNOTATOR NAME (required) ──────────────────────────────────────────────────
 if not st.session_state.annotator_name or not str(st.session_state.annotator_name).strip():
@@ -678,7 +706,7 @@ reviewed_papers = sum(
 
 pct = int(reviewed_papers / total_papers * 100) if total_papers else 0
 
-c1, c2 = st.columns([6, 1])
+c1, c2, c3 = st.columns([5, 1, 1])
 with c1:
     st.markdown(f"""
     <div class="top-bar">
@@ -691,6 +719,12 @@ with c1:
     </div>
     """, unsafe_allow_html=True)
 with c2:
+    theme = st.session_state.theme
+    theme_label = "🌙 Dark mode: ON" if theme == "dark" else "☀️ Dark mode: OFF"
+    if st.button(theme_label, key="theme_toggle", help="Dark mode on/off"):
+        st.session_state.theme = "light" if theme == "dark" else "dark"
+        st.rerun()
+with c3:
     if st.button("Change name", help="Use a different annotator name"):
         del st.session_state.annotator_name
         params = dict(st.query_params)
@@ -765,9 +799,39 @@ def matches_search(text: str, q: str) -> bool:
         return True
     return q.strip().lower() in text.lower()
 
-# ── MODE LABEL ────────────────────────────────────────────────────────────────
+# ── MODE LABEL + PREV/NEXT NAV ───────────────────────────────────────────────
 mode_label = "Human ↔ LLM Consensus" if mode == "human_llm" else "Human ↔ Human Duplicates"
 st.caption(f"📌 {mode_label}")
+
+# Prev/Next at top (before Mark buttons) so clicks register reliably
+_, nav_area, _ = st.columns([2, 1, 2])
+with nav_area:
+    prev_col, next_col = st.columns(2)
+    with prev_col:
+        do_prev = st.button("← Prev", key="nav_prev", use_container_width=True)
+    with next_col:
+        do_next = st.button("Next →", key="nav_next", use_container_width=True)
+
+if do_prev:
+    if anchor_i <= 0 and mode == "human_llm":
+        st.session_state.annotation_mode = "human_human"
+        st.session_state.anchor_idx = n - 1
+    else:
+        st.session_state.anchor_idx = max(0, anchor_i - 1)
+    st.rerun()
+if do_next:
+    if anchor_i >= n - 1:
+        if mode == "human_human" and has_llm:
+            st.session_state.annotation_mode = "human_llm"
+            st.session_state.anchor_idx = 0
+        else:
+            st.session_state.annotation_mode = "human_human"
+            st.session_state.anchor_idx = 0
+            if paper_idx < total_papers - 1:
+                st.session_state.paper_idx = paper_idx + 1
+    else:
+        st.session_state.anchor_idx = min(n - 1, anchor_i + 1)
+    st.rerun()
 
 # ── LAYOUT: anchor | scroll list ─────────────────────────────────────────────
 col_anchor, col_list = st.columns([2, 3], gap="large")
@@ -803,33 +867,6 @@ with col_anchor:
     if jump_to != anchor_i:
         st.session_state.anchor_idx = int(jump_to)
         st.rerun()
-
-    nav_c1, nav_c2 = st.columns(2)
-    with nav_c1:
-        if st.button("← Prev", use_container_width=True):
-            if anchor_i <= 0 and mode == "human_llm":
-                # Back to human_human
-                st.session_state.annotation_mode = "human_human"
-                st.session_state.anchor_idx = n - 1
-            else:
-                st.session_state.anchor_idx = max(0, anchor_i - 1)
-            st.rerun()
-    with nav_c2:
-        if st.button("Next →", use_container_width=True):
-            if anchor_i >= n - 1:
-                if mode == "human_human" and has_llm:
-                    # Move to human_llm for this paper
-                    st.session_state.annotation_mode = "human_llm"
-                    st.session_state.anchor_idx = 0
-                else:
-                    # Next paper
-                    st.session_state.annotation_mode = "human_human"
-                    st.session_state.anchor_idx = 0
-                    if paper_idx < total_papers - 1:
-                        st.session_state.paper_idx = paper_idx + 1
-            else:
-                st.session_state.anchor_idx = min(n - 1, anchor_i + 1)
-            st.rerun()
 
     # ── Basket ───────────────────────────────────────────────────────────────
     if mode == "human_human":
