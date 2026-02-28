@@ -824,11 +824,10 @@ with nav_right:
 
 def _go_to(new_anchor: int, new_mode: str | None = None):
     """Navigate to a new anchor index, keeping number_input widget in sync."""
+    target_mode = new_mode if new_mode is not None else mode
     if new_mode is not None:
         st.session_state.annotation_mode = new_mode
     st.session_state.anchor_idx = new_anchor
-    # Sync number_input stored state so it doesn't override anchor_idx on next render
-    target_mode = new_mode if new_mode is not None else mode
     st.session_state[f"jump_{paper_id}_{target_mode}"] = new_anchor
     st.rerun()
 
@@ -874,7 +873,6 @@ with col_anchor:
             "Jump to feedback",
             min_value=0,
             max_value=n - 1,
-            value=anchor_i,
             step=1,
             format="%d",
             key=f"jump_{paper_id}_{mode}",
