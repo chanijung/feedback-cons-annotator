@@ -405,17 +405,23 @@ def get_gsheet_client():
         return None
 
 
-def _submit_pairs_to_sheet(worksheet, annotator_name: str, pairs_dict: dict, is_hl: bool) -> tuple[int, int]:
-    """Submit pairs to worksheet. Returns (updated, appended) counts."""
+def _submit_pairs_to_sheet(worksheet, annotator_name: str, pairs_dict: dict, is_hl: bool, completed_anchors_dict: dict | None = None) -> tuple[int, int]:
+    """Submit pairs to worksheet. Returns (updated, appended) counts.
+    completed_anchors_dict: {paper_id: set of completed anchor indices} for this mode.
+    """
     existing = worksheet.get_all_values()
-    header = ["annotator_name", "paper_id", "pairs", "timestamp"]
+    header = ["annotator_name", "paper_id", "pairs", "completed_anchors", "timestamp"]
     is_blank = not existing or all(
         all(not str(c).strip() for c in (row if isinstance(row, (list, tuple)) else [row]))
         for row in existing
     )
     if is_blank:
-        worksheet.update([header], "A1:D1")
+        worksheet.update([header], "A1:E1")
         existing = [header]
+
+    # Detect if existing sheet has old 4-col format and migrate header
+    if existing and len(existing[0]) == 4 and existing[0] == ["annotator_name", "paper_id", "pairs", "timestamp"]:
+        existing[0] = header
 
     def find_row(ann: str, pid: str) -> int | None:
         for i in range(1, len(existing)):
@@ -426,21 +432,31 @@ def _submit_pairs_to_sheet(worksheet, annotator_name: str, pairs_dict: dict, is_
 
     timestamp = datetime.now(timezone.utc).isoformat()
     updated, appended = 0, 0
-    for pid, data in pairs_dict.items():
+
+    # Merge all pids from pairs_dict and completed_anchors_dict
+    all_pids = set(pairs_dict.keys())
+    if completed_anchors_dict:
+        all_pids |= set(completed_anchors_dict.keys())
+
+    for pid in all_pids:
+        data = pairs_dict.get(pid)
         if is_hl:
-            ps = data if isinstance(data, set) else set(tuple(p) for p in data)
-            if not ps:
-                continue
-            pairs_str = json.dumps(sorted([list(p) for p in ps]))
+            ps = data if isinstance(data, set) else (set(tuple(p) for p in data) if data else set())
+            pairs_str = json.dumps(sorted([list(p) for p in ps])) if ps else "[]"
         else:
-            ps = data
-            if not ps:
-                continue
-            pairs_str = json.dumps(sorted([sorted(list(p)) for p in ps]))
-        row_data = [annotator_name, pid, pairs_str, timestamp]
+            ps = data if data else set()
+            pairs_str = json.dumps(sorted([sorted(list(p)) for p in ps])) if ps else "[]"
+
+        done_set = (completed_anchors_dict or {}).get(pid, set())
+        done_str = json.dumps(sorted(done_set)) if done_set else "[]"
+
+        if pairs_str == "[]" and done_str == "[]":
+            continue
+
+        row_data = [annotator_name, pid, pairs_str, done_str, timestamp]
         idx = find_row(annotator_name, pid)
         if idx is not None:
-            worksheet.update([row_data], f"A{idx + 1}:D{idx + 1}")
+            worksheet.update([row_data], f"A{idx + 1}:E{idx + 1}")
             updated += 1
         else:
             worksheet.append_row(row_data)
@@ -461,12 +477,18 @@ def submit_to_gsheet(annotator_name: str) -> tuple[bool, str]:
         spreadsheet = gc.open_by_key(sheet_id)
 
         msg_parts = []
+
+        # Build per-mode completed_anchors dicts: {paper_id: set of int}
+        ca = st.session_state.completed_anchors
+        ca_hh = {pid: v.get("human_human", set()) for pid, v in ca.items()}
+        ca_hl = {pid: v.get("human_llm", set()) for pid, v in ca.items()}
+
         try:
             ws_main = spreadsheet.worksheet(sheet_name)
         except WorksheetNotFound:
             return False, f"Worksheet '{sheet_name}' not found. Create a tab with that name, or set SHEET_NAME in secrets to match your tab."
         u1, a1 = _submit_pairs_to_sheet(
-            ws_main, annotator_name, st.session_state.pairs, is_hl=False
+            ws_main, annotator_name, st.session_state.pairs, is_hl=False, completed_anchors_dict=ca_hh
         )
         if u1 or a1:
             msg_parts.append(f"Human-Human: {u1 + a1}")
@@ -474,7 +496,7 @@ def submit_to_gsheet(annotator_name: str) -> tuple[bool, str]:
         try:
             ws_hl = spreadsheet.worksheet(sheet_hl)
             u2, a2 = _submit_pairs_to_sheet(
-                ws_hl, annotator_name, st.session_state.pairs_hl, is_hl=True
+                ws_hl, annotator_name, st.session_state.pairs_hl, is_hl=True, completed_anchors_dict=ca_hl
             )
             if u2 or a2:
                 msg_parts.append(f"Human-LLM: {u2 + a2}")
@@ -492,17 +514,43 @@ def submit_to_gsheet(annotator_name: str) -> tuple[bool, str]:
         return False, str(e)
 
 
-def load_pairs_from_gsheet(annotator_name: str) -> tuple[dict, dict]:
-    """Load human-human and human-llm annotations. Returns (pairs, pairs_hl)."""
+def _parse_completed_anchors(s: str) -> set:
+    """Parse a JSON list of ints into a set."""
+    try:
+        raw = json.loads(s)
+        if isinstance(raw, list):
+            return set(int(x) for x in raw)
+    except Exception:
+        pass
+    return set()
+
+
+def load_pairs_from_gsheet(annotator_name: str) -> tuple[dict, dict, dict]:
+    """Load human-human and human-llm annotations and completed anchors.
+    Returns (pairs, pairs_hl, completed_anchors).
+    completed_anchors: {paper_id: {"human_human": set, "human_llm": set}}
+    """
     gc = get_gsheet_client()
     if gc is None:
-        return {}, {}
+        return {}, {}, {}
     pairs, pairs_hl = {}, {}
+    completed_anchors: dict = {}
     ann = str(annotator_name).strip()
     try:
         raw = st.secrets["SPREADSHEET_ID"].strip()
         sheet_id = raw.split("/d/")[1].split("/")[0] if "/d/" in raw else raw
         spreadsheet = gc.open_by_key(sheet_id)
+
+        def _load_completed(row, mode_key, completed_anchors):
+            """Read completed_anchors column (index 3) from row and merge into dict."""
+            if len(row) >= 4:
+                pid = str(row[1]).strip()
+                done_str = str(row[3]).strip()
+                done_set = _parse_completed_anchors(done_str)
+                if done_set and pid:
+                    if pid not in completed_anchors:
+                        completed_anchors[pid] = {"human_human": set(), "human_llm": set()}
+                    completed_anchors[pid][mode_key] |= done_set
 
         # Human-Human
         sheet_name = st.secrets.get("SHEET_NAME", "HumanHuman")
@@ -523,6 +571,7 @@ def load_pairs_from_gsheet(annotator_name: str) -> tuple[dict, dict]:
                 parsed = parse_existing_pairs(pairs_str)
                 if parsed:
                     pairs[pid] = set(frozenset(p) for p in parsed if len(p) == 2)
+            _load_completed(row, "human_human", completed_anchors)
 
         # Human-LLM
         try:
@@ -536,11 +585,12 @@ def load_pairs_from_gsheet(annotator_name: str) -> tuple[dict, dict]:
                     parsed = parse_existing_pairs(pairs_str)
                     if parsed:
                         pairs_hl[pid] = set(tuple(p) for p in parsed if len(p) == 2)
+                _load_completed(row, "human_llm", completed_anchors)
         except Exception:
             pass
     except Exception as e:
         logging.exception("Load from Google Sheets failed: %s", e)
-    return pairs, pairs_hl
+    return pairs, pairs_hl, completed_anchors
 
 
 # ── ANNOTATOR ASSIGNMENT (12 papers × 3 annotators each, 4 people) ───────────────
@@ -601,8 +651,10 @@ def init_state():
     if "annotation_mode" not in st.session_state:
         st.session_state.annotation_mode = "human_human"  # or "human_llm"
     if "pairs_hl" not in st.session_state:
-        # {(paper_id, human_idx): set of llm_idx} or {paper_id: {(h,l), ...}}
         st.session_state.pairs_hl = {}
+    if "completed_anchors" not in st.session_state:
+        # {paper_id: {"human_human": set of int, "human_llm": set of int}}
+        st.session_state.completed_anchors = {}
 
 def _paper_has_llm(row) -> bool:
     """Check if row has valid llm_feedback."""
@@ -631,11 +683,18 @@ annotator_name = st.session_state.annotator_name
 
 # ── LOAD FROM GOOGLE SHEETS (on refresh / fresh session) ──────────────────────
 if not st.session_state.pairs and get_gsheet_client():
-    loaded_pairs, loaded_hl = load_pairs_from_gsheet(annotator_name)
+    loaded_pairs, loaded_hl, loaded_ca = load_pairs_from_gsheet(annotator_name)
     if loaded_pairs:
         st.session_state.pairs = loaded_pairs
     if loaded_hl:
         st.session_state.pairs_hl = loaded_hl
+    if loaded_ca:
+        # Merge loaded completed_anchors into session state
+        for pid, modes in loaded_ca.items():
+            if pid not in st.session_state.completed_anchors:
+                st.session_state.completed_anchors[pid] = {"human_human": set(), "human_llm": set()}
+            for m, s in modes.items():
+                st.session_state.completed_anchors[pid][m] |= s
 
 # ── FILE UPLOAD (if no CSV found) ─────────────────────────────────────────────
 if st.session_state.df is None:
@@ -758,6 +817,10 @@ if paper_id not in st.session_state.pairs_hl:
     st.session_state.pairs_hl[paper_id] = set()
 pairs_hl_paper: set = st.session_state.pairs_hl[paper_id]
 
+# Init completed_anchors for this paper
+if paper_id not in st.session_state.completed_anchors:
+    st.session_state.completed_anchors[paper_id] = {"human_human": set(), "human_llm": set()}
+
 if not feedbacks:
     st.warning("No feedbacks found for this paper.")
     st.stop()
@@ -770,9 +833,10 @@ if st.session_state.annotation_mode == "human_llm" and not has_llm:
 n = len(feedbacks)
 n_llm = len(llm_feedbacks)
 anchor_i = min(st.session_state.anchor_idx, n - 1)
+mode = st.session_state.annotation_mode
+completed_set = st.session_state.completed_anchors[paper_id].get(mode, set())
 anchor_feedback_idx, anchor_text = feedbacks[anchor_i]
 anchor_keywords = get_keywords(anchor_text)
-mode = st.session_state.annotation_mode
 
 # ── SEARCH FILTER ─────────────────────────────────────────────────────────────
 search_q = st.text_input("🔍  Filter feedbacks by keyword", value=st.session_state.search_query, placeholder="e.g. experiment, baseline ...")
@@ -823,12 +887,10 @@ with nav_right:
         )
 
 def _go_to(new_anchor: int, new_mode: str | None = None):
-    """Navigate to a new anchor index, keeping number_input widget in sync."""
-    target_mode = new_mode if new_mode is not None else mode
+    """Navigate to a new anchor index."""
     if new_mode is not None:
         st.session_state.annotation_mode = new_mode
     st.session_state.anchor_idx = new_anchor
-    st.session_state[f"jump_{paper_id}_{target_mode}"] = new_anchor
     st.rerun()
 
 if do_prev:
@@ -854,32 +916,54 @@ col_anchor, col_list = st.columns([1, 1], gap="large")
 # ─── Anchor panel ────────────────────────────────────────────────────────────
 with col_anchor:
     anchor_title = "Human Anchor" if mode == "human_llm" else "Anchor"
+    anchor_done = anchor_i in completed_set
+    done_badge = " ✅" if anchor_done else ""
     st.markdown(f"""
     <div class="anchor-panel">
-      <div class="anchor-label">🔒 {anchor_title} — Reviewing</div>
+      <div class="anchor-label">🔒 {anchor_title} — Reviewing{done_badge}</div>
       <div class="anchor-idx">#{anchor_feedback_idx} &nbsp;·&nbsp; {anchor_i} / {n - 1}</div>
       <div class="anchor-text">{anchor_text}</div>
     </div>
     """, unsafe_allow_html=True)
 
+    done_label = "✅ Done (unmark)" if anchor_done else "☐ Mark anchor as done"
+    if st.button(done_label, key=f"done_{paper_id}_{mode}_{anchor_i}", use_container_width=True):
+        if anchor_done:
+            st.session_state.completed_anchors[paper_id][mode].discard(anchor_i)
+        else:
+            st.session_state.completed_anchors[paper_id].setdefault(mode, set()).add(anchor_i)
+        st.rerun()
+
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Jump to specific feedback (0-based index)
+    # Jump to specific feedback (0-based index).
+    # Always pre-sync the widget key to anchor_i before the widget renders.
+    # This is done BEFORE instantiation (allowed by Streamlit), so the widget
+    # always reflects the current anchor — including after Done is clicked.
+    # User-initiated changes are captured via on_change (fires before the
+    # pre-sync of the next rerun, so user input is never overridden).
+    _jump_key = f"jump_{paper_id}_{mode}"
+    st.session_state[_jump_key] = anchor_i
+
+    def _on_jump_change():
+        new_val = int(st.session_state[_jump_key])
+        if 0 <= new_val <= n - 1 and new_val != st.session_state.anchor_idx:
+            st.session_state.anchor_idx = new_val
+
     jump_c1, jump_c2 = st.columns([1, 3])
     with jump_c1:
         st.caption("Go to #")
     with jump_c2:
-        jump_to = st.number_input(
+        st.number_input(
             "Jump to feedback",
             min_value=0,
             max_value=n - 1,
             step=1,
             format="%d",
-            key=f"jump_{paper_id}_{mode}",
+            key=_jump_key,
             label_visibility="collapsed",
+            on_change=_on_jump_change,
         )
-    if jump_to != anchor_i:
-        _go_to(int(jump_to))
 
     # ── Basket ───────────────────────────────────────────────────────────────
     if mode == "human_human":
