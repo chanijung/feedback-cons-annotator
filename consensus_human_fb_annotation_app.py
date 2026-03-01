@@ -1026,7 +1026,11 @@ with col_list:
     if mode == "human_human":
         list_feedbacks = feedbacks
         list_n = n
-        list_title = f"All feedbacks &nbsp;·&nbsp; {n} items"
+        remaining = n - anchor_i - 1  # feedbacks with index > anchor
+        if remaining > 0:
+            list_title = f"Feedbacks after anchor &nbsp;·&nbsp; {remaining} items (#{anchor_feedback_idx + 1}–#{feedbacks[-1][0]})"
+        else:
+            list_title = f"Feedbacks after anchor &nbsp;·&nbsp; 0 items"
     else:
         list_feedbacks = llm_feedbacks
         list_n = n_llm
@@ -1040,12 +1044,23 @@ with col_list:
     """, unsafe_allow_html=True)
 
     # Filter by search, then sort by word overlap (desc) so high-overlap feedbacks appear first
+    # In human_human mode, only show feedbacks whose index is greater than the anchor's index
+    # so each pair is reviewed exactly once.
     items = [
         (fb_i, fb_idx, fb_text)
         for fb_i, (fb_idx, fb_text) in enumerate(list_feedbacks)
         if matches_search(fb_text, search_q)
+        and (mode != "human_human" or fb_idx > anchor_feedback_idx)
     ]
     items.sort(key=lambda x: count_word_overlap(anchor_keywords, x[2]), reverse=True)
+
+    if mode == "human_human" and not items and not search_q.strip():
+        st.markdown(
+            "<div style='color:var(--text-dim); font-size:0.88rem; padding:1rem 0;'>"
+            "This is the last feedback — no later feedbacks to compare."
+            "</div>",
+            unsafe_allow_html=True,
+        )
 
     for fb_i, fb_idx, fb_text in items:
 
