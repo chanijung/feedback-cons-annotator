@@ -278,20 +278,20 @@ html, body, .stApp {
 [data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child {
     overflow-y: auto !important;
     max-height: calc(100vh - 180px) !important;
-    scrollbar-width: thin;
+    scrollbar-width: auto;
     scrollbar-color: var(--border) var(--surface);
 }
 [data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar {
-    width: 10px;
+    width: 30px;
 }
 [data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar-track {
     background: var(--surface);
-    border-radius: 5px;
+    border-radius: 8px;
 }
 [data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar-thumb {
     background: var(--border);
-    border-radius: 5px;
-    border: 2px solid var(--surface);
+    border-radius: 8px;
+    border: 3px solid var(--surface);
 }
 [data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar-thumb:hover {
     background: var(--text-dim);
