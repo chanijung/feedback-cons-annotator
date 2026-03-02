@@ -668,7 +668,7 @@ init_state()
 if not st.session_state.annotator_name or not str(st.session_state.annotator_name).strip():
     st.markdown("### 👤 Enter your name to begin")
     st.caption("This will be recorded with your annotations when you submit.")
-    name = st.text_input("Annotator name", placeholder="e.g. Chani Jung", label_visibility="collapsed")
+    name = st.text_input("Annotator name", placeholder="", label_visibility="collapsed")
     if st.button("Continue"):
         if name and str(name).strip():
             name_clean = str(name).strip()
@@ -854,37 +854,11 @@ st.caption(f"📌 {mode_label}")
 # Prev / Next / 맨위로 - above right panel (same 2:3 split as main layout)
 _nav_left, nav_right = st.columns([1, 1], gap="large")
 with nav_right:
-    prev_col, next_col, scroll_col = st.columns([1, 1, 1])
+    prev_col, next_col = st.columns([1, 1])
     with prev_col:
         do_prev = st.button("← Prev", key="nav_prev", use_container_width=True)
     with next_col:
         do_next = st.button("Next →", key="nav_next", use_container_width=True)
-    with scroll_col:
-        st.html(
-            """<button type="button" id="scroll-to-top-btn" style="
-                font-size: 0.83rem; padding: 0.4rem 1rem; min-height: 2.5rem; line-height: 1.2; box-sizing: border-box;
-                background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
-                color: var(--text); cursor: pointer; font-family: inherit; width: 100%;
-            ">Scroll to top</button>
-            <script>
-            (function(){
-                function scrollRightToTop(){
-                    var d = document;
-                    try { if (window.parent && window.parent !== window) d = window.parent.document; } catch(e) {}
-                    var blocks = d.querySelectorAll('[data-testid=\"stHorizontalBlock\"]');
-                    for (var i = 0; i < blocks.length; i++) {
-                        if (blocks[i].querySelector('.anchor-panel')) {
-                            var right = blocks[i].lastElementChild;
-                            if (right) { right.scrollTop = 0; break; }
-                        }
-                    }
-                }
-                var btn = document.getElementById('scroll-to-top-btn');
-                if (btn) btn.addEventListener('click', scrollRightToTop);
-            })();
-            </script>""",
-            unsafe_allow_javascript=True,
-        )
 
 def _go_to(new_anchor: int, new_mode: str | None = None):
     """Navigate to a new anchor index."""
