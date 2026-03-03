@@ -55,13 +55,3 @@ paper_id,pdf_url,title,abstract,human_feedback_list,llm_name,llm_feedback
 25. The reviewer suggests including a scalability analysis of the proposed models, questioning the computational cost as the number of nodes grows.
 26. The reviewer requests more clarity on how to use the theoretical bounds to determine which edges to sample to achieve a target structure, suggesting that a pseudocode could help.
 27. The reviewer finds the explanation of the cubic bound insufficiently clear and requests further clarification on the novelty of the contribution, especially regarding tighter bounds in terms of overlap and volume. They illustrate this by discussing Erdős–Rényi graphs, noting that producing community structure requires additional constraints and that a cubic bound on triangle counts is expected.",,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
