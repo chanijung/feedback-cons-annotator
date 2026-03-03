@@ -620,7 +620,8 @@ DATA_PATH = _DATA_ANNOTATION if _DATA_ANNOTATION.exists() else _DATA_INTER_HUMAN
 
 @st.cache_data(ttl=60)
 def load_data(path: str) -> pd.DataFrame:
-    return load_csv(path)
+    df = load_csv(path)
+    return df.dropna(subset=["paper_id"]).reset_index(drop=True)
 
 
 def init_state():
@@ -710,7 +711,8 @@ df = st.session_state.df
 # ── FILTER BY ANNOTATOR ASSIGNMENT ────────────────────────────────────────────
 assigned_indices = get_assigned_paper_indices(annotator_name)
 if assigned_indices is not None:
-    df = df.iloc[assigned_indices].reset_index(drop=True)
+    valid_indices = [i for i in assigned_indices if i < len(df)]
+    df = df.iloc[valid_indices].reset_index(drop=True)
 else:
     st.warning(
         f"Annotator '{annotator_name}' is not in the assignment list ({', '.join(_ANNOTATORS)}). "
