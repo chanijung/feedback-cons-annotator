@@ -619,7 +619,8 @@ _DATA_INTER_HUMAN = _PROJECT_ROOT / "data" / "inter_human_annotation_sheet.csv"
 DATA_PATH = _DATA_ANNOTATION if _DATA_ANNOTATION.exists() else _DATA_INTER_HUMAN
 
 @st.cache_data(ttl=60)
-def load_data(path: str) -> pd.DataFrame:
+def load_data(path: str, _mtime: float = 0) -> pd.DataFrame:
+    """_mtime is used only as cache key so CSV updates are picked up after refresh."""
     df = load_csv(path)
     return df.dropna(subset=["paper_id"]).reset_index(drop=True)
 
@@ -632,12 +633,12 @@ def init_state():
             st.session_state.annotator_name = str(q).strip()
         else:
             st.session_state.annotator_name = ""
-    if "df" not in st.session_state:
-        # Try default path, else require upload
-        if DATA_PATH.exists():
-            st.session_state.df = load_data(str(DATA_PATH))
-        else:
-            st.session_state.df = None
+    # Try default path, else require upload. When using file, always reload so CSV updates are picked up.
+    if DATA_PATH.exists():
+        mtime = DATA_PATH.stat().st_mtime
+        st.session_state.df = load_data(str(DATA_PATH), mtime)
+    elif "df" not in st.session_state:
+        st.session_state.df = None
     if "paper_idx" not in st.session_state:
         st.session_state.paper_idx = 0
     if "anchor_idx" not in st.session_state:
@@ -658,8 +659,8 @@ def init_state():
         st.session_state.completed_anchors = {}
 
 def _paper_has_llm(row) -> bool:
-    """Check if row has valid llm_feedback."""
-    fb = row.get("llm_feedback", "")
+    """Check if row has valid llm_feedback_list."""
+    fb = row.get("llm_feedback_list", "")
     return pd.notna(fb) and str(fb).strip() != ""
 
 
@@ -732,7 +733,7 @@ for i, row in df.iterrows():
     title = str(row.get("title", "")).strip()
     short = title[:48] + "…" if len(title) > 48 else title if title else str(pid)
     pid_short = str(pid)[:12] if pid else ""
-    has_llm_row = _paper_has_llm(row) and len(parse_feedbacks(row.get("llm_feedback", ""))) > 0
+    has_llm_row = _paper_has_llm(row) and len(parse_feedbacks(row.get("llm_feedback_list", ""))) > 0
 
     # Human-Human
     has_hh = pid in st.session_state.pairs and len(st.session_state.pairs[pid]) > 0
@@ -803,7 +804,7 @@ paper_idx = st.session_state.paper_idx
 current_row = df.iloc[paper_idx]
 paper_id = current_row["paper_id"]
 feedbacks = parse_feedbacks(current_row.get("human_feedback_list", ""))
-llm_feedbacks = parse_feedbacks(current_row.get("llm_feedback", ""))
+llm_feedbacks = parse_feedbacks(current_row.get("llm_feedback_list", ""))
 has_llm = _paper_has_llm(current_row) and len(llm_feedbacks) > 0
 llm_name = str(current_row.get("llm_name", "LLM")).strip()
 
