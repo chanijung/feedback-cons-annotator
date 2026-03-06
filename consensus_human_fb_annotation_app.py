@@ -3,13 +3,9 @@ import logging
 
 import streamlit as st
 import pandas as pd
-import json
-import re
-import ast
 from datetime import datetime, timezone
 from pathlib import Path
 
-# Google Sheets integration (gspread + Service Account)
 import gspread
 from gspread.exceptions import WorksheetNotFound
 from google.oauth2 import service_account
@@ -35,9 +31,10 @@ st.markdown("""
     --accent2: #c026d3;
     --text: #1e293b;
     --text-dim: #64748b;
-    --highlight: rgba(37, 99, 235, 0.15);
-    --checked-bg: rgba(37, 99, 235, 0.08);
-    --checked-border: #2563eb;
+    --match-bg: rgba(34,197,94,0.1);
+    --match-border: #16a34a;
+    --nonmatch-bg: rgba(239,68,68,0.1);
+    --nonmatch-border: #dc2626;
     --radius: 10px;
 }
 
@@ -47,7 +44,6 @@ html, body, .stApp {
     font-family: 'IBM Plex Sans', sans-serif;
 }
 
-/* Hide default streamlit chrome */
 #MainMenu, footer, header { display: none !important; }
 .block-container { padding: 1.2rem 1.5rem !important; max-width: 100% !important; }
 
@@ -93,109 +89,51 @@ html, body, .stApp {
     transition: width 0.4s ease;
 }
 
-/* ── Paper selector ── */
-.stSelectbox > div > div {
-    background: var(--surface) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: var(--radius) !important;
-    color: var(--text) !important;
-    font-family: 'IBM Plex Sans', sans-serif;
-}
-
-/* ── Anchor panel ── */
-.anchor-panel {
+/* ── Feedback panels ── */
+.feedback-panel {
     background: var(--surface);
-    border: 1.5px solid var(--accent);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
     padding: 1.2rem;
-    position: sticky;
-    top: 0.5rem;
-    box-shadow: 0 0 20px rgba(91, 141, 238, 0.1);
+    min-height: 200px;
 }
-.anchor-label {
+.feedback-panel.match {
+    border-color: var(--match-border);
+    background: var(--match-bg);
+}
+.feedback-panel.nonmatch {
+    border-color: var(--nonmatch-border);
+    background: var(--nonmatch-bg);
+}
+.panel-label {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.68rem;
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     font-weight: 600;
 }
-.anchor-idx {
+.panel-idx {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: var(--text-dim);
     margin-bottom: 0.5rem;
 }
-.anchor-text {
+.panel-text {
     font-size: 1rem;
     line-height: 1.65;
     color: var(--text);
 }
 
-/* ── Feedback card ── */
-.feedback-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.9rem 1rem;
-    margin-bottom: 0.6rem;
-    transition: border-color 0.2s, background 0.2s;
-}
-.feedback-card.checked {
-    background: var(--checked-bg);
-    border-color: var(--checked-border);
-}
-.feedback-card.anchor-self {
-    opacity: 0.35;
-    pointer-events: none;
-}
-.card-idx {
+/* ── Label heading ── */
+.label-heading {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.7rem;
     color: var(--text-dim);
-    margin-bottom: 0.35rem;
-}
-.card-text {
-    font-size: 0.96rem;
-    line-height: 1.6;
-    color: var(--text);
-}
-.highlight-word {
-    background: rgba(37,99,235,0.2);
-    color: #1d4ed8;
-    border-radius: 3px;
-    padding: 0 2px;
-    font-weight: 500;
-}
-
-/* ── Basket ── */
-.basket-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-    margin-top: 0.8rem;
-}
-.basket-title {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--accent2);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 0.6rem;
-    font-weight: 600;
-}
-.pair-tag {
-    display: inline-block;
-    background: rgba(224,91,141,0.15);
-    border: 1px solid rgba(224,91,141,0.4);
-    color: #f0a8c4;
-    border-radius: 6px;
-    padding: 0.2rem 0.55rem;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    margin: 0.15rem;
+    margin-bottom: 0.4rem;
 }
 
 /* ── Paper info ── */
@@ -204,8 +142,8 @@ html, body, .stApp {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 1rem;
-    margin-top: 1rem;
-    max-height: 200px;
+    margin-top: 0.8rem;
+    max-height: 180px;
     overflow-y: auto;
 }
 .paper-info-title {
@@ -217,23 +155,31 @@ html, body, .stApp {
     margin-bottom: 0.5rem;
 }
 .paper-abstract {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     line-height: 1.55;
-    color: #1e293b;
-    margin-bottom: 0.6rem;
-}
-.paper-pdf-link {
-    font-size: 0.85rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
 }
 .paper-pdf-link a {
     color: var(--accent);
+    font-size: 0.85rem;
     text-decoration: none;
 }
-.paper-pdf-link a:hover {
-    text-decoration: underline;
+.paper-pdf-link a:hover { text-decoration: underline; }
+
+/* ── Go to # label ── */
+.stNumberInput label {
+    font-family: 'IBM Plex Mono', monospace !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: var(--text) !important;
+    white-space: nowrap;
+}
+.stNumberInput > div {
+    gap: 0.3rem !important;
 }
 
-/* ── Buttons ── */
+/* ── Buttons (default) ── */
 .stButton > button {
     font-family: 'IBM Plex Sans', sans-serif !important;
     font-size: 0.83rem !important;
@@ -250,136 +196,34 @@ html, body, .stApp {
     color: var(--accent) !important;
 }
 
-/* search box */
-.stTextInput > div > div > input {
-    background: var(--surface) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 8px !important;
-    color: var(--text) !important;
-    font-family: 'IBM Plex Mono', monospace !important;
-    font-size: 0.82rem !important;
+/* ── Match / Non-match label buttons (bigger, centered) ── */
+.label-btn-row + div button,
+.label-btn-row ~ div button {
+    font-size: 1.15rem !important;
+    padding: 0.8rem 1rem !important;
+    min-height: 3.2rem !important;
+    font-weight: 600 !important;
+}
+/* Simpler: all primary/secondary kind buttons get bigger */
+[data-testid="baseButton-primary"],
+[data-testid="baseButton-secondary"] {
+    font-size: 1.15rem !important;
+    padding: 0.8rem 1.2rem !important;
+    min-height: 3.2rem !important;
+    font-weight: 600 !important;
 }
 
-/* ── Sticky left panel, scrollable right panel (50/50 width) ── */
-[data-testid="stHorizontalBlock"]:has(.anchor-panel) {
-    align-items: flex-start !important;
-    max-height: calc(100vh - 180px) !important;
+/* ── Radio buttons for labeling ── */
+.stRadio > div {
+    gap: 0.5rem !important;
 }
-[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:first-child,
-[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child {
-    flex: 1 1 0 !important;
-    min-width: 0 !important;
-}
-[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:first-child {
-    position: sticky !important;
-    top: 0.5rem !important;
-    align-self: flex-start !important;
-}
-[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child {
-    overflow-y: auto !important;
-    max-height: calc(100vh - 180px) !important;
-    scrollbar-width: auto;
-    scrollbar-color: var(--border) var(--surface);
-}
-[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar {
-    width: 30px;
-}
-[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar-track {
-    background: var(--surface);
-    border-radius: 8px;
-}
-[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 8px;
-    border: 3px solid var(--surface);
-}
-[data-testid="stHorizontalBlock"]:has(.anchor-panel) > div:last-child::-webkit-scrollbar-thumb:hover {
-    background: var(--text-dim);
+.stRadio label {
+    font-family: 'IBM Plex Sans', sans-serif !important;
+    font-size: 0.9rem !important;
 }
 
-/* save result area */
-.save-result {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-dim);
-    white-space: pre-wrap;
-    word-break: break-all;
-}
 </style>
 """, unsafe_allow_html=True)
-
-# ── STOPWORDS ─────────────────────────────────────────────────────────────────
-STOPWORDS = {
-    "the","a","an","and","or","but","in","on","at","to","for","of","with",
-    "is","are","was","were","be","been","being","have","has","had","do","does",
-    "did","will","would","could","should","may","might","shall","can","this",
-    "that","these","those","it","its","by","from","as","if","into","than",
-    "then","also","not","no","so","very","more","most","some","any","all",
-    "each","both","such","through","about","which","what","when","where","who",
-    "how","their","they","them","there","he","she","we","i","you","my","our",
-    "your","his","her","its","up","out","just","been","only","over","after",
-    "before","since","while","although","though","even","within","between",
-    "among","during","without","whether","because","however","therefore",
-    "thus","hence","while","whereas","despite","although","further","since",
-    "first","second","third"
-}
-
-# ── UTILS ─────────────────────────────────────────────────────────────────────
-
-def parse_feedbacks(raw) -> list[tuple[int, str]]:
-    """Parse newline-separated numbered feedbacks → [(idx, text), ...]"""
-    if pd.isna(raw) or not str(raw).strip():
-        return []
-    items = []
-    pattern = re.compile(r'^(\d+)\.\s+(.+)', re.DOTALL)
-    for line in str(raw).split('\n'):
-        line = line.strip()
-        m = pattern.match(line)
-        if m:
-            items.append((int(m.group(1)), m.group(2).strip()))
-    return items
-
-
-def get_keywords(text: str) -> set[str]:
-    words = re.findall(r'\b[a-zA-Z]{3,}\b', text.lower())
-    return {w for w in words if w not in STOPWORDS}
-
-
-def count_word_overlap(anchor_keywords: set[str], text: str) -> int:
-    """Count overlapping words between anchor and text. Used for sorting."""
-    return len(anchor_keywords & get_keywords(text))
-
-
-def highlight(text: str, keywords: set[str]) -> str:
-    """Wrap matching keywords in <span class='highlight-word'>"""
-    if not keywords:
-        return text
-    pattern = re.compile(
-        r'\b(' + '|'.join(re.escape(k) for k in sorted(keywords, key=len, reverse=True)) + r')\b',
-        re.IGNORECASE
-    )
-    return pattern.sub(r"<span class='highlight-word'>\1</span>", text)
-
-
-def load_csv(path: str) -> pd.DataFrame:
-    df = pd.read_csv(path)
-    return df
-
-
-def parse_existing_pairs(val) -> list[list[int]]:
-    if pd.isna(val) or not str(val).strip():
-        return []
-    try:
-        parsed = ast.literal_eval(str(val))
-        if isinstance(parsed, list):
-            return [list(p) for p in parsed]
-    except Exception:
-        pass
-    return []
 
 
 # ── GOOGLE SHEETS ─────────────────────────────────────────────────────────────
@@ -389,9 +233,15 @@ _SHEETS_SCOPES = [
     "https://www.googleapis.com/auth/drive",
 ]
 
+SHEET_HEADER = [
+    "annotator_name", "paper_id",
+    "feedback1_idx", "feedback1",
+    "feedback2_idx", "feedback2",
+    "llm_name", "match_label",
+]
+
 
 def get_gsheet_client():
-    """Build gspread client from Streamlit secrets. Returns None if not configured."""
     try:
         if "gcp_service_account" not in st.secrets or "SPREADSHEET_ID" not in st.secrets:
             return None
@@ -405,272 +255,212 @@ def get_gsheet_client():
         return None
 
 
-def _submit_pairs_to_sheet(worksheet, annotator_name: str, pairs_dict: dict, is_hl: bool, completed_anchors_dict: dict | None = None) -> tuple[int, int]:
-    """Submit pairs to worksheet. Returns (updated, appended) counts.
-    completed_anchors_dict: {paper_id: set of completed anchor indices} for this mode.
-    """
-    existing = worksheet.get_all_values()
-    header = ["annotator_name", "paper_id", "pairs", "completed_anchors", "timestamp"]
-    is_blank = not existing or all(
-        all(not str(c).strip() for c in (row if isinstance(row, (list, tuple)) else [row]))
-        for row in existing
-    )
-    if is_blank:
-        worksheet.update([header], "A1:E1")
-        existing = [header]
-
-    # Detect if existing sheet has old 4-col format and migrate header
-    if existing and len(existing[0]) == 4 and existing[0] == ["annotator_name", "paper_id", "pairs", "timestamp"]:
-        existing[0] = header
-
-    def find_row(ann: str, pid: str) -> int | None:
-        for i in range(1, len(existing)):
-            row = existing[i]
-            if len(row) >= 2 and str(row[0]).strip() == ann and str(row[1]).strip() == pid:
-                return i
-        return None
-
-    timestamp = datetime.now(timezone.utc).isoformat()
-    updated, appended = 0, 0
-
-    # Merge all pids from pairs_dict and completed_anchors_dict
-    all_pids = set(pairs_dict.keys())
-    if completed_anchors_dict:
-        all_pids |= set(completed_anchors_dict.keys())
-
-    for pid in all_pids:
-        data = pairs_dict.get(pid)
-        if is_hl:
-            ps = data if isinstance(data, set) else (set(tuple(p) for p in data) if data else set())
-            pairs_str = json.dumps(sorted([list(p) for p in ps])) if ps else "[]"
-        else:
-            ps = data if data else set()
-            pairs_str = json.dumps(sorted([sorted(list(p)) for p in ps])) if ps else "[]"
-
-        done_set = (completed_anchors_dict or {}).get(pid, set())
-        done_str = json.dumps(sorted(done_set)) if done_set else "[]"
-
-        if pairs_str == "[]" and done_str == "[]":
-            continue
-
-        row_data = [annotator_name, pid, pairs_str, done_str, timestamp]
-        idx = find_row(annotator_name, pid)
-        if idx is not None:
-            worksheet.update([row_data], f"A{idx + 1}:E{idx + 1}")
-            updated += 1
-        else:
-            worksheet.append_row(row_data)
-            appended += 1
-    return updated, appended
-
-
-def submit_to_gsheet(annotator_name: str) -> tuple[bool, str]:
-    """Submit both human-human and human-llm pairs to Google Sheets."""
+def _get_worksheet():
     gc = get_gsheet_client()
     if gc is None:
-        return False, "Google Sheets not configured."
+        return None
+    raw = st.secrets["SPREADSHEET_ID"].strip()
+    sheet_id = raw.split("/d/")[1].split("/")[0] if "/d/" in raw else raw
+    sheet_name = st.secrets.get("SHEET_NAME", "Annotations")
+    spreadsheet = gc.open_by_key(sheet_id)
     try:
-        raw = st.secrets["SPREADSHEET_ID"].strip()
-        sheet_id = raw.split("/d/")[1].split("/")[0] if "/d/" in raw else raw
-        sheet_name = st.secrets.get("SHEET_NAME", "HumanHuman")
-        sheet_hl = st.secrets.get("SHEET_NAME_HL", "HumanLLM")
-        spreadsheet = gc.open_by_key(sheet_id)
+        return spreadsheet.worksheet(sheet_name)
+    except WorksheetNotFound:
+        ws = spreadsheet.add_worksheet(title=sheet_name, rows=1000, cols=20)
+        ws.update([SHEET_HEADER], "A1")
+        return ws
 
-        msg_parts = []
 
-        # Build per-mode completed_anchors dicts: {paper_id: set of int}
-        ca = st.session_state.completed_anchors
-        ca_hh = {pid: v.get("human_human", set()) for pid, v in ca.items()}
-        ca_hl = {pid: v.get("human_llm", set()) for pid, v in ca.items()}
+def _build_row_data(annotator_name: str, df_idx: int, match_label: int, df: pd.DataFrame) -> list:
+    r = df.iloc[df_idx]
+    return [
+        annotator_name,
+        str(r.get("paper_id", "")),
+        str(r.get("feedback1_idx", "")),
+        str(r.get("feedback1", "")),
+        str(r.get("feedback2_idx", "")),
+        str(r.get("feedback2", "")),
+        str(r.get("llm_name", "") or ""),
+        int(match_label),
+    ]
 
-        try:
-            ws_main = spreadsheet.worksheet(sheet_name)
-        except WorksheetNotFound:
-            return False, f"Worksheet '{sheet_name}' not found. Create a tab with that name, or set SHEET_NAME in secrets to match your tab."
-        u1, a1 = _submit_pairs_to_sheet(
-            ws_main, annotator_name, st.session_state.pairs, is_hl=False, completed_anchors_dict=ca_hh
-        )
-        if u1 or a1:
-            msg_parts.append(f"Human-Human: {u1 + a1}")
 
-        try:
-            ws_hl = spreadsheet.worksheet(sheet_hl)
-            u2, a2 = _submit_pairs_to_sheet(
-                ws_hl, annotator_name, st.session_state.pairs_hl, is_hl=True, completed_anchors_dict=ca_hl
+def _ensure_header(ws) -> list:
+    """Read sheet, write header if blank, return all rows."""
+    existing = ws.get_all_values()
+    is_blank = not existing or all(
+        all(not str(c).strip() for c in row) for row in existing
+    )
+    if is_blank:
+        ws.update([SHEET_HEADER], "A1")
+        return [SHEET_HEADER]
+    return existing
+
+
+def load_labels_from_gsheet(annotator_name: str, df: pd.DataFrame) -> tuple[dict, dict]:
+    """Read sheet once. Returns (labels, row_cache).
+    labels: {df_row_idx: match_label}
+    row_cache: {(paper_id, fb1_idx, fb2_idx): sheet_row_number (1-based)}
+    """
+    try:
+        ws = _get_worksheet()
+        if ws is None:
+            return {}, {}
+        existing = _ensure_header(ws)
+
+        df_lookup: dict[tuple, int] = {}
+        for i, row in df.iterrows():
+            key = (
+                str(row.get("paper_id", "")),
+                str(row.get("feedback1_idx", "")),
+                str(row.get("feedback2_idx", "")),
             )
-            if u2 or a2:
-                msg_parts.append(f"Human-LLM: {u2 + a2}")
-        except WorksheetNotFound:
-            if msg_parts:
-                msg_parts.append(f"(Human-LLM tab '{sheet_hl}' not found—create it or set SHEET_NAME_HL)")
-            else:
-                return False, f"Worksheet '{sheet_hl}' not found. Create a tab named '{sheet_hl}', or set SHEET_NAME_HL in secrets."
+            df_lookup[key] = int(i)
 
-        if not msg_parts:
-            return False, "No annotations to submit."
-        return True, f"Submitted: {', '.join(msg_parts)}."
+        labels: dict[int, int] = {}
+        row_cache: dict[tuple, int] = {}
+        for sheet_row_num, row in enumerate(existing[1:], start=2):
+            if len(row) < 5 or str(row[0]).strip() != annotator_name:
+                continue
+            key = (str(row[1]).strip(), str(row[2]).strip(), str(row[4]).strip())
+            row_cache[key] = sheet_row_num
+            if key in df_lookup and len(row) >= 8:
+                try:
+                    labels[df_lookup[key]] = int(row[7])
+                except (ValueError, IndexError):
+                    pass
+        return labels, row_cache
+    except Exception as e:
+        logging.exception("Load from Google Sheets failed: %s", e)
+        return {}, {}
+
+
+def autosave_row(annotator_name: str, df_idx: int, match_label: int, df: pd.DataFrame) -> bool:
+    """Save a single row. Uses cached row positions to avoid reading the whole sheet.
+    Returns True on success.
+    """
+    try:
+        ws = _get_worksheet()
+        if ws is None:
+            return False
+        row_data = _build_row_data(annotator_name, df_idx, match_label, df)
+        r = df.iloc[df_idx]
+        key = (str(r.get("paper_id", "")), str(r.get("feedback1_idx", "")), str(r.get("feedback2_idx", "")))
+        cache: dict = st.session_state.get("sheet_row_cache", {})
+        if key in cache:
+            ws.update([row_data], f"A{cache[key]}")
+        else:
+            # New row: ensure header exists, then append
+            existing = ws.get_all_values()
+            is_blank = not existing or all(all(not str(c).strip() for c in row) for row in existing)
+            if is_blank:
+                ws.update([SHEET_HEADER], "A1")
+                next_row = 2
+            else:
+                next_row = len(existing) + 1
+            ws.append_row(row_data)
+            cache[key] = next_row
+            st.session_state.sheet_row_cache = cache
+        return True
+    except Exception as e:
+        logging.exception("Auto-save failed: %s", e)
+        return False
+
+
+def submit_to_gsheet(annotator_name: str, labels: dict, df: pd.DataFrame) -> tuple[bool, str]:
+    """Bulk submit all labels (used by the manual Submit button)."""
+    try:
+        ws = _get_worksheet()
+        if ws is None:
+            return False, "Google Sheets not configured."
+
+        existing = _ensure_header(ws)
+        lookup: dict[tuple, int] = {}
+        for i, row in enumerate(existing[1:], start=2):
+            if len(row) >= 5 and str(row[0]).strip() == annotator_name:
+                key = (str(row[1]).strip(), str(row[2]).strip(), str(row[4]).strip())
+                lookup[key] = i
+
+        updated, appended = 0, 0
+        for df_idx, match_label in labels.items():
+            if df_idx >= len(df):
+                continue
+            row_data = _build_row_data(annotator_name, df_idx, match_label, df)
+            r = df.iloc[df_idx]
+            key = (str(r.get("paper_id", "")), str(r.get("feedback1_idx", "")), str(r.get("feedback2_idx", "")))
+            if key in lookup:
+                ws.update([row_data], f"A{lookup[key]}")
+                updated += 1
+            else:
+                ws.append_row(row_data)
+                appended += 1
+
+        if updated + appended == 0:
+            return False, "No labels to submit."
+        return True, f"Submitted {updated + appended} annotations ({updated} updated, {appended} new)."
     except Exception as e:
         logging.exception("Google Sheets submit failed: %s", e)
         return False, str(e)
-
-
-def _parse_completed_anchors(s: str) -> set:
-    """Parse a JSON list of ints into a set."""
-    try:
-        raw = json.loads(s)
-        if isinstance(raw, list):
-            return set(int(x) for x in raw)
-    except Exception:
-        pass
-    return set()
-
-
-def load_pairs_from_gsheet(annotator_name: str) -> tuple[dict, dict, dict]:
-    """Load human-human and human-llm annotations and completed anchors.
-    Returns (pairs, pairs_hl, completed_anchors).
-    completed_anchors: {paper_id: {"human_human": set, "human_llm": set}}
-    """
-    gc = get_gsheet_client()
-    if gc is None:
-        return {}, {}, {}
-    pairs, pairs_hl = {}, {}
-    completed_anchors: dict = {}
-    ann = str(annotator_name).strip()
-    try:
-        raw = st.secrets["SPREADSHEET_ID"].strip()
-        sheet_id = raw.split("/d/")[1].split("/")[0] if "/d/" in raw else raw
-        spreadsheet = gc.open_by_key(sheet_id)
-
-        def _load_completed(row, mode_key, completed_anchors):
-            """Read completed_anchors column (index 3) from row and merge into dict."""
-            if len(row) >= 4:
-                pid = str(row[1]).strip()
-                done_str = str(row[3]).strip()
-                done_set = _parse_completed_anchors(done_str)
-                if done_set and pid:
-                    if pid not in completed_anchors:
-                        completed_anchors[pid] = {"human_human": set(), "human_llm": set()}
-                    completed_anchors[pid][mode_key] |= done_set
-
-        # Human-Human
-        sheet_name = st.secrets.get("SHEET_NAME", "HumanHuman")
-        try:
-            ws = spreadsheet.worksheet(sheet_name)
-        except WorksheetNotFound:
-            logging.warning("Sheet '%s' not found, trying first tab", sheet_name)
-            try:
-                ws = spreadsheet.sheet1
-            except Exception:
-                ws = None
-        rows = ws.get_all_values() if ws else []
-        for row in (rows[1:] if rows else []):
-            if len(row) < 3 or str(row[0]).strip() != ann:
-                continue
-            pid, pairs_str = str(row[1]).strip(), str(row[2]).strip()
-            if pid and pairs_str:
-                parsed = parse_existing_pairs(pairs_str)
-                if parsed:
-                    pairs[pid] = set(frozenset(p) for p in parsed if len(p) == 2)
-            _load_completed(row, "human_human", completed_anchors)
-
-        # Human-LLM
-        try:
-            ws_hl = spreadsheet.worksheet(st.secrets.get("SHEET_NAME_HL", "HumanLLM"))
-            rows_hl = ws_hl.get_all_values()
-            for row in (rows_hl[1:] if rows_hl else []):
-                if len(row) < 3 or str(row[0]).strip() != ann:
-                    continue
-                pid, pairs_str = str(row[1]).strip(), str(row[2]).strip()
-                if pid and pairs_str:
-                    parsed = parse_existing_pairs(pairs_str)
-                    if parsed:
-                        pairs_hl[pid] = set(tuple(p) for p in parsed if len(p) == 2)
-                _load_completed(row, "human_llm", completed_anchors)
-        except Exception:
-            pass
     except Exception as e:
         logging.exception("Load from Google Sheets failed: %s", e)
-    return pairs, pairs_hl, completed_anchors
+        return {}
 
 
-# ── ANNOTATOR ASSIGNMENT (12 papers × 3 annotators each, 4 people) ───────────────
-# Each paper: 3 annotators. Each person: 9 papers.
+# ── ANNOTATOR ASSIGNMENT ───────────────────────────────────────────────────────
 _ANNOTATORS = ["chani", "jimin", "hyunwoo", "xuhui"]
 _ASSIGNMENT = {
-    "chani": [0, 1, 2, 4, 5, 6, 8, 9, 10],
-    "jimin": [0, 1, 3, 4, 5, 7, 8, 9, 11],
+    "chani":   [0, 1, 2, 4, 5, 6, 8, 9, 10],
+    "jimin":   [0, 1, 3, 4, 5, 7, 8, 9, 11],
     "hyunwoo": [0, 2, 3, 4, 6, 7, 8, 10, 11],
-    "xuhui": [1, 2, 3, 5, 6, 7, 9, 10, 11],
+    "xuhui":   [1, 2, 3, 5, 6, 7, 9, 10, 11],
 }
 
 
-def get_assigned_paper_indices(annotator_name: str) -> list[int] | None:
-    """Return list of paper indices for this annotator, or None if not assigned."""
+def get_assigned_rows(annotator_name: str, df_len: int) -> list[int]:
     key = str(annotator_name).strip().lower()
-    return _ASSIGNMENT.get(key)
+    indices = _ASSIGNMENT.get(key)
+    if indices is None:
+        return list(range(df_len))
+    return [i for i in indices if i < df_len]
 
 
-# ── SESSION STATE ─────────────────────────────────────────────────────────────
-
+# ── DATA ───────────────────────────────────────────────────────────────────────
 _PROJECT_ROOT = Path(__file__).resolve().parent
-# Prefer annotation_sheet.csv (has human + llm); fallback to inter_human
-_DATA_ANNOTATION = _PROJECT_ROOT / "data" / "annotation_sheet.csv"
-_DATA_INTER_HUMAN = _PROJECT_ROOT / "data" / "inter_human_annotation_sheet.csv"
-DATA_PATH = _DATA_ANNOTATION if _DATA_ANNOTATION.exists() else _DATA_INTER_HUMAN
+_DATA_PATH = _PROJECT_ROOT / "data" / "annotation_sheet.csv"
+
 
 @st.cache_data(ttl=60)
 def load_data(path: str, _mtime: float = 0) -> pd.DataFrame:
-    """_mtime is used only as cache key so CSV updates are picked up after refresh."""
-    df = load_csv(path)
+    df = pd.read_csv(path)
     return df.dropna(subset=["paper_id"]).reset_index(drop=True)
 
 
+# ── SESSION STATE ──────────────────────────────────────────────────────────────
+
 def init_state():
-    # Restore annotator name from URL query param or session
     if "annotator_name" not in st.session_state:
         q = st.query_params.get("annotator")
-        if q and str(q).strip():
-            st.session_state.annotator_name = str(q).strip()
-        else:
-            st.session_state.annotator_name = ""
-    # Try default path, else require upload. When using file, always reload so CSV updates are picked up.
-    if DATA_PATH.exists():
-        mtime = DATA_PATH.stat().st_mtime
-        st.session_state.df = load_data(str(DATA_PATH), mtime)
+        st.session_state.annotator_name = str(q).strip() if q and str(q).strip() else ""
+    # Always reload from file so CSV changes are picked up
+    if _DATA_PATH.exists():
+        mtime = _DATA_PATH.stat().st_mtime
+        st.session_state.df = load_data(str(_DATA_PATH), mtime)
     elif "df" not in st.session_state:
         st.session_state.df = None
-    if "paper_idx" not in st.session_state:
-        st.session_state.paper_idx = 0
-    if "anchor_idx" not in st.session_state:
-        st.session_state.anchor_idx = 0
-    if "pairs" not in st.session_state:
-        # { paper_id: set of frozensets }
-        st.session_state.pairs = {}
-    if "search_query" not in st.session_state:
-        st.session_state.search_query = ""
-    if "submit_success" not in st.session_state:
-        st.session_state.submit_success = None
-    if "annotation_mode" not in st.session_state:
-        st.session_state.annotation_mode = "human_human"  # or "human_llm"
-    if "pairs_hl" not in st.session_state:
-        st.session_state.pairs_hl = {}
-    if "completed_anchors" not in st.session_state:
-        # {paper_id: {"human_human": set of int, "human_llm": set of int}}
-        st.session_state.completed_anchors = {}
-
-def _paper_has_llm(row) -> bool:
-    """Check if row has valid llm_feedback_list."""
-    fb = row.get("llm_feedback_list", "")
-    return pd.notna(fb) and str(fb).strip() != ""
+    if "row_nav_idx" not in st.session_state:
+        st.session_state.row_nav_idx = 0
+    if "labels" not in st.session_state:
+        # {df_row_idx: 0 (non-match) or 1 (match)}
+        st.session_state.labels = {}
 
 
 init_state()
 
-# ── ANNOTATOR NAME (required) ──────────────────────────────────────────────────
-if not st.session_state.annotator_name or not str(st.session_state.annotator_name).strip():
+# ── ANNOTATOR NAME GATE ────────────────────────────────────────────────────────
+if not st.session_state.annotator_name:
     st.markdown("### 👤 Enter your name to begin")
     st.caption("This will be recorded with your annotations when you submit.")
-    name = st.text_input("Annotator name", placeholder="", label_visibility="collapsed")
+    name = st.text_input("Annotator name", placeholder="e.g. Chani Jung", label_visibility="collapsed")
     if st.button("Continue"):
         if name and str(name).strip():
             name_clean = str(name).strip()
@@ -683,81 +473,71 @@ if not st.session_state.annotator_name or not str(st.session_state.annotator_nam
 
 annotator_name = st.session_state.annotator_name
 
-# ── LOAD FROM GOOGLE SHEETS (on refresh / fresh session) ──────────────────────
-if not st.session_state.pairs and get_gsheet_client():
-    loaded_pairs, loaded_hl, loaded_ca = load_pairs_from_gsheet(annotator_name)
-    if loaded_pairs:
-        st.session_state.pairs = loaded_pairs
-    if loaded_hl:
-        st.session_state.pairs_hl = loaded_hl
-    if loaded_ca:
-        # Merge loaded completed_anchors into session state
-        for pid, modes in loaded_ca.items():
-            if pid not in st.session_state.completed_anchors:
-                st.session_state.completed_anchors[pid] = {"human_human": set(), "human_llm": set()}
-            for m, s in modes.items():
-                st.session_state.completed_anchors[pid][m] |= s
-
-# ── FILE UPLOAD (if no CSV found) ─────────────────────────────────────────────
+# ── FILE UPLOAD FALLBACK ───────────────────────────────────────────────────────
 if st.session_state.df is None:
-    st.markdown("### 📂 Upload `inter_human_annotation_sheet.csv` to begin")
+    st.markdown("### 📂 Upload `annotation_sheet.csv` to begin")
     up = st.file_uploader("CSV file", type=["csv"])
     if up:
-        st.session_state.df = pd.read_csv(up)
+        st.session_state.df = (
+            pd.read_csv(up).dropna(subset=["paper_id"]).reset_index(drop=True)
+        )
         st.rerun()
     st.stop()
 
-df = st.session_state.df
+df: pd.DataFrame = st.session_state.df
 
-# ── FILTER BY ANNOTATOR ASSIGNMENT ────────────────────────────────────────────
-assigned_indices = get_assigned_paper_indices(annotator_name)
-if assigned_indices is not None:
-    valid_indices = [i for i in assigned_indices if i < len(df)]
-    df = df.iloc[valid_indices].reset_index(drop=True)
-else:
+# ── ASSIGNED ROWS ──────────────────────────────────────────────────────────────
+assigned_rows = get_assigned_rows(annotator_name, len(df))
+if not assigned_rows:
     st.warning(
-        f"Annotator '{annotator_name}' is not in the assignment list ({', '.join(_ANNOTATORS)}). "
-        "Showing all papers."
+        f"Annotator '{annotator_name}' is not in the assignment list "
+        f"({', '.join(_ANNOTATORS)}). No rows assigned."
+    )
+    st.stop()
+
+# ── LOAD FROM GOOGLE SHEETS (once per session) ────────────────────────────────
+_sheets_loaded_key = f"sheets_loaded_{annotator_name}"
+if not st.session_state.get(_sheets_loaded_key) and get_gsheet_client():
+    loaded, row_cache = load_labels_from_gsheet(annotator_name, df)
+    if loaded:
+        st.session_state.labels.update(loaded)
+    st.session_state.sheet_row_cache = row_cache
+    st.session_state[_sheets_loaded_key] = True
+    # Jump to earliest unlabeled row after loading
+    st.session_state.row_nav_idx = next(
+        (i for i, df_idx in enumerate(assigned_rows) if df_idx not in st.session_state.labels),
+        len(assigned_rows) - 1,
     )
 
-# ── PAPER SELECTION (H-H and H-L separate entries) ─────────────────────────────
-paper_ids = df["paper_id"].tolist()
-if st.session_state.paper_idx >= len(paper_ids):
-    st.session_state.paper_idx = 0
+# On first load (no sheets), also land on earliest unlabeled
+if not st.session_state.get(f"nav_initialized_{annotator_name}"):
+    st.session_state.row_nav_idx = next(
+        (i for i, df_idx in enumerate(assigned_rows) if df_idx not in st.session_state.labels),
+        len(assigned_rows) - 1,
+    )
+    st.session_state[f"nav_initialized_{annotator_name}"] = True
 
-# Build nav options: each (paper_idx, mode) gets its own dropdown entry
-nav_options: list[tuple[int, str]] = []  # (paper_idx, "human_human"|"human_llm")
-nav_labels: list[str] = []
-for i, row in df.iterrows():
-    pid = row["paper_id"]
-    title = str(row.get("title", "")).strip()
-    short = title[:48] + "…" if len(title) > 48 else title if title else str(pid)
-    pid_short = str(pid)[:12] if pid else ""
-    has_llm_row = _paper_has_llm(row) and len(parse_feedbacks(row.get("llm_feedback_list", ""))) > 0
+# ── CURRENT ROW ───────────────────────────────────────────────────────────────
+n_assigned = len(assigned_rows)
+nav_idx = min(st.session_state.row_nav_idx, n_assigned - 1)
+actual_row_idx = assigned_rows[nav_idx]
+row = df.iloc[actual_row_idx]
 
-    # Human-Human
-    has_hh = pid in st.session_state.pairs and len(st.session_state.pairs[pid]) > 0
-    lbl_hh = f"[H-H] {short} ({pid_short})" + (" ✓" if has_hh else "")
-    nav_options.append((i, "human_human"))
-    nav_labels.append(lbl_hh)
+paper_id    = str(row.get("paper_id", ""))
+feedback1   = str(row.get("feedback1", "") or "")
+feedback2   = str(row.get("feedback2", "") or "")
+feedback1_idx = str(row.get("feedback1_idx", ""))
+feedback2_idx = str(row.get("feedback2_idx", ""))
+llm_name    = str(row.get("llm_name", "") or "").strip()
+title       = str(row.get("title", "") or "").strip()
+abstract    = str(row.get("abstract", "") or "").strip()
+pdf_url     = str(row.get("pdf_url", "") or "").strip()
 
-    # Human-LLM (only if paper has llm feedback)
-    if has_llm_row:
-        has_hl = pid in st.session_state.pairs_hl and len(st.session_state.pairs_hl[pid]) > 0
-        lbl_hl = f"[H-L] {short} ({pid_short})" + (" ✓" if has_hl else "")
-        nav_options.append((i, "human_llm"))
-        nav_labels.append(lbl_hl)
+n_labeled = sum(1 for i in assigned_rows if i in st.session_state.labels)
+pct = int(n_labeled / n_assigned * 100) if n_assigned else 0
+current_label = st.session_state.labels.get(actual_row_idx)
 
-# Progress across all papers
-total_papers = len(paper_ids)
-reviewed_papers = sum(
-    1 for pid in paper_ids
-    if (pid in st.session_state.pairs and len(st.session_state.pairs[pid]) > 0)
-    or (pid in st.session_state.pairs_hl and len(st.session_state.pairs_hl[pid]) > 0)
-)
-
-pct = int(reviewed_papers / total_papers * 100) if total_papers else 0
-
+# ── TOP BAR ───────────────────────────────────────────────────────────────────
 c1, c2 = st.columns([6, 1])
 with c1:
     st.markdown(f"""
@@ -765,7 +545,7 @@ with c1:
       <h1>⬡ Feedback Consensus Annotator</h1>
       <span class="progress-info">
         <span style="color:var(--accent); margin-right:0.8rem;">👤 {annotator_name}</span>
-        Papers annotated: {reviewed_papers} / {total_papers}
+        Labeled: {n_labeled} / {n_assigned}
         <span class="progress-wrap"><span class="progress-fill" style="width:{pct}%"></span></span>
       </span>
     </div>
@@ -778,316 +558,129 @@ with c2:
         st.query_params = params
         st.rerun()
 
-# Find current nav index
-current_nav_idx = 0
-for k, (pi, m) in enumerate(nav_options):
-    if pi == st.session_state.paper_idx and m == st.session_state.annotation_mode:
-        current_nav_idx = k
-        break
+# ── NAVIGATION ROW: ← Prev | Go to # [input] | Next → ───────────────────────
+_jump_key = f"jump_row_{annotator_name}"
+st.session_state[_jump_key] = nav_idx
 
-sel_label = st.selectbox(
-    "Select Paper & Mode",
-    options=nav_labels,
-    index=current_nav_idx,
-    label_visibility="collapsed",
+def _on_jump():
+    new_val = int(st.session_state[_jump_key])
+    if 0 <= new_val < n_assigned:
+        st.session_state.row_nav_idx = new_val
+
+label_badge = (
+    "✅ Match" if current_label == 1
+    else ("❌ Non-match" if current_label == 0 else "⬜ Unlabeled")
 )
-sel_idx = nav_labels.index(sel_label) if sel_label in nav_labels else 0
-new_paper_idx, new_mode = nav_options[sel_idx]
-if new_paper_idx != st.session_state.paper_idx or new_mode != st.session_state.annotation_mode:
-    st.session_state.paper_idx = new_paper_idx
-    st.session_state.annotation_mode = new_mode
-    st.session_state.anchor_idx = 0
-    st.rerun()
 
-paper_idx = st.session_state.paper_idx
-
-current_row = df.iloc[paper_idx]
-paper_id = current_row["paper_id"]
-feedbacks = parse_feedbacks(current_row.get("human_feedback_list", ""))
-llm_feedbacks = parse_feedbacks(current_row.get("llm_feedback_list", ""))
-has_llm = _paper_has_llm(current_row) and len(llm_feedbacks) > 0
-llm_name = str(current_row.get("llm_name", "LLM")).strip()
-
-# Init pairs for this paper
-if paper_id not in st.session_state.pairs:
-    existing = parse_existing_pairs(current_row.get("duplicated_feedback_pairs", ""))
-    st.session_state.pairs[paper_id] = set(frozenset(p) for p in existing if len(p) == 2)
-
-current_pairs: set = st.session_state.pairs[paper_id]
-
-# Init pairs_hl for human-llm: {(human_idx, llm_idx), ...}
-if paper_id not in st.session_state.pairs_hl:
-    st.session_state.pairs_hl[paper_id] = set()
-pairs_hl_paper: set = st.session_state.pairs_hl[paper_id]
-
-# Init completed_anchors for this paper
-if paper_id not in st.session_state.completed_anchors:
-    st.session_state.completed_anchors[paper_id] = {"human_human": set(), "human_llm": set()}
-
-if not feedbacks:
-    st.warning("No feedbacks found for this paper.")
-    st.stop()
-
-# If in human_llm mode but no llm data, switch back to human_human
-if st.session_state.annotation_mode == "human_llm" and not has_llm:
-    st.session_state.annotation_mode = "human_human"
-    st.rerun()
-
-n = len(feedbacks)
-n_llm = len(llm_feedbacks)
-anchor_i = min(st.session_state.anchor_idx, n - 1)
-mode = st.session_state.annotation_mode
-completed_set = st.session_state.completed_anchors[paper_id].get(mode, set())
-anchor_feedback_idx, anchor_text = feedbacks[anchor_i]
-anchor_keywords = get_keywords(anchor_text)
-
-# ── SEARCH FILTER ─────────────────────────────────────────────────────────────
-search_q = st.text_input("🔍  Filter feedbacks by keyword", value=st.session_state.search_query, placeholder="e.g. experiment, baseline ...")
-st.session_state.search_query = search_q
-
-def matches_search(text: str, q: str) -> bool:
-    if not q.strip():
-        return True
-    return q.strip().lower() in text.lower()
-
-# ── MODE LABEL + PREV/NEXT NAV ───────────────────────────────────────────────
-mode_label = "Human ↔ LLM Consensus" if mode == "human_llm" else "Human ↔ Human Duplicates"
-st.caption(f"📌 {mode_label}")
-
-# Prev / Next / 맨위로 - above right panel (same 2:3 split as main layout)
-_nav_left, nav_right = st.columns([1, 1], gap="large")
-with nav_right:
-    prev_col, next_col = st.columns([1, 1])
-    with prev_col:
-        do_prev = st.button("← Prev", key="nav_prev", use_container_width=True)
-    with next_col:
-        do_next = st.button("Next →", key="nav_next", use_container_width=True)
-
-def _go_to(new_anchor: int, new_mode: str | None = None):
-    """Navigate to a new anchor index."""
-    if new_mode is not None:
-        st.session_state.annotation_mode = new_mode
-    st.session_state.anchor_idx = new_anchor
-    st.rerun()
+prev_col, pos_col, goto_col, next_col = st.columns([3, 2, 2, 3])
+with prev_col:
+    do_prev = st.button("← Prev", use_container_width=True)
+with pos_col:
+    st.markdown(
+        f"<div style='text-align:center; font-family:IBM Plex Mono,monospace; "
+        f"font-size:0.85rem; color:var(--text-dim); padding-top:0.55rem; line-height:1.3'>"
+        f"{nav_idx + 1} / {n_assigned}<br>"
+        f"<span style='font-size:0.8rem'>{label_badge}</span>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+with goto_col:
+    st.number_input(
+        "Go to #",
+        min_value=0,
+        max_value=n_assigned - 1,
+        step=1,
+        format="%d",
+        key=_jump_key,
+        on_change=_on_jump,
+    )
+with next_col:
+    do_next = st.button("Next →", use_container_width=True)
 
 if do_prev:
-    if anchor_i <= 0 and mode == "human_llm":
-        _go_to(n - 1, "human_human")
-    else:
-        _go_to(max(0, anchor_i - 1))
+    st.session_state.row_nav_idx = max(0, nav_idx - 1)
+    st.rerun()
 if do_next:
-    if anchor_i >= n - 1:
-        if mode == "human_human" and has_llm:
-            _go_to(0, "human_llm")
-        else:
-            st.session_state.annotation_mode = "human_human"
-            if paper_idx < total_papers - 1:
-                st.session_state.paper_idx = paper_idx + 1
-            _go_to(0, "human_human")
-    else:
-        _go_to(min(n - 1, anchor_i + 1))
+    st.session_state.row_nav_idx = min(n_assigned - 1, nav_idx + 1)
+    st.rerun()
 
-# ── LAYOUT: anchor | scroll list ─────────────────────────────────────────────
-col_anchor, col_list = st.columns([1, 1], gap="large")
+# ── FEEDBACK PANELS: feedback1 | feedback2 (side by side, no gap) ─────────────
+panel_class = ""
+if current_label == 1:
+    panel_class = "match"
+elif current_label == 0:
+    panel_class = "nonmatch"
 
-# ─── Anchor panel ────────────────────────────────────────────────────────────
-with col_anchor:
-    anchor_title = "Human Anchor" if mode == "human_llm" else "Anchor"
-    anchor_done = anchor_i in completed_set
-    done_badge = " ✅" if anchor_done else ""
+col_left, col_right = st.columns(2, gap="small")
+with col_left:
     st.markdown(f"""
-    <div class="anchor-panel">
-      <div class="anchor-label">🔒 {anchor_title} — Reviewing{done_badge}</div>
-      <div class="anchor-idx">#{anchor_feedback_idx} &nbsp;·&nbsp; {anchor_i} / {n - 1}</div>
-      <div class="anchor-text">{anchor_text}</div>
+    <div class="feedback-panel {panel_class}">
+      <div class="panel-label">Feedback 1</div>
+      <div class="panel-idx">#{feedback1_idx}</div>
+      <div class="panel-text">{html.escape(feedback1)}</div>
     </div>
     """, unsafe_allow_html=True)
 
-    done_label = "✅ Done (unmark)" if anchor_done else "☐ Mark anchor as done"
-    if st.button(done_label, key=f"done_{paper_id}_{mode}_{anchor_i}", use_container_width=True):
-        if anchor_done:
-            st.session_state.completed_anchors[paper_id][mode].discard(anchor_i)
-        else:
-            st.session_state.completed_anchors[paper_id].setdefault(mode, set()).add(anchor_i)
+with col_right:
+    st.markdown(f"""
+    <div class="feedback-panel {panel_class}">
+      <div class="panel-label">Feedback 2</div>
+      <div class="panel-idx">#{feedback2_idx}</div>
+      <div class="panel-text">{html.escape(feedback2)}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ── LABEL THIS PAIR (full width below feedbacks) ─────────────────────────────
+st.markdown("<div style='margin-top:0.8rem'></div>", unsafe_allow_html=True)
+st.markdown("<div class='label-heading'>Label this pair</div>", unsafe_allow_html=True)
+st.markdown("<div class='label-btn-row'>", unsafe_allow_html=True)
+
+match_active    = current_label == 1
+nonmatch_active = current_label == 0
+
+label_col1, label_col2 = st.columns(2)
+with label_col1:
+    if st.button(
+        "✅  Match",
+        key=f"btn_match_{actual_row_idx}",
+        use_container_width=True,
+        type="primary" if match_active else "secondary",
+    ):
+        st.session_state.labels[actual_row_idx] = 1
+        if get_gsheet_client():
+            autosave_row(annotator_name, actual_row_idx, 1, df)
+        st.session_state.row_nav_idx = min(n_assigned - 1, nav_idx + 1)
+        st.rerun()
+with label_col2:
+    if st.button(
+        "❌  Non-match",
+        key=f"btn_nonmatch_{actual_row_idx}",
+        use_container_width=True,
+        type="primary" if nonmatch_active else "secondary",
+    ):
+        st.session_state.labels[actual_row_idx] = 0
+        if get_gsheet_client():
+            autosave_row(annotator_name, actual_row_idx, 0, df)
+        st.session_state.row_nav_idx = min(n_assigned - 1, nav_idx + 1)
         st.rerun()
 
-    st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
 
-    # Jump to specific feedback (0-based index).
-    # Always pre-sync the widget key to anchor_i before the widget renders.
-    # This is done BEFORE instantiation (allowed by Streamlit), so the widget
-    # always reflects the current anchor — including after Done is clicked.
-    # User-initiated changes are captured via on_change (fires before the
-    # pre-sync of the next rerun, so user input is never overridden).
-    _jump_key = f"jump_{paper_id}_{mode}"
-    st.session_state[_jump_key] = anchor_i
+st.markdown("<hr style='margin:0.8rem 0'>", unsafe_allow_html=True)
 
-    def _on_jump_change():
-        new_val = int(st.session_state[_jump_key])
-        if 0 <= new_val <= n - 1 and new_val != st.session_state.anchor_idx:
-            st.session_state.anchor_idx = new_val
 
-    jump_c1, jump_c2 = st.columns([1, 3])
-    with jump_c1:
-        st.caption("Go to #")
-    with jump_c2:
-        st.number_input(
-            "Jump to feedback",
-            min_value=0,
-            max_value=n - 1,
-            step=1,
-            format="%d",
-            key=_jump_key,
-            label_visibility="collapsed",
-            on_change=_on_jump_change,
-        )
-
-    # ── Basket ───────────────────────────────────────────────────────────────
-    if mode == "human_human":
-        pairs_list = sorted([sorted(list(p)) for p in current_pairs])
-        pair_tags = "".join(f"<span class='pair-tag'>({a}, {b})</span>" for a, b in pairs_list)
-        basket_title = "🛒 Duplicate Pairs"
-    else:
-        # human_llm: show (human_i, llm_j) for current anchor
-        hl_pairs = [(anchor_i, l) for (h, l) in pairs_hl_paper if h == anchor_i]
-        pairs_list = sorted(hl_pairs)
-        pair_tags = "".join(f"<span class='pair-tag'>(H{anchor_i}, L{j})</span>" for _, j in pairs_list)
-        basket_title = "🛒 Consensus Pairs (Human ↔ LLM)"
-    empty_msg = "<span style='color:var(--text-dim); font-size:0.8rem;'>No pairs marked yet.</span>"
-
+# ── PAPER INFO (full width) ───────────────────────────────────────────────────
+if abstract or pdf_url:
+    abstract_escaped = html.escape(abstract) if abstract else ""
+    title_escaped = html.escape(title) if title else ""
+    pdf_link_html = (
+        f'<a href="{html.escape(pdf_url)}" target="_blank" rel="noopener">📄 Open PDF</a>'
+        if pdf_url else ""
+    )
     st.markdown(f"""
-    <div class="basket-wrap">
-      <div class="basket-title">{basket_title} — {len(pairs_list)} saved</div>
-      {pair_tags if pair_tags else empty_msg}
+    <div class="paper-info">
+      <div class="paper-info-title">Paper{f': {title_escaped}' if title_escaped else ''}</div>
+      {f'<div class="paper-abstract">{abstract_escaped}</div>' if abstract_escaped else ''}
+      {f'<div class="paper-pdf-link">{pdf_link_html}</div>' if pdf_link_html else ''}
     </div>
     """, unsafe_allow_html=True)
-
-    # ── Submit to Google Sheets ───────────────────────────────────────────────
-    st.markdown("<br>", unsafe_allow_html=True)
-    if get_gsheet_client():
-        if st.button("📤 Submit to Google Sheets", use_container_width=True, type="primary"):
-            ok, msg = submit_to_gsheet(annotator_name)
-            st.session_state.submit_success = ok
-            st.session_state.submit_message = msg
-            st.rerun()
-        if st.session_state.submit_success is True:
-            st.success(st.session_state.get("submit_message", "Submitted."))
-        elif st.session_state.submit_success is False:
-            st.error(st.session_state.get("submit_message", "Submit failed."))
-    else:
-        st.caption("Google Sheets not configured. Add secrets to enable Submit.")
-    st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("💾 Copy result as JSON", use_container_width=True):
-        result = {
-            "human_human": {pid: sorted([sorted(list(p)) for p in ps]) for pid, ps in st.session_state.pairs.items() if ps},
-            "human_llm": {pid: sorted([list(p) for p in ps]) for pid, ps in st.session_state.pairs_hl.items() if ps},
-        }
-        st.markdown(f"<div class='save-result'>{json.dumps(result, indent=2)}</div>", unsafe_allow_html=True)
-
-    # ── Paper info (Abstract, PDF) ─────────────────────────────────────────────
-    abstract_raw = str(current_row.get("abstract", "") or "").strip()
-    pdf_url = str(current_row.get("pdf_url", "") or "").strip()
-    if abstract_raw or pdf_url:
-        abstract_escaped = html.escape(abstract_raw) if abstract_raw else ""
-        pdf_link_html = f'<a href="{html.escape(pdf_url)}" target="_blank" rel="noopener">📄 Open PDF</a>' if pdf_url else ""
-        st.markdown(f"""
-        <div class="paper-info">
-          <div class="paper-info-title">Paper</div>
-          {f'<div class="paper-abstract">{abstract_escaped}</div>' if abstract_escaped else ''}
-          {f'<div class="paper-pdf-link">{pdf_link_html}</div>' if pdf_link_html else ''}
-        </div>
-        """, unsafe_allow_html=True)
-
-# ─── Scroll list panel ───────────────────────────────────────────────────────
-with col_list:
-    if mode == "human_human":
-        list_feedbacks = feedbacks
-        list_n = n
-        remaining = n - anchor_i - 1  # feedbacks with index > anchor
-        if remaining > 0:
-            list_title = f"Feedbacks after anchor &nbsp;·&nbsp; {remaining} items (#{anchor_feedback_idx + 1}–#{feedbacks[-1][0]})"
-        else:
-            list_title = f"Feedbacks after anchor &nbsp;·&nbsp; 0 items"
-    else:
-        list_feedbacks = llm_feedbacks
-        list_n = n_llm
-        list_title = f"LLM feedbacks ({llm_name}) &nbsp;·&nbsp; {n_llm} items"
-
-    st.markdown(f"""
-    <div style='font-family:IBM Plex Mono,monospace; font-size:0.7rem; color:var(--text-dim);
-                text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.6rem;'>
-        {list_title} · sorted by word overlap ↓
-    </div>
-    """, unsafe_allow_html=True)
-
-    # Filter by search, then sort by word overlap (desc) so high-overlap feedbacks appear first
-    # In human_human mode, only show feedbacks whose index is greater than the anchor's index
-    # so each pair is reviewed exactly once.
-    items = [
-        (fb_i, fb_idx, fb_text)
-        for fb_i, (fb_idx, fb_text) in enumerate(list_feedbacks)
-        if matches_search(fb_text, search_q)
-        and (mode != "human_human" or fb_idx > anchor_feedback_idx)
-    ]
-    items.sort(key=lambda x: count_word_overlap(anchor_keywords, x[2]), reverse=True)
-
-    if mode == "human_human" and not items and not search_q.strip():
-        st.markdown(
-            "<div style='color:var(--text-dim); font-size:0.88rem; padding:1rem 0;'>"
-            "This is the last feedback — no later feedbacks to compare."
-            "</div>",
-            unsafe_allow_html=True,
-        )
-
-    for fb_i, fb_idx, fb_text in items:
-
-        if mode == "human_human":
-            pair_key = frozenset([anchor_feedback_idx, fb_idx])
-            is_self = (fb_i == anchor_i)
-            is_checked = pair_key in current_pairs and not is_self
-        else:
-            # human_llm: (human_anchor_i, llm_idx)
-            is_self = False
-            is_checked = (anchor_i, fb_i) in pairs_hl_paper
-
-        # highlight common words
-        display_text = highlight(fb_text, anchor_keywords)
-
-        card_class = "feedback-card"
-        if is_self:
-            card_class += " anchor-self"
-        elif is_checked:
-            card_class += " checked"
-
-        if mode == "human_human":
-            check_icon_self = "← This is the anchor" if is_self else ("✅ Duplicate" if is_checked else "Mark duplicate")
-        else:
-            check_icon_self = "✅ Consensus" if is_checked else "Mark consensus"
-
-        st.markdown(f"""
-        <div class="{card_class}">
-          <div class="card-idx">#{fb_idx}</div>
-          <div class="card-text">{display_text}</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        if mode == "human_human":
-            if not is_self:
-                btn_label = f"{'✅ Marked' if is_checked else '☐ Mark'} — #{anchor_feedback_idx} ↔ #{fb_idx}"
-                if st.button(btn_label, key=f"btn_hh_{paper_id}_{anchor_i}_{fb_i}"):
-                    if is_checked:
-                        current_pairs.discard(pair_key)
-                    else:
-                        current_pairs.add(pair_key)
-                    st.session_state.pairs[paper_id] = current_pairs
-                    st.rerun()
-        else:
-            btn_label = f"{'✅ Marked' if is_checked else '☐ Mark'} — Human #{anchor_feedback_idx} ↔ LLM #{fb_idx}"
-            if st.button(btn_label, key=f"btn_hl_{paper_id}_{anchor_i}_{fb_i}"):
-                hl_pair = (anchor_i, fb_i)
-                if is_checked:
-                    pairs_hl_paper.discard(hl_pair)
-                else:
-                    pairs_hl_paper.add(hl_pair)
-                st.session_state.pairs_hl[paper_id] = pairs_hl_paper
-                st.rerun()
