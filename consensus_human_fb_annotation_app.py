@@ -460,7 +460,7 @@ init_state()
 if not st.session_state.annotator_name:
     st.markdown("### 👤 Enter your name to begin")
     st.caption("This will be recorded with your annotations when you submit.")
-    name = st.text_input("Annotator name", placeholder="e.g. Chani Jung", label_visibility="collapsed")
+    name = st.text_input("Annotator name", placeholder="e.g. chani", label_visibility="collapsed")
     if st.button("Continue"):
         if name and str(name).strip():
             name_clean = str(name).strip()
