@@ -1,5 +1,6 @@
 import html
 import logging
+import re
 
 import streamlit as st
 import pandas as pd
@@ -222,6 +223,15 @@ html, body, .stApp {
     font-size: 0.9rem !important;
 }
 
+/* ── Word overlap highlight ── */
+.word-hl {
+    background: rgba(250, 204, 21, 0.45);
+    border-radius: 3px;
+    padding: 0 2px;
+    color: inherit;
+    font-weight: 600;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -233,12 +243,32 @@ _SHEETS_SCOPES = [
     "https://www.googleapis.com/auth/drive",
 ]
 
-SHEET_HEADER = [
-    "annotator_name", "paper_id",
+HH_HEADER = [
+    "annotator_name", "paper_id", "global_id",
+    "feedback1_idx", "feedback1",
+    "feedback2_idx", "feedback2",
+    "match_label",
+]
+
+HL_HEADER = [
+    "annotator_name", "paper_id", "global_id",
     "feedback1_idx", "feedback1",
     "feedback2_idx", "feedback2",
     "llm_name", "match_label",
 ]
+
+_SHEET_NAMES = {
+    "human_human": "HumanHuman",
+    "human_llm":   "HumanLLM",
+}
+
+
+def _source_to_sheet_name(source: str) -> str:
+    return _SHEET_NAMES.get(source, "HumanHuman")
+
+
+def _get_header(sheet_name: str) -> list:
+    return HL_HEADER if sheet_name == "HumanLLM" else HH_HEADER
 
 
 def get_gsheet_client():
@@ -255,62 +285,67 @@ def get_gsheet_client():
         return None
 
 
-def _get_worksheet():
+def _get_worksheet(sheet_name: str):
     gc = get_gsheet_client()
     if gc is None:
         return None
     raw = st.secrets["SPREADSHEET_ID"].strip()
     sheet_id = raw.split("/d/")[1].split("/")[0] if "/d/" in raw else raw
-    sheet_name = st.secrets.get("SHEET_NAME", "Annotations")
     spreadsheet = gc.open_by_key(sheet_id)
+    header = _get_header(sheet_name)
     try:
         return spreadsheet.worksheet(sheet_name)
     except WorksheetNotFound:
-        ws = spreadsheet.add_worksheet(title=sheet_name, rows=1000, cols=20)
-        ws.update([SHEET_HEADER], "A1")
+        ws = spreadsheet.add_worksheet(title=sheet_name, rows=2000, cols=20)
+        ws.update([header], "A1")
         return ws
 
 
 def _build_row_data(annotator_name: str, df_idx: int, match_label: int, df: pd.DataFrame) -> list:
     r = df.iloc[df_idx]
-    return [
+    source = str(r.get("source", ""))
+    base = [
         annotator_name,
         str(r.get("paper_id", "")),
+        int(r.get("global_id", df_idx)),
         str(r.get("feedback1_idx", "")),
         str(r.get("feedback1", "")),
         str(r.get("feedback2_idx", "")),
         str(r.get("feedback2", "")),
-        str(r.get("llm_name", "") or ""),
-        int(match_label),
     ]
+    if source == "human_llm":
+        return base + [str(r.get("llm_name", "") or ""), int(match_label)]
+    else:
+        return base + [int(match_label)]
 
 
-def _ensure_header(ws) -> list:
+def _ensure_header(ws, header: list) -> list:
     """Read sheet, write header if blank, return all rows."""
     existing = ws.get_all_values()
     is_blank = not existing or all(
         all(not str(c).strip() for c in row) for row in existing
     )
     if is_blank:
-        ws.update([SHEET_HEADER], "A1")
-        return [SHEET_HEADER]
+        ws.update([header], "A1")
+        return [header]
     return existing
 
 
 def load_labels_from_gsheet(annotator_name: str, df: pd.DataFrame) -> tuple[dict, dict]:
-    """Read sheet once. Returns (labels, row_cache).
-    labels: {df_row_idx: match_label}
-    row_cache: {(paper_id, fb1_idx, fb2_idx): sheet_row_number (1-based)}
+    """Read both sheets. Returns (labels, row_cache).
+    labels:    {df_row_idx: match_label}
+    row_cache: {(sheet_name, paper_id, fb1_idx, fb2_idx): sheet_row_number (1-based)}
     """
     try:
-        ws = _get_worksheet()
-        if ws is None:
+        gc = get_gsheet_client()
+        if gc is None:
             return {}, {}
-        existing = _ensure_header(ws)
 
         df_lookup: dict[tuple, int] = {}
         for i, row in df.iterrows():
+            sname = _source_to_sheet_name(str(row.get("source", "")))
             key = (
+                sname,
                 str(row.get("paper_id", "")),
                 str(row.get("feedback1_idx", "")),
                 str(row.get("feedback2_idx", "")),
@@ -319,16 +354,29 @@ def load_labels_from_gsheet(annotator_name: str, df: pd.DataFrame) -> tuple[dict
 
         labels: dict[int, int] = {}
         row_cache: dict[tuple, int] = {}
-        for sheet_row_num, row in enumerate(existing[1:], start=2):
-            if len(row) < 5 or str(row[0]).strip() != annotator_name:
+
+        for sheet_name in _SHEET_NAMES.values():
+            ws = _get_worksheet(sheet_name)
+            if ws is None:
                 continue
-            key = (str(row[1]).strip(), str(row[2]).strip(), str(row[4]).strip())
-            row_cache[key] = sheet_row_num
-            if key in df_lookup and len(row) >= 8:
-                try:
-                    labels[df_lookup[key]] = int(row[7])
-                except (ValueError, IndexError):
-                    pass
+            header = _get_header(sheet_name)
+            existing = _ensure_header(ws, header)
+            
+            label_idx = 7 if sheet_name == "HumanHuman" else 8
+            
+            for sheet_row_num, row in enumerate(existing[1:], start=2):
+                if len(row) < 5 or str(row[0]).strip() != annotator_name:
+                    continue
+                # key: (sheet_name, paper_id, fb1_idx, fb2_idx)
+                # row[1]: paper_id, row[3]: feedback1_idx, row[5]: feedback2_idx
+                key = (sheet_name, str(row[1]).strip(), str(row[3]).strip(), str(row[5]).strip())
+                row_cache[key] = sheet_row_num
+                if key in df_lookup and len(row) > label_idx:
+                    try:
+                        labels[df_lookup[key]] = int(row[label_idx])
+                    except (ValueError, IndexError):
+                        pass
+
         return labels, row_cache
     except Exception as e:
         logging.exception("Load from Google Sheets failed: %s", e)
@@ -336,25 +384,32 @@ def load_labels_from_gsheet(annotator_name: str, df: pd.DataFrame) -> tuple[dict
 
 
 def autosave_row(annotator_name: str, df_idx: int, match_label: int, df: pd.DataFrame) -> bool:
-    """Save a single row. Uses cached row positions to avoid reading the whole sheet.
+    """Save a single row to the appropriate sheet based on source type.
+    Uses cached row positions to avoid reading the whole sheet.
     Returns True on success.
     """
     try:
-        ws = _get_worksheet()
+        r = df.iloc[df_idx]
+        sheet_name = _source_to_sheet_name(str(r.get("source", "")))
+        ws = _get_worksheet(sheet_name)
         if ws is None:
             return False
         row_data = _build_row_data(annotator_name, df_idx, match_label, df)
-        r = df.iloc[df_idx]
-        key = (str(r.get("paper_id", "")), str(r.get("feedback1_idx", "")), str(r.get("feedback2_idx", "")))
+        key = (
+            sheet_name,
+            str(r.get("paper_id", "")),
+            str(r.get("feedback1_idx", "")),
+            str(r.get("feedback2_idx", "")),
+        )
         cache: dict = st.session_state.get("sheet_row_cache", {})
         if key in cache:
             ws.update([row_data], f"A{cache[key]}")
         else:
-            # New row: ensure header exists, then append
+            header = _get_header(sheet_name)
             existing = ws.get_all_values()
             is_blank = not existing or all(all(not str(c).strip() for c in row) for row in existing)
             if is_blank:
-                ws.update([SHEET_HEADER], "A1")
+                ws.update([header], "A1")
                 next_row = 2
             else:
                 next_row = len(existing) + 1
@@ -368,26 +423,45 @@ def autosave_row(annotator_name: str, df_idx: int, match_label: int, df: pd.Data
 
 
 def submit_to_gsheet(annotator_name: str, labels: dict, df: pd.DataFrame) -> tuple[bool, str]:
-    """Bulk submit all labels (used by the manual Submit button)."""
+    """Bulk submit all labels to the appropriate sheets based on source type."""
     try:
-        ws = _get_worksheet()
-        if ws is None:
+        gc = get_gsheet_client()
+        if gc is None:
             return False, "Google Sheets not configured."
 
-        existing = _ensure_header(ws)
+        # Build per-sheet lookups of existing rows
+        ws_map: dict[str, object] = {}
         lookup: dict[tuple, int] = {}
-        for i, row in enumerate(existing[1:], start=2):
-            if len(row) >= 5 and str(row[0]).strip() == annotator_name:
-                key = (str(row[1]).strip(), str(row[2]).strip(), str(row[4]).strip())
-                lookup[key] = i
+        for sheet_name in _SHEET_NAMES.values():
+            ws = _get_worksheet(sheet_name)
+            if ws is None:
+                continue
+            ws_map[sheet_name] = ws
+            header = _get_header(sheet_name)
+            existing = _ensure_header(ws, header)
+            for i, row in enumerate(existing[1:], start=2):
+                if len(row) >= 6 and str(row[0]).strip() == annotator_name:
+                    # key: (sheet_name, paper_id, fb1_idx, fb2_idx)
+                    # row[1]: paper_id, row[3]: feedback1_idx, row[5]: feedback2_idx
+                    key = (sheet_name, str(row[1]).strip(), str(row[3]).strip(), str(row[5]).strip())
+                    lookup[key] = i
 
         updated, appended = 0, 0
         for df_idx, match_label in labels.items():
             if df_idx >= len(df):
                 continue
-            row_data = _build_row_data(annotator_name, df_idx, match_label, df)
             r = df.iloc[df_idx]
-            key = (str(r.get("paper_id", "")), str(r.get("feedback1_idx", "")), str(r.get("feedback2_idx", "")))
+            sheet_name = _source_to_sheet_name(str(r.get("source", "")))
+            ws = ws_map.get(sheet_name)
+            if ws is None:
+                continue
+            row_data = _build_row_data(annotator_name, df_idx, match_label, df)
+            key = (
+                sheet_name,
+                str(r.get("paper_id", "")),
+                str(r.get("feedback1_idx", "")),
+                str(r.get("feedback2_idx", "")),
+            )
             if key in lookup:
                 ws.update([row_data], f"A{lookup[key]}")
                 updated += 1
@@ -401,37 +475,157 @@ def submit_to_gsheet(annotator_name: str, labels: dict, df: pd.DataFrame) -> tup
     except Exception as e:
         logging.exception("Google Sheets submit failed: %s", e)
         return False, str(e)
-    except Exception as e:
-        logging.exception("Load from Google Sheets failed: %s", e)
-        return {}
+
+
+# ── WORD OVERLAP HIGHLIGHT ────────────────────────────────────────────────────
+
+_STOPWORDS = frozenset({
+    "a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for",
+    "of", "with", "by", "from", "is", "are", "was", "were", "be", "been",
+    "being", "have", "has", "had", "do", "does", "did", "will", "would",
+    "could", "should", "may", "might", "shall", "can", "it", "its",
+    "this", "that", "these", "those", "i", "we", "you", "he", "she",
+    "they", "me", "us", "him", "her", "them", "my", "our", "your", "his",
+    "their", "what", "which", "who", "when", "where", "why", "how",
+    "all", "each", "every", "both", "some", "such", "no", "not", "only",
+    "own", "same", "so", "than", "too", "very", "just", "also", "any",
+    "as", "if", "then", "there", "about", "after", "before", "into",
+    "more", "other", "well", "s", "t",
+})
+
+
+def _overlap_words(text_a: str, text_b: str) -> frozenset:
+    """Return lowercase words present in both texts, excluding short tokens and stopwords."""
+    def tokens(t: str) -> set:
+        return {
+            w for w in re.findall(r"\b[a-z]{3,}\b", t.lower())
+            if w not in _STOPWORDS
+        }
+    return frozenset(tokens(text_a) & tokens(text_b))
+
+
+def _highlight_text(text: str, words: frozenset) -> str:
+    """Return HTML with words-in-overlap wrapped in <span class='word-hl'>.
+    All other content is HTML-escaped."""
+    if not words:
+        return html.escape(text)
+    parts = re.split(r"(\b\w+\b)", text)
+    result = []
+    for part in parts:
+        if part.lower() in words:
+            result.append(f'<span class="word-hl">{html.escape(part)}</span>')
+        else:
+            result.append(html.escape(part))
+    return "".join(result)
+
+
+# ── NAV HELPERS ───────────────────────────────────────────────────────────────
+
+def _next_nav_idx(current_nav: int, assigned_pairs: list[tuple[int, bool]], labels: dict, n_assigned: int) -> int:
+    """After labeling current_nav, return the next nav index to show.
+    Priority: (1) next unlabeled row after current, (2) earliest unlabeled row,
+    (3) stay at current if everything is labeled.
+    """
+    for i in range(current_nav + 1, n_assigned):
+        if assigned_pairs[i][0] not in labels:
+            return i
+    for i in range(0, current_nav):
+        if assigned_pairs[i][0] not in labels:
+            return i
+    return min(n_assigned - 1, current_nav + 1)
 
 
 # ── ANNOTATOR ASSIGNMENT ───────────────────────────────────────────────────────
 _ANNOTATORS = ["chani", "jimin", "hyunwoo", "xuhui"]
-_ASSIGNMENT = {
-    "chani":   [0, 1, 2, 4, 5, 6, 8, 9, 10],
-    "jimin":   [0, 1, 3, 4, 5, 7, 8, 9, 11],
-    "hyunwoo": [0, 2, 3, 4, 6, 7, 8, 10, 11],
-    "xuhui":   [1, 2, 3, 5, 6, 7, 9, 10, 11],
-}
 
 
-def get_assigned_rows(annotator_name: str, df_len: int) -> list[int]:
+def compute_assigned_pairs(annotator_name: str, df: pd.DataFrame) -> list[tuple[int, bool]]:
+    """Return ordered list of (df_idx, swap) for this annotator.
+
+    Ordering:
+    1. Group by paper_id (papers in order of first appearance in df)
+    2. Within each paper:
+       - Count how many pairs each feedback_idx appears in
+       - Put the higher-frequency feedback on the left (swap=True if feedback2 is more frequent)
+         Ties → keep original order (swap=False)
+       - Sort pairs by (left_feedback_idx, right_feedback_idx) so same-anchor pairs
+         appear consecutively
+    swap=True means feedback2 is shown on the left and feedback1 on the right.
+    """
+    from collections import defaultdict, Counter
+
     key = str(annotator_name).strip().lower()
-    indices = _ASSIGNMENT.get(key)
-    if indices is None:
-        return list(range(df_len))
-    return [i for i in indices if i < df_len]
+    if "annotators" in df.columns:
+        raw_indices = [
+            i for i, row in df.iterrows()
+            if key in (row["annotators"] if isinstance(row["annotators"], list) else [])
+        ]
+    else:
+        raw_indices = list(range(len(df)))
+
+    # Group by paper_id, preserving order of first occurrence
+    paper_order: list[str] = []
+    paper_groups: dict[str, list[int]] = defaultdict(list)
+    seen_papers: set[str] = set()
+    for idx in raw_indices:
+        pid = str(df.iloc[idx].get("paper_id", ""))
+        if pid not in seen_papers:
+            paper_order.append(pid)
+            seen_papers.add(pid)
+        paper_groups[pid].append(idx)
+
+    result: list[tuple[int, bool]] = []
+
+    for paper_id in paper_order:
+        indices = paper_groups[paper_id]
+        if len(indices) == 1:
+            result.append((indices[0], False))
+            continue
+
+        # Count how many times each feedback_idx appears across this paper's assigned pairs
+        freq: Counter = Counter()
+        for idx in indices:
+            row = df.iloc[idx]
+            freq[str(row.get("feedback1_idx", ""))] += 1
+            freq[str(row.get("feedback2_idx", ""))] += 1
+
+        # Decide orientation per pair: higher-freq feedback goes left
+        oriented: list[tuple[int, bool]] = []
+        for idx in indices:
+            row = df.iloc[idx]
+            f1k = str(row.get("feedback1_idx", ""))
+            f2k = str(row.get("feedback2_idx", ""))
+            # swap only when feedback2 is strictly more frequent than feedback1
+            swap = freq[f2k] > freq[f1k]
+            oriented.append((idx, swap))
+
+        # Sort so same-anchor (left) feedback pairs are consecutive
+        def _sort_key(item: tuple[int, bool]) -> tuple[str, str]:
+            idx, swap = item
+            row = df.iloc[idx]
+            f1k = str(row.get("feedback1_idx", ""))
+            f2k = str(row.get("feedback2_idx", ""))
+            left_k  = f2k if swap else f1k
+            right_k = f1k if swap else f2k
+            return (left_k, right_k)
+
+        oriented.sort(key=_sort_key)
+        result.extend(oriented)
+
+    return result
 
 
 # ── DATA ───────────────────────────────────────────────────────────────────────
 _PROJECT_ROOT = Path(__file__).resolve().parent
-_DATA_PATH = _PROJECT_ROOT / "data" / "annotation_sheet.csv"
+_DATA_PATH = _PROJECT_ROOT / "data" / "pairs_assignment.json"
 
 
 @st.cache_data(ttl=60)
 def load_data(path: str, _mtime: float = 0) -> pd.DataFrame:
-    df = pd.read_csv(path)
+    import json as _json
+    with open(path, encoding="utf-8") as f:
+        records = _json.load(f)
+    df = pd.DataFrame(records)
     return df.dropna(subset=["paper_id"]).reset_index(drop=True)
 
 
@@ -441,7 +635,7 @@ def init_state():
     if "annotator_name" not in st.session_state:
         q = st.query_params.get("annotator")
         st.session_state.annotator_name = str(q).strip() if q and str(q).strip() else ""
-    # Always reload from file so CSV changes are picked up
+    # Always reload from file so data changes are picked up
     if _DATA_PATH.exists():
         mtime = _DATA_PATH.stat().st_mtime
         st.session_state.df = load_data(str(_DATA_PATH), mtime)
@@ -475,20 +669,14 @@ annotator_name = st.session_state.annotator_name
 
 # ── FILE UPLOAD FALLBACK ───────────────────────────────────────────────────────
 if st.session_state.df is None:
-    st.markdown("### 📂 Upload `annotation_sheet.csv` to begin")
-    up = st.file_uploader("CSV file", type=["csv"])
-    if up:
-        st.session_state.df = (
-            pd.read_csv(up).dropna(subset=["paper_id"]).reset_index(drop=True)
-        )
-        st.rerun()
+    st.error("`data/pairs_assignment.json` not found. Please run `data/generate_assignment.py` first.")
     st.stop()
 
 df: pd.DataFrame = st.session_state.df
 
-# ── ASSIGNED ROWS ──────────────────────────────────────────────────────────────
-assigned_rows = get_assigned_rows(annotator_name, len(df))
-if not assigned_rows:
+# ── ASSIGNED PAIRS ─────────────────────────────────────────────────────────────
+assigned_pairs = compute_assigned_pairs(annotator_name, df)
+if not assigned_pairs:
     st.warning(
         f"Annotator '{annotator_name}' is not in the assignment list "
         f"({', '.join(_ANNOTATORS)}). No rows assigned."
@@ -503,37 +691,42 @@ if not st.session_state.get(_sheets_loaded_key) and get_gsheet_client():
         st.session_state.labels.update(loaded)
     st.session_state.sheet_row_cache = row_cache
     st.session_state[_sheets_loaded_key] = True
-    # Jump to earliest unlabeled row after loading
     st.session_state.row_nav_idx = next(
-        (i for i, df_idx in enumerate(assigned_rows) if df_idx not in st.session_state.labels),
-        len(assigned_rows) - 1,
+        (i for i, (df_idx, _) in enumerate(assigned_pairs) if df_idx not in st.session_state.labels),
+        len(assigned_pairs) - 1,
     )
 
 # On first load (no sheets), also land on earliest unlabeled
 if not st.session_state.get(f"nav_initialized_{annotator_name}"):
     st.session_state.row_nav_idx = next(
-        (i for i, df_idx in enumerate(assigned_rows) if df_idx not in st.session_state.labels),
-        len(assigned_rows) - 1,
+        (i for i, (df_idx, _) in enumerate(assigned_pairs) if df_idx not in st.session_state.labels),
+        len(assigned_pairs) - 1,
     )
     st.session_state[f"nav_initialized_{annotator_name}"] = True
 
 # ── CURRENT ROW ───────────────────────────────────────────────────────────────
-n_assigned = len(assigned_rows)
+n_assigned = len(assigned_pairs)
 nav_idx = min(st.session_state.row_nav_idx, n_assigned - 1)
-actual_row_idx = assigned_rows[nav_idx]
+actual_row_idx, swap_display = assigned_pairs[nav_idx]
 row = df.iloc[actual_row_idx]
 
 paper_id    = str(row.get("paper_id", ""))
-feedback1   = str(row.get("feedback1", "") or "")
-feedback2   = str(row.get("feedback2", "") or "")
-feedback1_idx = str(row.get("feedback1_idx", ""))
-feedback2_idx = str(row.get("feedback2_idx", ""))
 llm_name    = str(row.get("llm_name", "") or "").strip()
 title       = str(row.get("title", "") or "").strip()
 abstract    = str(row.get("abstract", "") or "").strip()
 pdf_url     = str(row.get("pdf_url", "") or "").strip()
+pair_source = str(row.get("source", "") or "").strip()
+global_id   = row.get("global_id", actual_row_idx)
 
-n_labeled = sum(1 for i in assigned_rows if i in st.session_state.labels)
+# Apply left/right orientation based on swap_display
+if swap_display:
+    feedback_left  = str(row.get("feedback2", "") or "")
+    feedback_right = str(row.get("feedback1", "") or "")
+else:
+    feedback_left  = str(row.get("feedback1", "") or "")
+    feedback_right = str(row.get("feedback2", "") or "")
+
+n_labeled = sum(1 for df_idx, _ in assigned_pairs if df_idx in st.session_state.labels)
 pct = int(n_labeled / n_assigned * 100) if n_assigned else 0
 current_label = st.session_state.labels.get(actual_row_idx)
 
@@ -611,22 +804,29 @@ if current_label == 1:
 elif current_label == 0:
     panel_class = "nonmatch"
 
+_src_badge = (
+    "human ↔ human" if pair_source == "human_human"
+    else (f"human ↔ {html.escape(llm_name)}" if llm_name else "human ↔ LLM")
+)
+
+_overlap = _overlap_words(feedback_left, feedback_right)
+_html_left  = _highlight_text(feedback_left,  _overlap)
+_html_right = _highlight_text(feedback_right, _overlap)
+
 col_left, col_right = st.columns(2, gap="small")
 with col_left:
     st.markdown(f"""
     <div class="feedback-panel {panel_class}">
-      <div class="panel-label">Feedback 1</div>
-      <div class="panel-idx">#{feedback1_idx}</div>
-      <div class="panel-text">{html.escape(feedback1)}</div>
+      <div class="panel-label">Feedback A &nbsp;<span style="font-weight:400;color:var(--text-dim)">[{_src_badge}] pair #{global_id}</span></div>
+      <div class="panel-text">{_html_left}</div>
     </div>
     """, unsafe_allow_html=True)
 
 with col_right:
     st.markdown(f"""
     <div class="feedback-panel {panel_class}">
-      <div class="panel-label">Feedback 2</div>
-      <div class="panel-idx">#{feedback2_idx}</div>
-      <div class="panel-text">{html.escape(feedback2)}</div>
+      <div class="panel-label">Feedback B &nbsp;<span style="font-weight:400;color:var(--text-dim)">[{_src_badge}] pair #{global_id}</span></div>
+      <div class="panel-text">{_html_right}</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -649,7 +849,7 @@ with label_col1:
         st.session_state.labels[actual_row_idx] = 1
         if get_gsheet_client():
             autosave_row(annotator_name, actual_row_idx, 1, df)
-        st.session_state.row_nav_idx = min(n_assigned - 1, nav_idx + 1)
+        st.session_state.row_nav_idx = _next_nav_idx(nav_idx, assigned_pairs, st.session_state.labels, n_assigned)
         st.rerun()
 with label_col2:
     if st.button(
@@ -661,7 +861,7 @@ with label_col2:
         st.session_state.labels[actual_row_idx] = 0
         if get_gsheet_client():
             autosave_row(annotator_name, actual_row_idx, 0, df)
-        st.session_state.row_nav_idx = min(n_assigned - 1, nav_idx + 1)
+        st.session_state.row_nav_idx = _next_nav_idx(nav_idx, assigned_pairs, st.session_state.labels, n_assigned)
         st.rerun()
 
 st.markdown("</div>", unsafe_allow_html=True)

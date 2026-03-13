@@ -23,3 +23,6 @@ build/
 .vscode/
 *.swp
 *.swo
+
+# Data
+data/annotation_sheet-*.csv
