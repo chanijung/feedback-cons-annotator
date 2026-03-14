@@ -806,7 +806,7 @@ elif current_label == 0:
 
 _src_badge = (
     "human ↔ human" if pair_source == "human_human"
-    else (f"human ↔ {html.escape(llm_name)}" if llm_name else "human ↔ LLM")
+    else ("human ↔ LLM")
 )
 
 _overlap = _overlap_words(feedback_left, feedback_right)
