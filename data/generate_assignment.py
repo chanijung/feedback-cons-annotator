@@ -8,7 +8,9 @@ Distribution strategy:
   - Each pair is assigned to exactly 3 annotators.
   - xuhui is assigned only to pairs that were assigned to xuhui in the old 280-sample
     assignment (data/old-280_samples/pairs_assignment.json); no newly assigned samples.
-  - 210 pairs include xuhui (subset of xuhui's old assignment); 70 pairs → chani, jimin, hyunwoo only.
+  - Among xuhui-eligible pairs, pairs xuhui already annotated (in old CSV files) are
+    prioritised first, then remaining slots are filled by global_id order.
+  - 210 pairs include xuhui; 70 pairs → chani, jimin, hyunwoo only.
   Each annotator ends up with 210 pairs (105 human-human + 105 human-llm).
 """
 
@@ -96,12 +98,51 @@ def load_xuhui_old_assignment_keys() -> set:
     }
 
 
+def load_xuhui_annotated_keys() -> set:
+    """Return pair keys xuhui has already annotated, from the old CSV files.
+
+    Key format matches pair_key(): (paper_id, feedback1_idx, feedback2_idx, source)
+    """
+    import csv as _csv
+    source_map = {
+        OLD_SAMPLES_DIR / "Feedback consensus annotation - HumanHuman.csv": "human_human",
+        OLD_SAMPLES_DIR / "Feedback consensus annotation - HumanLLM.csv":   "human_llm",
+    }
+    keys: set = set()
+    for csv_path, source in source_map.items():
+        if not csv_path.exists():
+            continue
+        with open(csv_path, encoding="utf-8", newline="") as f:
+            rows = list(_csv.reader(f))
+        if not rows:
+            continue
+        header = rows[0]
+        try:
+            paper_col = header.index("paper_id")
+            f1_col    = header.index("feedback1_idx")
+            f2_col    = header.index("feedback2_idx")
+        except ValueError:
+            continue
+        for row in rows[1:]:
+            if not row or str(row[0]).strip().lower() != "xuhui":
+                continue
+            # Same order as pair_key(): (paper_id, fb1, fb2, source)
+            keys.add((
+                str(row[paper_col]).strip(),
+                str(row[f1_col]).strip(),
+                str(row[f2_col]).strip(),
+                source,
+            ))
+    return keys
+
+
 def main():
     hh_data = load_json(DATA / "human_human-emb_sim_results.json")
     hl_data = load_json(DATA / "human_llm-emb_sim_results.json")
     papers = load_json(DATA / "sample_50_papers-consensus_human_annot.json")
     paper_lookup = build_paper_lookup(papers)
-    xuhui_old_keys = load_xuhui_old_assignment_keys()
+    xuhui_old_keys      = load_xuhui_old_assignment_keys()
+    xuhui_annotated_keys = load_xuhui_annotated_keys()
 
     # Flatten all pairs from each source (140 per source)
     hh_pairs = []
@@ -133,19 +174,30 @@ def main():
     # Mark which pairs can get xuhui (must be in old xuhui assignment)
     for e in raw_entries:
         e["_key"] = pair_key(e)
-        e["_xuhui_eligible"] = e["_key"] in xuhui_old_keys
+        e["_xuhui_eligible"]  = e["_key"] in xuhui_old_keys
+        e["_xuhui_annotated"] = e["_key"] in xuhui_annotated_keys
 
-    # Split: first 210 slots for xuhui must be from _xuhui_eligible; remaining 70 get no xuhui
     xuhui_eligible_indices = [i for i, e in enumerate(raw_entries) if e["_xuhui_eligible"]]
     if len(xuhui_eligible_indices) < XUHUI_TARGET:
         raise SystemExit(
             f"Only {len(xuhui_eligible_indices)} of {TOTAL_PAIRS} new pairs were in xuhui's old assignment; "
             f"need at least {XUHUI_TARGET} for target 210. Check data/old-280_samples/pairs_assignment.json."
         )
-    # Assign xuhui to exactly XUHUI_TARGET pairs (first XUHUI_TARGET eligible by global_id order)
-    xuhui_assign_global_ids = set(
-        raw_entries[i]["global_id"] for i in sorted(xuhui_eligible_indices, key=lambda i: raw_entries[i]["global_id"])[:XUHUI_TARGET]
-    )
+
+    # Select XUHUI_TARGET pairs: already-annotated ones first, then fill by global_id order
+    annotated_eligible   = [i for i in xuhui_eligible_indices if raw_entries[i]["_xuhui_annotated"]]
+    unannotated_eligible = [i for i in xuhui_eligible_indices if not raw_entries[i]["_xuhui_annotated"]]
+    # Sort each group by global_id
+    annotated_eligible.sort(key=lambda i: raw_entries[i]["global_id"])
+    unannotated_eligible.sort(key=lambda i: raw_entries[i]["global_id"])
+
+    selected = annotated_eligible + unannotated_eligible
+    selected = selected[:XUHUI_TARGET]
+
+    print(f"xuhui 선택: 이미 annotation한 pair {len(annotated_eligible)}개 우선 포함, "
+          f"추가 {len(selected) - len(annotated_eligible)}개 (global_id 순)")
+
+    xuhui_assign_global_ids = {raw_entries[i]["global_id"] for i in selected}
 
     # Assign annotators: 210 with xuhui (split 70/70/70 for other two), 70 without xuhui
     # Groups for xuhui pairs: (xuhui, chani, jimin), (xuhui, chani, hyunwoo), (xuhui, jimin, hyunwoo)

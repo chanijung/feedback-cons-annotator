@@ -365,7 +365,7 @@ def load_labels_from_gsheet(annotator_name: str, df: pd.DataFrame) -> tuple[dict
             label_idx = 7 if sheet_name == "HumanHuman" else 8
             
             for sheet_row_num, row in enumerate(existing[1:], start=2):
-                if len(row) < 5 or str(row[0]).strip() != annotator_name:
+                if len(row) < 5 or str(row[0]).strip().lower() != annotator_name.lower():
                     continue
                 # key: (sheet_name, paper_id, fb1_idx, fb2_idx)
                 # row[1]: paper_id, row[3]: feedback1_idx, row[5]: feedback2_idx
@@ -440,7 +440,7 @@ def submit_to_gsheet(annotator_name: str, labels: dict, df: pd.DataFrame) -> tup
             header = _get_header(sheet_name)
             existing = _ensure_header(ws, header)
             for i, row in enumerate(existing[1:], start=2):
-                if len(row) >= 6 and str(row[0]).strip() == annotator_name:
+                if len(row) >= 6 and str(row[0]).strip().lower() == annotator_name.lower():
                     # key: (sheet_name, paper_id, fb1_idx, fb2_idx)
                     # row[1]: paper_id, row[3]: feedback1_idx, row[5]: feedback2_idx
                     key = (sheet_name, str(row[1]).strip(), str(row[3]).strip(), str(row[5]).strip())
