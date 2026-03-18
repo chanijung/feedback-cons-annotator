@@ -2,14 +2,6 @@
   {
     "paper_id": "-u4j4dHeWQi",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 28,
-      "num_candidate_pairs": 378,
-      "mean_cosine_similarity": 0.34320953183401665,
-      "std_cosine_similarity": 0.10050009353095328,
-      "min_cosine_similarity": 0.09050767752219842,
-      "max_cosine_similarity": 0.7074901957495534
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1515-0",
@@ -60,14 +52,6 @@
   {
     "paper_id": "7156_vBNTeQ7dPP",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 38,
-      "num_candidate_pairs": 703,
-      "mean_cosine_similarity": 0.3529965149450769,
-      "std_cosine_similarity": 0.12360010429396259,
-      "min_cosine_similarity": 0.06243876210793715,
-      "max_cosine_similarity": 0.8785126458782531
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-2240-4",
@@ -173,14 +157,6 @@
   {
     "paper_id": "BylQSxHFwr",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 12,
-      "num_candidate_pairs": 66,
-      "mean_cosine_similarity": 0.29162276577451596,
-      "std_cosine_similarity": 0.12027679268904261,
-      "min_cosine_similarity": 0.02691846268485174,
-      "max_cosine_similarity": 0.7115010822282745
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-684-3",
@@ -264,14 +240,6 @@
   {
     "paper_id": "I9J8gIyqRE",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 20,
-      "num_candidate_pairs": 190,
-      "mean_cosine_similarity": 0.3110072132604359,
-      "std_cosine_similarity": 0.11384811984350857,
-      "min_cosine_similarity": 0.07555022072003273,
-      "max_cosine_similarity": 0.6880625527130645
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-511-7",
@@ -322,14 +290,6 @@
   {
     "paper_id": "4810_E4flIscNE6",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 12,
-      "num_candidate_pairs": 66,
-      "mean_cosine_similarity": 0.4490868180851768,
-      "std_cosine_similarity": 0.13390631843117795,
-      "min_cosine_similarity": 0.16391551726611522,
-      "max_cosine_similarity": 0.74951355837931
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-3146-0",
@@ -411,119 +371,9 @@
     ]
   },
   {
-    "paper_id": "B1xhpa4FvS",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 20,
-      "num_candidate_pairs": 190,
-      "mean_cosine_similarity": 0.3658093373412223,
-      "std_cosine_similarity": 0.12296501102523592,
-      "min_cosine_similarity": 0.07682678078950946,
-      "max_cosine_similarity": 0.7212860502015468
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-8",
-        "text_a": "Error bars should be included in Figure 2 D.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-761-1",
-        "text_b": "The model assumes only one kind of role for fake news dissemination, which underestimates the complexity of real-world scenarios where there are both intentional creators of fake news and unintentional spreaders. The authors should consider more related work in information diffusion that addresses competitive propagation with multiple parties.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.1449831095940949
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-7",
-        "text_a": "The legend in Figure 2 A & B is confusing; different styles should be used for 'private signal optimal' and 'all signals optimal'.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-760-5",
-        "text_b": "Modeling users as only voting on the truth or false value of a claim is not realistic, since most social networks involve users liking, sharing, etc., and users are motivated by more than just truthfulness.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2239171853102796
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-3",
-        "text_a": "The authors should provide motivation for choosing to model the social network as a Barabási-Albert graph and explain why this is a reasonable modeling choice.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-9",
-        "text_b": "The authors should provide results with a heuristic attacker that always lies about the claim. Is it true in practice that agents learn to distrust such an attacker? Can one find a heuristic attacker that behaves equivalently to the learned one, or even build stronger hand-tuned attackers?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3135301165814696
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-1",
-        "text_a": "The applicability of the proposed DMARL approach is questionable in its current state, as it is not clear how the conclusions would translate to more realistic scenarios of fake news in social networks due to strong assumptions and the use of a toy example.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-3",
-        "text_b": "The authors should provide motivation for choosing to model the social network as a Barabási-Albert graph and explain why this is a reasonable modeling choice.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4092130219230317
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-2",
-        "text_a": "The paper lacks comparison with other approaches to information aggregation in social networks, such as heuristic or game-theoretic methods, and should either provide experimental comparisons or clear motivation for not including such methods.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-9",
-        "text_b": "The authors should provide results with a heuristic attacker that always lies about the claim. Is it true in practice that agents learn to distrust such an attacker? Can one find a heuristic attacker that behaves equivalently to the learned one, or even build stronger hand-tuned attackers?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.38710075123546833
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-0",
-        "text_a": "The paper lacks a significant technical contribution to learning algorithms, as it primarily applies existing DMARL techniques to a novel toy domain without proposing improvements to core algorithms.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-759-1",
-        "text_b": "The applicability of the proposed DMARL approach is questionable in its current state, as it is not clear how the conclusions would translate to more realistic scenarios of fake news in social networks due to strong assumptions and the use of a toy example.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6030034636074415
-      }
-    ]
-  },
-  {
     "paper_id": "HJgCF0VFwr",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 14,
-      "num_candidate_pairs": 91,
-      "mean_cosine_similarity": 0.3907755523067215,
-      "std_cosine_similarity": 0.12983730590487566,
-      "min_cosine_similarity": 0.18673668857071135,
-      "max_cosine_similarity": 0.8851812928197683
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1072-3",
-        "text_a": "The test statistics resemble HSIC. It would be helpful to include comments on the connection to HSIC.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1074-3",
-        "text_b": "It would be interesting to visualize the importance of features at different depths in deep convolutional networks.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.24470332965063737
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1073-0",
-        "text_a": "The main drawback of the approach is its significantly increased computation due to (1) the quadratic complexity of kernel methods, and (2) inability to cache computation among different pairs of nodes (unlike gradient-based approaches, which can compute importance for all node connections in one forward-backward pass). This limits the applicability of the approach to larger models, such as those used for ImageNet, where model compression is more urgently needed. As a result, the significance and impact of the approach is also limited.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1074-5",
-        "text_b": "Were the fine-tuning results in the random pruning experiments performed with random pruning or with your importance metric? For a fair comparison, the treatment of the pruned network should be the same in both cases. Did you try pruning with your method without retraining? The most drastic results should be shown with fine-tuning of both importance-pruned and randomly-pruned networks.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3297317889333577
-      },
       {
         "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1073-0",
         "text_a": "The main drawback of the approach is its significantly increased computation due to (1) the quadratic complexity of kernel methods, and (2) inability to cache computation among different pairs of nodes (unlike gradient-based approaches, which can compute importance for all node connections in one forward-backward pass). This limits the applicability of the approach to larger models, such as those used for ImageNet, where model compression is more urgently needed. As a result, the significance and impact of the approach is also limited.",
@@ -536,17 +386,6 @@
         "cosine_similarity": 0.282705721377288
       },
       {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1073-2",
-        "text_a": "The experiment section should include more important information, such as the kernel bandwidth used for the Gaussian kernel, since this parameter greatly affects performance. Additionally, the main text introducing the proposed statistical test is a bit verbose and dense in unnecessary notations. It could be made more succinct by presenting a high-level idea (removing mean, three-way correlations) first, followed by the final results, and moving some intermediate results to the Appendix.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1074-0",
-        "text_b": "The empirical results could be clearer; the paper lacks baselines for larger models on CIFAR10 and should compare with published results of other algorithms. Additionally, how does the method perform on larger networks like ImageNet? Computational efficiency is mentioned but could be examined in greater detail, including how long it takes to run and how model size affects runtime.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4421128284247406
-      },
-      {
         "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1073-1",
         "text_a": "The experimental results, while interesting in showing better compression rates on small datasets, are less convincing than results on more complex models and larger datasets such as ImageNet, where model compression is more impactful. Also, test errors on small datasets are easier to achieve and can be significantly improved by tuning optimization settings like learning rates, making these results more preliminary.",
         "unit_id_a": "",
@@ -556,87 +395,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.6476046069414423
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1072-1",
-        "text_a": "The numerical experiments are conducted only on small datasets. It is unclear how the method works on larger datasets such as ImageNet and, more importantly, how it compares with state-of-the-art pruning methods on more challenging datasets. In particular, no performance comparison is provided for the CIFAR10-VGG16 setting.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1074-5",
-        "text_b": "Were the fine-tuning results in the random pruning experiments performed with random pruning or with your importance metric? For a fair comparison, the treatment of the pruned network should be the same in both cases. Did you try pruning with your method without retraining? The most drastic results should be shown with fine-tuning of both importance-pruned and randomly-pruned networks.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5800327101846738
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1074-2",
-        "text_a": "It would be interesting to examine the correlation between the importance score and the actual impact on network performance. For instance, this could be done by comparing random pruning with pruning higher-importance connections. It might also be useful to examine the performance of networks after pruning nodes of differing importance without full retraining or just fine-tuning, as it is unclear how important full retraining is for this method.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1074-5",
-        "text_b": "Were the fine-tuning results in the random pruning experiments performed with random pruning or with your importance metric? For a fair comparison, the treatment of the pruned network should be the same in both cases. Did you try pruning with your method without retraining? The most drastic results should be shown with fine-tuning of both importance-pruned and randomly-pruned networks.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.7433961631052485
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1074-5",
-        "text_a": "Were the fine-tuning results in the random pruning experiments performed with random pruning or with your importance metric? For a fair comparison, the treatment of the pruned network should be the same in both cases. Did you try pruning with your method without retraining? The most drastic results should be shown with fine-tuning of both importance-pruned and randomly-pruned networks.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-1074-6",
-        "text_b": "Regarding the random pruning experiments: Was 'Fine-tuning' performed using random pruning or the importance metric? When you found that random pruning could not achieve an LCR of less than one, was that with or without fine-tuning? The treatment of the pruned network, whether using random pruning or your importance metric, should be the same.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.8851812928197683
       }
     ]
   },
   {
     "paper_id": "LLHwQh9zEb",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 34,
-      "num_candidate_pairs": 561,
-      "mean_cosine_similarity": 0.37942113807271916,
-      "std_cosine_similarity": 0.11391247839644131,
-      "min_cosine_similarity": 0.11871100671085505,
-      "max_cosine_similarity": 0.8751166274929779
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1582-0",
-        "text_a": "From Eqn.(1) to Eqn.(5), you choose to use a complex gating mechanism to aggregate information. Is every component necessary? What if using a simple GCN or GAT?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1582-2",
-        "text_b": "The authors should provide some real cases to show how the method outperforms previous baselines, and why the method can obtain good results without templates.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.1998399160741445
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1579-2",
-        "text_a": "The results in Table 1 are only convincing for USPTO_STEREO_mixed and less so for other datasets.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1579-9",
-        "text_b": "How exactly is \\mathcal{B}_{u,v} used in the learnable \\tilde{r}_{u,v}?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.19198443265164214
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1580-7",
-        "text_a": "It is still not clear how the minor modifications from NERF impact the performance of the proposed method, either theoretically or empirically.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1582-1",
-        "text_b": "The model contains more parameters than conventional retrosynthesis models like conventional Transformer, GLN. Could you please compare the number of parameters of different methods?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3684377717294052
-      },
       {
         "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1580-0",
         "text_a": "The proposed framework is similar to the NERF approach (Bi et al. ICML 2021). Both use graph neural networks to capture local information and a Transformer encoder for intermolecular interactions, followed by a Transformer decoder. The main difference is that NERF decodes directly to a graph, while the proposed method decodes to SMILES strings. Therefore, the novelty of this paper seems limited.",
@@ -647,76 +412,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.5586021910679044
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1579-3",
-        "text_a": "In the experimental comparison for retrosynthesis, methods compared use different forms of pretraining or augmentation, and while augmentation still provides advantages, the graph-based molecule embedding may mean that SMILES augmentation would not further improve your results.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1581-0",
-        "text_b": "The authors claim that integrating features like reaction templates, atom mapping, pretraining, or data augmentation with Graph2SMILES could improve its performance, but do not conduct experiments to demonstrate this claim. As these techniques are common in predictive chemistry, the authors should explain why they did not equip Graph2SMILES with these techniques.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6676388589836929
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1579-12",
-        "text_a": "The experiments do not fully show the model's impact, especially regarding the lack of augmentation needed at inference time.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-1579-14",
-        "text_b": "Augmentation at training time is not really an issue and yields good performance, but the need for augmentation during inference time might be the more interesting aspect and should be stressed more, possibly shown experimentally with the same pretraining.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6533612244176866
       }
     ]
   },
   {
     "paper_id": "iOnhIy-a-0n",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 19,
-      "num_candidate_pairs": 171,
-      "mean_cosine_similarity": 0.32910843700873316,
-      "std_cosine_similarity": 0.09593530825695089,
-      "min_cosine_similarity": 0.12807931460084684,
-      "max_cosine_similarity": 0.6423649399918326
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1084-2",
-        "text_a": "Have you considered using more than two temperatures in your method?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1085-2",
-        "text_b": "The operator E is not defined in the main text (only in the appendix) for Theorem 1.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.12807931460084684
-      },
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1084-3",
-        "text_a": "Please define 'acceleration' (relative to what?) and clarify what is meant by 'exponentially faster' on page 5, compared to reSGLD.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1086-1",
-        "text_b": "The novelty and originality of the paper are limited, as a well-known type of variance reduction is applied in a new context where it makes sense.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.16953566542109882
-      },
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1084-10",
-        "text_a": "On page 7: Why do you anneal $\\tau^{(1)}$ in the CIFAR experiment?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1087-0",
-        "text_b": "The proposed variance reduction technique is not new and is very similar to standard control variates methods, which have already been extensively applied to MCMCs and other machine learning tasks.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2585144108422925
-      },
       {
         "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1084-7",
         "text_a": "On page 4, Algorithm 1: How should $\\gamma$ be set?",
@@ -727,75 +429,12 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.3545805564031969
-      },
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1084-0",
-        "text_a": "How much tweaking do parameters such as $F$ and other hyperparameters require? Can you provide some intuition on how to set these parameters?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1087-2",
-        "text_b": "In Section 5.2, regarding Figures 3c and 3d, the effect of variance reduction becomes significant after sufficient epochs, and the author conjectures this is because the learning rate is decreased. I think this suggests the proposed variance reduction is significantly affected by the step size, which changes during the exploration stage in SG-MCMCs. Therefore, using a constant $m$ during the exploration stage might not be a good idea.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.38134761561539804
-      },
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1085-1",
-        "text_a": "For the synthetic experiments, can you explain the choice of using different values of F (1 for VR-reSGLD and 100 for reSGLD)? While I can believe that variance reduction leads to a different bias/variance trade-off, it would be good to explain why these specific values of F were used.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1087-1",
-        "text_b": "All experimental results and theoretical analysis suggest that using a smaller $m$ is better. However, how should $m$ be tuned? Does the variance reduction work even if $m=1$? I also think that a sufficiently large $m$ is required to estimate the control covariate appropriately, as suggested by Rie Johnson and Tong Zhang in their paper. Is this intuition incorrect?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.457451284852764
-      },
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1084-3",
-        "text_a": "Please define 'acceleration' (relative to what?) and clarify what is meant by 'exponentially faster' on page 5, compared to reSGLD.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1085-1",
-        "text_b": "For the synthetic experiments, can you explain the choice of using different values of F (1 for VR-reSGLD and 100 for reSGLD)? While I can believe that variance reduction leads to a different bias/variance trade-off, it would be good to explain why these specific values of F were used.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.45234586081878286
-      },
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1084-9",
-        "text_a": "On page 6: You set $\\tau^{(1)}=10$ to avoid peaky modes, but it would be interesting to see the performance of VR-reSGLD for a sharply peaked posterior, which is more realistic for high-dimensional parameter spaces and large datasets.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1085-1",
-        "text_b": "For the synthetic experiments, can you explain the choice of using different values of F (1 for VR-reSGLD and 100 for reSGLD)? While I can believe that variance reduction leads to a different bias/variance trade-off, it would be good to explain why these specific values of F were used.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5509447466326666
-      },
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1087-1",
-        "text_a": "All experimental results and theoretical analysis suggest that using a smaller $m$ is better. However, how should $m$ be tuned? Does the variance reduction work even if $m=1$? I also think that a sufficiently large $m$ is required to estimate the control covariate appropriately, as suggested by Rie Johnson and Tong Zhang in their paper. Is this intuition incorrect?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1087-2",
-        "text_b": "In Section 5.2, regarding Figures 3c and 3d, the effect of variance reduction becomes significant after sufficient epochs, and the author conjectures this is because the learning rate is decreased. I think this suggests the proposed variance reduction is significantly affected by the step size, which changes during the exploration stage in SG-MCMCs. Therefore, using a constant $m$ during the exploration stage might not be a good idea.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6150002421844936
       }
     ]
   },
   {
     "paper_id": "6365_rBAnJed1iY",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 39,
-      "num_candidate_pairs": 741,
-      "mean_cosine_similarity": 0.33637349416945783,
-      "std_cosine_similarity": 0.11512328042409099,
-      "min_cosine_similarity": 0.05120314713801395,
-      "max_cosine_similarity": 0.7819390962400564
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-6757-5",
@@ -890,14 +529,6 @@
   {
     "paper_id": "2409_op19LjpHkH",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 36,
-      "num_candidate_pairs": 630,
-      "mean_cosine_similarity": 0.30389365929165546,
-      "std_cosine_similarity": 0.09291527515337672,
-      "min_cosine_similarity": 0.0343324780555735,
-      "max_cosine_similarity": 0.6516495563753292
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-577-3",
@@ -948,14 +579,6 @@
   {
     "paper_id": "zS9sRyaPFlJ",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 25,
-      "num_candidate_pairs": 300,
-      "mean_cosine_similarity": 0.3246367205075056,
-      "std_cosine_similarity": 0.1142682488551671,
-      "min_cosine_similarity": 0.07936686931353927,
-      "max_cosine_similarity": 0.712149104803435
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-120-7",
@@ -1050,14 +673,6 @@
   {
     "paper_id": "UFbxfSnxan3",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 17,
-      "num_candidate_pairs": 136,
-      "mean_cosine_similarity": 0.3462353319715929,
-      "std_cosine_similarity": 0.09708863291007677,
-      "min_cosine_similarity": 0.16174253927045382,
-      "max_cosine_similarity": 0.6320826216743106
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-164-3",
@@ -1086,14 +701,6 @@
   {
     "paper_id": "49V11oUejQ",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 34,
-      "num_candidate_pairs": 561,
-      "mean_cosine_similarity": 0.4615355166014634,
-      "std_cosine_similarity": 0.12979403481620802,
-      "min_cosine_similarity": 0.11002631254835993,
-      "max_cosine_similarity": 0.8320530382865564
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-831-3",
@@ -1186,85 +793,8 @@
     ]
   },
   {
-    "paper_id": "lP11WtZwquE",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 22,
-      "num_candidate_pairs": 231,
-      "mean_cosine_similarity": 0.39153773904384803,
-      "std_cosine_similarity": 0.12060875684525446,
-      "min_cosine_similarity": 0.13701965761411083,
-      "max_cosine_similarity": 0.7689331835437232
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-546-0",
-        "text_a": "The motivation of this paper is not very convincing. While I agree with the importance of ensuring auto-constructed data is accurate, how can we measure the severity of the 'false negative problem'? For example, in Table 1, both 'Ground-truth' and 'Prediction' could fit the masked tokens, but there are subtle differences, especially in long contexts (512/1024 tokens during pretraining vs. a short sentence in the examples).",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-548-2",
-        "text_b": "The paper should provide the correction statistics of the hard correction (HC) method.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.32352956752895606
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-548-0",
-        "text_a": "The experimental settings are unclear. SR and HC appear to be continual pre-training objectives. Are the baselines (ELECTRA_small and ELECTRA_base) also continually pre-trained with the original ELECTRA objectives for the same number of steps as SR and HC? If not, the results are not convincing.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-548-3",
-        "text_b": "Since ELECTRA-style token-level discriminative pre-trained models perform well on token-level classification tasks such as NER, it would be beneficial to report results on NER tasks.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4478437479315608
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-547-1",
-        "text_a": "The intuition behind soft regularization and hard correction seems ad-hoc and may not hold in some cases. For example, minimizing the distance between the predicted token and the ground-truth token could be misleading if the model is not well trained and the prediction is incorrect. Using synonyms from a dictionary could also be wrong without considering context.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-549-1",
-        "text_b": "For the Hard Correction method, it appears that the method simply uses a synonym set as the target labels. Even though the empirical results are good, the solution lacks novelty. Additionally, while WordNet synonyms can help mitigate the false negative problem, they may also introduce new false positives.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6595827933710247
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-547-4",
-        "text_a": "The results in Table 2 are inconsistent with Table 1 (ELECTRA_small and ELECTRA_base on GLUE test set). Important baselines such as RoBERTa, XLNet, and DeBERTa are missing. Since all experiments are conducted on ELECTRA small and base models, it is unknown whether the proposed methods work on larger scale models or other pretrained models like BERT.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-550-2",
-        "text_b": "The experiments only cover one pretrained language model - ELECTRA. Could this method be applied on other MLM PrLMs such as RoBERTa?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6851978155731964
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-546-0",
-        "text_a": "The motivation of this paper is not very convincing. While I agree with the importance of ensuring auto-constructed data is accurate, how can we measure the severity of the 'false negative problem'? For example, in Table 1, both 'Ground-truth' and 'Prediction' could fit the masked tokens, but there are subtle differences, especially in long contexts (512/1024 tokens during pretraining vs. a short sentence in the examples).",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-547-0",
-        "text_b": "The motivation for reducing false negative examples in pretraining is reasonable, but it is not convincing that this is necessary since the main goal of pretraining is to learn good contextualized representations useful for downstream tasks. The claim that false negatives are harmful to pretraining is not fully supported by the experiments.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6673715069689347
-      }
-    ]
-  },
-  {
     "paper_id": "1462_2405_15757v2",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 23,
-      "num_candidate_pairs": 253,
-      "mean_cosine_similarity": 0.331550782939245,
-      "std_cosine_similarity": 0.10861845045112387,
-      "min_cosine_similarity": 0.13462052349713668,
-      "max_cosine_similarity": 0.8380982537767228
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-111-1",
@@ -1337,14 +867,6 @@
   {
     "paper_id": "sZI1Oj9KBKy",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 36,
-      "num_candidate_pairs": 630,
-      "mean_cosine_similarity": 0.3565828909744339,
-      "std_cosine_similarity": 0.12727515092650984,
-      "min_cosine_similarity": 0.05234088432360266,
-      "max_cosine_similarity": 0.7950375423105589
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-1532-2",
@@ -1426,97 +948,9 @@
     ]
   },
   {
-    "paper_id": "1988_2406_19905v2",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 23,
-      "num_candidate_pairs": 252,
-      "mean_cosine_similarity": 0.36101394910523416,
-      "std_cosine_similarity": 0.11677594698293327,
-      "min_cosine_similarity": 0.14282439527376495,
-      "max_cosine_similarity": 0.7198314533848158
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-6966-1",
-        "text_a": "It would be interesting to understand the tokens that remain conflicting even after STGC. What proportion of the total tokens stay conflicting? Can something be reasoned about this behaviour? Along with the mean gradient consistency, please report the standard deviations as well. It might also be worth tracking the proportion of total tokens that stay conflicting over the course of training. Insights and justifications on this would be useful.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-6966-2",
-        "text_b": "Provide a more detailed motivation for the particular form of the conflict elimination loss proposed in Eqn 8. Specifically, why is $z_{moe}'(t_n)$ set to $-z_{moe}(t_n)$? Were other forms considered, or can you provide insights into why this particular expression works?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3258765367019215
-      },
-      {
-        "unit_key_a": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-6967-1",
-        "text_a": "The optimization process of the proposed Conflicting-Elimination-Loss (CEL) appears unstable (as seen in Figure 3(a)), and the reviewer is concerned about whether this instability would be problematic when scaling up to larger models.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-6968-3",
-        "text_b": "Figure 3b: better label the x-axis with \"Training Step\"; In TL;DR, a novel loss; Figure A in supplementary: part of the figure is not visible",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4254463414455088
-      },
-      {
-        "unit_key_a": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-6967-0",
-        "text_a": "The paper should include a visualization of the routing mechanism of the trained model to provide insights into why the proposed method improves performance. Additionally, such visualization could validate whether the method effectively utilizes all experts, rather than collapsing into only using one expert.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-6968-5",
-        "text_b": "It would be better to provide some analysis on the distribution of expert loadings for better understanding.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4799550619331896
-      },
-      {
-        "unit_key_a": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-6964-1",
-        "text_a": "The paper suggests redistributing conflicting tokens to different experts. However, it is unclear how the method ensures that these conflicting tokens do not cause conflicts with tokens in other experts.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-6968-1",
-        "text_b": "Since the average gradient is dynamically changing during training, is it possible that some tokens do not conflict with a specific expert but become conflicting after several steps of training?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6139329102640407
-      }
-    ]
-  },
-  {
     "paper_id": "7IG0wsTND7w",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 16,
-      "num_candidate_pairs": 120,
-      "mean_cosine_similarity": 0.31866348249185983,
-      "std_cosine_similarity": 0.10659410663456848,
-      "min_cosine_similarity": 0.08660424396682621,
-      "max_cosine_similarity": 0.6538516993679605
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-361-0",
-        "text_a": "Why did you choose to use Fourier amplitude for adversarially generating images? Is the intent to create bad but not excessively bad images to force better generalization performance? The approach seems rather arbitrary; I would like to understand the reasoning behind this choice compared to other possible methods.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-361-1",
-        "text_b": "Do the authors plan to release the full code for reproducing the results in the paper?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.23915638445049825
-      },
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-360-0",
-        "text_a": "Even though the generated target domain is supposed to represent the 'worst-case', it is still not the same as the true target domains. It would be better to discuss this distinction in the theoretical analysis.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-360-3",
-        "text_b": "There is no comparison with other methods [3,4] using different backbone networks, such as ResNet-18 on PACS.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.31773010940641805
-      },
       {
         "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-360-1",
         "text_a": "Why not directly minimize e^*(\\mathcal{H} ; S, T) using a single supervised loss if the label of the generated target domain is known?",
@@ -1529,17 +963,6 @@
         "cosine_similarity": 0.2557085069052123
       },
       {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-359-0",
-        "text_a": "The contributions are somewhat limited because MCD is already an existing approach.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-359-4",
-        "text_b": "It is not clear whether the proposed approach can synthesize the unseen target domain. The reviewer would like to know the authors' opinion on this.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.37210375034825005
-      },
-      {
         "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-359-1",
         "text_a": "The paper should focus more on true solutions in domain generalization, and provide more discussion about what constitutes a true solution in DG.",
         "unit_id_a": "",
@@ -1549,42 +972,12 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.4832443646333442
-      },
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-359-1",
-        "text_a": "The paper should focus more on true solutions in domain generalization, and provide more discussion about what constitutes a true solution in DG.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-360-0",
-        "text_b": "Even though the generated target domain is supposed to represent the 'worst-case', it is still not the same as the true target domains. It would be better to discuss this distinction in the theoretical analysis.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4706728348088382
-      },
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-359-1",
-        "text_a": "The paper should focus more on true solutions in domain generalization, and provide more discussion about what constitutes a true solution in DG.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-359-5",
-        "text_b": "The reviewer is concerned that the current solution, though proposed under existing conditions, may not be a true solution for domain generalization and could potentially mislead the field's development.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6297709341502351
       }
     ]
   },
   {
     "paper_id": "FeWvD0L_a4",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 30,
-      "num_candidate_pairs": 435,
-      "mean_cosine_similarity": 0.3136096008194555,
-      "std_cosine_similarity": 0.10065789399126446,
-      "min_cosine_similarity": 0.08174947055363684,
-      "max_cosine_similarity": 0.7747183345214732
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-1035-4",
@@ -1668,14 +1061,6 @@
   {
     "paper_id": "1490_2409_06666v1",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 19,
-      "num_candidate_pairs": 171,
-      "mean_cosine_similarity": 0.4471425644105502,
-      "std_cosine_similarity": 0.09175814384085608,
-      "min_cosine_similarity": 0.24594082863359834,
-      "max_cosine_similarity": 0.7158479370901734
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-3962-3",
@@ -1687,65 +1072,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.5362085953798348
-      },
-      {
-        "unit_key_a": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-3963-1",
-        "text_a": "Some experimental results in the paper are questionable, including (1) the potential bias in ChatGPT-Score due to evaluation prompts that closely match the training data, (2) inconsistencies between WER and S2SIF scores, possibly caused by limitations of the VITS TTS model, and (3) decoding time measurements that may not provide a fair comparison due to dependence on response length. To ensure more accurate and meaningful results, human evaluations should be conducted, a TTS model suitable for longer utterances or chunked input should be used, and decoding time per token should be reported.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-3964-3",
-        "text_b": "The audio quality of the proposed method is not good according to the MOS score and is not compared with any external works, making it difficult to assess the value of the CTC-based design, especially given prior work in streaming TTS.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5763671136730463
-      },
-      {
-        "unit_key_a": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-3964-0",
-        "text_a": "The paper does not sufficiently acknowledge or compare to prior research in streaming TTS, despite the clear connection of the proposed text-to-speech component to this area. The paper should compare the proposed method with previous works in streaming TTS and provide motivation for the unique CTC-based design.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2025_reviews_111325_conversation_formatted_parsed-thread-3964-3",
-        "text_b": "The audio quality of the proposed method is not good according to the MOS score and is not compared with any external works, making it difficult to assess the value of the CTC-based design, especially given prior work in streaming TTS.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.7158479370901734
       }
     ]
   },
   {
     "paper_id": "5670_VUA9LSmC2r",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 31,
-      "num_candidate_pairs": 465,
-      "mean_cosine_similarity": 0.32241325225222967,
-      "std_cosine_similarity": 0.10909354806694882,
-      "min_cosine_similarity": 0.08722886419291984,
-      "max_cosine_similarity": 0.672600946813509
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4594-1",
-        "text_a": "From my understanding, GPT-4 generates the target states, and whether these states have been met is used as environmental feedback for training Octopus. It seems possible that GPT-4 could generate an incorrect or trivial target state that satisfies the language task goal, so the model might successfully reach this predicted state without actually achieving the true task goal. Is this correct? In such cases, errors from GPT-4 appear more harmful than unsuccessful execution from GPT-4 generated code.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4596-10",
-        "text_b": "The paper mentions open-sourcing multiple times in the main text. An anonymous website link would be helpful.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.11662026093367335
-      },
-      {
-        "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4595-1",
-        "text_a": "The paper uses uncommon or less frequently used words in many sentences, substituting them for simpler, more common terms that could convey the message more clearly. As a result, the text may come across as disjointed and strange to the reader.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4596-6",
-        "text_b": "Why did you choose CodeLLaMA-7B as the reward model in RLEF while using MPT-7B for the full VLM?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.12392281423855472
-      },
       {
         "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4594-0",
         "text_a": "The data collection process relies on GPT-4, which takes as input a systems message and an environment message to output the required plan, code, and target state. This relies on the strong assumption that the systems plus environment message fully captures the environment state, since planning is done without access to the visual scene. The systems prompt must therefore be elaborate, handcrafted, and task specific to allow GPT-4 to plan reasonably. Is there a robust way to design such prompts for different or new tasks without tuning?",
@@ -1758,17 +1091,6 @@
         "cosine_similarity": 0.2709965437303173
       },
       {
-        "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4594-2",
-        "text_a": "The results in Table 2 are not particularly convincing. Octopus should outperform blind LLMs that do not take visual input, but TAPA outperforms or matches Octopus in 2 of 5 tasks. The paper lacks analysis on why this occurs. Where does TAPA fail? Also, comparison is difficult when vision models differ; do OVD and CLIP-ViT perform similarly in extracting information from the scene?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4595-4",
-        "text_b": "In Section ENVIRONMENTAL FEEDBACK, what if there are multiple erroneous states in a task sequence? Which are the positive states and which are the error states at this time? It may not be correct that if one of the states is wrong, its previous states must all be negative.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2516580482203116
-      },
-      {
         "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4595-0",
         "text_a": "The novelty of this paper is limited. The paper uses GPT-4 with prompt engineering to collect data from two embodied environments, then trains a vision-language agent model. The agent model does not have a specific framework diagram to show the detailed parts, making it difficult to see which part of the model is innovative. I suggest providing a framework diagram to clearly explain where the model is newly proposed in the paper and how it differs from existing methods.",
         "unit_id_a": "",
@@ -1778,42 +1100,12 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.3849166694599281
-      },
-      {
-        "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4594-0",
-        "text_a": "The data collection process relies on GPT-4, which takes as input a systems message and an environment message to output the required plan, code, and target state. This relies on the strong assumption that the systems plus environment message fully captures the environment state, since planning is done without access to the visual scene. The systems prompt must therefore be elaborate, handcrafted, and task specific to allow GPT-4 to plan reasonably. Is there a robust way to design such prompts for different or new tasks without tuning?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4596-4",
-        "text_b": "The use of GPT-4 to collect training data assumes GPT-4's performance is optimal or near-optimal. Comparing GPT-4 generated samples to human-collected samples, or describing any data quality control measures used, would be helpful.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.553111367100149
-      },
-      {
-        "unit_key_a": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4596-1",
-        "text_a": "The authors refer to the simulation used as 'OctoGibson', which is based on OmniGibson. More details are needed to elaborate the main differences between them, or clarify whether the simulator was only used for data collection.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2024_reviews_111325_conversation_formatted_parsed-thread-4597-3",
-        "text_b": "The manuscript does not make clear what was originally provided by OmniGibson or GTA-V versus what is added by OctoVerse. Also, it lacks motivation for why anyone should use its proposed environment, and the problem formulation needs significant improvement.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5588921475962724
       }
     ]
   },
   {
     "paper_id": "HyxG3p4twS",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 12,
-      "num_candidate_pairs": 66,
-      "mean_cosine_similarity": 0.3556933862286382,
-      "std_cosine_similarity": 0.09732964120438038,
-      "min_cosine_similarity": 0.15924220323986188,
-      "max_cosine_similarity": 0.6509222104232196
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-18-4",
@@ -1825,76 +1117,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.19262348335158092
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-19-0",
-        "text_a": "The authors do not compare their learnable image compression method to already available trainable compression methods.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-19-2",
-        "text_b": "The relationship between Figures 5 and 8 is unclear; it is not explained how the systems represented in these two graphs relate to each other or what the mapping is between their points.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2071600828682547
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-18-5",
-        "text_a": "Please add other neural compression methods to the graphs.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-19-0",
-        "text_b": "The authors do not compare their learnable image compression method to already available trainable compression methods.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4752612120322709
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-18-5",
-        "text_a": "Please add other neural compression methods to the graphs.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-18-6",
-        "text_b": "Please clarify that you create a file and decode a file for each image used to create the graphs (as opposed to using the estimated file size), as this is a very important topic.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4655416636528216
       }
     ]
   },
   {
     "paper_id": "qoTcTS9-IZ-",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 34,
-      "num_candidate_pairs": 561,
-      "mean_cosine_similarity": 0.3437331456201025,
-      "std_cosine_similarity": 0.09610780838419539,
-      "min_cosine_similarity": 0.10883751907680146,
-      "max_cosine_similarity": 0.6804066615554405
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1416-8",
-        "text_a": "Compared to the well-studied NTK and MF scalings, the newly identified scaling sym-default is said to have divergence behavior (its prediction function is always infinite for infinite d at any positive training time). The paper should justify why this divergence does not lead to instability; Figure 1 suggests it suffers from numerical instability.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1419-10",
-        "text_b": "The authors should use \\citep where appropriate in the manuscript.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.14360574608247373
-      },
-      {
-        "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1419-6",
-        "text_a": "In equation (26), why is a Gaussian distribution over the logit a good way to measure KL divergence? Since after training with softmax, the logit distribution may no longer be Gaussian.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1419-10",
-        "text_b": "The authors should use \\citep where appropriate in the manuscript.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.10883751907680146
-      },
       {
         "unit_key_a": "iclr_2021_reviews_111325_conversation_formatted_parsed-thread-1418-5",
         "text_a": "The seemingly most interesting regimes are not defined in the main text.",
@@ -1922,14 +1151,6 @@
   {
     "paper_id": "fyD8adDrXo",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 13,
-      "num_candidate_pairs": 78,
-      "mean_cosine_similarity": 0.3667363476004906,
-      "std_cosine_similarity": 0.10505378613398064,
-      "min_cosine_similarity": 0.16612554593570614,
-      "max_cosine_similarity": 0.6663891198275502
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-2085-4",
@@ -1978,107 +1199,8 @@
     ]
   },
   {
-    "paper_id": "dfDv0WU853R",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 15,
-      "num_candidate_pairs": 105,
-      "mean_cosine_similarity": 0.3126506948737417,
-      "std_cosine_similarity": 0.10104011220075787,
-      "min_cosine_similarity": 0.13844053251559468,
-      "max_cosine_similarity": 0.5972772089596043
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-146-0",
-        "text_a": "Starting from Equation 4, the notation mixes Δ and ∇, without a (one-line) explanation of what these symbols mean. It is confusing, as it seems like Δ is also a gradient, and more explanation of the notation would be welcome.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-148-1",
-        "text_b": "The density estimator models the distribution only using a Gaussian distribution, which could limit its capacity since, in practice, the dataset distribution is unlikely to be unimodal.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.13844053251559468
-      },
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-146-0",
-        "text_a": "Starting from Equation 4, the notation mixes Δ and ∇, without a (one-line) explanation of what these symbols mean. It is confusing, as it seems like Δ is also a gradient, and more explanation of the notation would be welcome.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-147-6",
-        "text_b": "Theorem 3 in the paper is very similar to Corollary 3.1.1 in [1], but this similarity was not properly mentioned.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2968545966203961
-      },
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-146-1",
-        "text_a": "For offline RL papers, I am curious what happens if the proposed algorithm is used in an online setting. Specifically, is it possible to occasionally let $\\pi_\\theta$ execute an episode in the environment, add the resulting transitions to the experience buffer, and continue learning from that?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-147-4",
-        "text_b": "OptiDICE, in addition to OneStepRL and IQL, only requires in-distribution samples (s,a,r,s') of the offline dataset.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.39180068376812716
-      },
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-146-2",
-        "text_a": "Neither the abstract nor the introduction mention the simple summary of the paper: 'we modify how samples are sampled from the experience buffer to correct for out-of-distribution actions.' Sentences like 'utilizes sampling-importance resampling to execute in-sample policy evaluation' are only understandable by people already familiar with sampling-importance resampling.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-148-0",
-        "text_b": "One limitation of the method is that it requires knowing the probability of the in-sample action in the dataset. Although the paper presents results with the density estimator removed, this method does not perform well on the AntMaze problem. Can you explain why the method does not perform well on AntMaze-UMaze and AntMaze-Large datasets?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.47905866529914337
-      },
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-147-2",
-        "text_a": "Some baselines are missing from the experiments, such as AWAC and CRR, which use similar approaches. Additionally, it would be beneficial to compare with a method using self-normalized importance sampling instead of SIR.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-148-3",
-        "text_b": "I cannot see why the proposed method outperforms other in-sample offline RL methods. Could you provide some insights on this?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.47621057073504336
-      },
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-147-1",
-        "text_a": "The algorithm requires behavior density estimation, which introduces additional computational costs and hyperparameters.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-148-2",
-        "text_b": "What is the training time required for using a density estimator?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5652224686250298
-      },
-      {
-        "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-146-1",
-        "text_a": "For offline RL papers, I am curious what happens if the proposed algorithm is used in an online setting. Specifically, is it possible to occasionally let $\\pi_\\theta$ execute an episode in the environment, add the resulting transitions to the experience buffer, and continue learning from that?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-148-3",
-        "text_b": "I cannot see why the proposed method outperforms other in-sample offline RL methods. Could you provide some insights on this?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5972772089596043
-      }
-    ]
-  },
-  {
     "paper_id": "6PIrhAx1j4i",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 20,
-      "num_candidate_pairs": 190,
-      "mean_cosine_similarity": 0.39078339345397267,
-      "std_cosine_similarity": 0.10388135587475433,
-      "min_cosine_similarity": 0.19548384142122896,
-      "max_cosine_similarity": 0.9101663556741907
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2023_reviews_111325_conversation_formatted_parsed-thread-601-1",
@@ -2173,14 +1295,6 @@
   {
     "paper_id": "SkeXL0NKwH",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 18,
-      "num_candidate_pairs": 153,
-      "mean_cosine_similarity": 0.34001490196280243,
-      "std_cosine_similarity": 0.09764945375163743,
-      "min_cosine_similarity": 0.10198449390272632,
-      "max_cosine_similarity": 0.6379790184674916
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-124-2",
@@ -2220,26 +1334,7 @@
   {
     "paper_id": "HyeCnkHtwH",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 18,
-      "num_candidate_pairs": 153,
-      "mean_cosine_similarity": 0.4221640710410054,
-      "std_cosine_similarity": 0.13823100287610462,
-      "min_cosine_similarity": 0.1103197954575965,
-      "max_cosine_similarity": 0.7598057242104164
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-325-0",
-        "text_a": "Equation 3 is unclear: What is theta in this equation, and how is it obtained?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-325-4",
-        "text_b": "The constrained images problem used in the experiments is very toy and simple, and the experiments with molecules do not include any baseline other than the GAN model without the constraint. Additionally, there are many recent contributions improving the validity of generative models for molecules, and the authors do not compare with any of them.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.1426183930937337
-      },
       {
         "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-323-6",
         "text_a": "For the Super Mario Bros. experiment, it is unclear why the authors chose to train the GAN on just level 1-3 or 3-3, instead of training a single model on multiple levels as is common in procedural content generation via machine learning.",
@@ -2252,17 +1347,6 @@
         "cosine_similarity": 0.38723174132674415
       },
       {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-323-5",
-        "text_a": "The descriptions of two of the three experiments do not include any discussion of the GAN architectures or hyperparameters. Some discussion in an appendix or a citation to a prior application of these architectures would be appropriate; without this, it is impossible for future researchers to replicate these results.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-325-6",
-        "text_b": "The proposed approach is rather incremental and lacks novelty, as it is essentially applying the semantic loss approach of Xu et al. (2018) to GAN training with very limited new methodological or algorithmic contributions.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.532693804725748
-      },
-      {
         "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-323-2",
         "text_a": "There is a lack of discussion of the experimental results to place them in context for readers.",
         "unit_id_a": "",
@@ -2272,28 +1356,6 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.5982466258869659
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-323-4",
-        "text_a": "It is unclear why GANs should be used for these domains instead of alternative approaches such as constraint-based solvers, or why adapting the constraints into a loss function is preferable to constraining generated output in a post-hoc process.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-325-4",
-        "text_b": "The constrained images problem used in the experiments is very toy and simple, and the experiments with molecules do not include any baseline other than the GAN model without the constraint. Additionally, there are many recent contributions improving the validity of generative models for molecules, and the authors do not compare with any of them.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.614459454777733
-      },
-      {
-        "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-323-5",
-        "text_a": "The descriptions of two of the three experiments do not include any discussion of the GAN architectures or hyperparameters. Some discussion in an appendix or a citation to a prior application of these architectures would be appropriate; without this, it is impossible for future researchers to replicate these results.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-323-7",
-        "text_b": "The paper lacks discussion on the results of each experiment; for example, the output of the GANs seems quite low and the differences between the GAN and CAN results do not seem substantial. Some discussion to put this in context for readers would be helpful.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.7598057242104164
       },
       {
         "unit_key_a": "iclr_2020_reviews_111325_conversation_formatted_parsed-thread-324-0",
@@ -2311,48 +1373,7 @@
   {
     "paper_id": "ab7fanwXWu",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 32,
-      "num_candidate_pairs": 496,
-      "mean_cosine_similarity": 0.3395310068432631,
-      "std_cosine_similarity": 0.09678447843147474,
-      "min_cosine_similarity": 0.05172266626675479,
-      "max_cosine_similarity": 0.65763850980254
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-613-2",
-        "text_a": "The reviewer is not fully convinced by the benefits of reparametrization, noting that while neural network reparameterization can improve convergence speed, it may also increase memory cost.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-616-5",
-        "text_b": "Equation 1 is called an ordinary differential equation, but it should be referred to as a partial differential equation.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.09340956310614981
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-615-6",
-        "text_a": "Technical comment: Right after equation 15, the paper claims that H is positive semidefinite. Where does this come from? If the base problem is non-convex, by definition H should have some negative eigenvalues at some point.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-616-1",
-        "text_b": "How does the idea of temporally changing but linear reparametrization relate to other classical optimization methods? Has this idea not been considered in the optimization literature before?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.219899362614845
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-615-0",
-        "text_a": "The experimental evaluation consists only of two problems that are not commonly of interest to the ICLR community, and it is unclear how these relate to typical optimization problems such as training deep neural networks.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-616-12",
-        "text_b": "\"GCN with $A^2$ as the propagation rule achieves the highest speedup\"—what is $A^2$? Please define.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2271462668821788
-      },
       {
         "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-614-4",
         "text_a": "In the experiments, the term 'linear' is used to refer to the gradient-based baselines. This terminology is confusing and may not be the best choice.",
@@ -2363,28 +1384,6 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.36219551437956476
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-613-2",
-        "text_a": "The reviewer is not fully convinced by the benefits of reparametrization, noting that while neural network reparameterization can improve convergence speed, it may also increase memory cost.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-615-3",
-        "text_b": "The final reparameterization is not very interesting, as it is just a linear map. Despite emphasis on 'using a neural network parameterization,' the end result is simply linear.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6151129258390287
-      },
-      {
-        "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-615-0",
-        "text_a": "The experimental evaluation consists only of two problems that are not commonly of interest to the ICLR community, and it is unclear how these relate to typical optimization problems such as training deep neural networks.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-615-1",
-        "text_b": "The experimental work is not thorough enough; specifically, there are no learning rate sweeps or comparisons to other optimizers.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5690122823440273
       },
       {
         "unit_key_a": "iclr_2022_reviews_111325_conversation_formatted_parsed-thread-613-4",
@@ -2402,14 +1401,6 @@
   {
     "paper_id": "xD0ivsbBf6",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 21,
-      "num_candidate_pairs": 210,
-      "mean_cosine_similarity": 0.31525937257898523,
-      "std_cosine_similarity": 0.13638512437383973,
-      "min_cosine_similarity": 0.07547817215231441,
-      "max_cosine_similarity": 0.8426300439339994
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-76-11",
@@ -2423,28 +1414,6 @@
         "cosine_similarity": 0.08794360286217186
       },
       {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-76-11",
-        "text_a": "Nearly every citation uses \\cite instead of \\citep, which is a typo.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-78-2",
-        "text_b": "The experiments mainly compare L-FMLC with tree-based and rule-based baselines (XGBoost, EBM), but lack comparisons with recent interpretable neural models, such as prototype-based networks or concept bottleneck models. Including such comparisons would provide more insight.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.14370643775067204
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-76-5",
-        "text_a": "Some necessary background information, such as the silhouette score (mentioned at line 240), is not explained in the manuscript.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-78-3",
-        "text_b": "Could the authors elaborate on how sensitive the model performance and fuzzy partition structure are to the regularization hyperparameters λ_sp, λ_ov, and λ_cov? Is there any principled or empirical guideline for selecting their values across different tasks?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.24561371543510566
-      },
-      {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-77-3",
         "text_a": "There are several issues with the experiments. For example, in Table 2, the model is claimed to be the 'best interpretable,' but it is outperformed by XGBoost and EBM, which are also considered interpretable models. Additionally, the results are not sufficiently competitive, particularly since only three datasets were used.",
         "unit_id_a": "",
@@ -2454,28 +1423,6 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.37827747750824864
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-76-1",
-        "text_a": "The proposed model is quite similar to some existing concept-based models (CBMs) where a neural network parametrizes an interpretable function (e.g., [2, 3] for logic rules, [4, 5] for a linear layer). The paper should discuss the similarities and differences, both qualitatively and ideally quantitatively.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-76-4",
-        "text_b": "Surrogate models are closely related to the global interpretability component, but the paper does not discuss them.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5215609828447485
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-77-3",
-        "text_a": "There are several issues with the experiments. For example, in Table 2, the model is claimed to be the 'best interpretable,' but it is outperformed by XGBoost and EBM, which are also considered interpretable models. Additionally, the results are not sufficiently competitive, particularly since only three datasets were used.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-78-2",
-        "text_b": "The experiments mainly compare L-FMLC with tree-based and rule-based baselines (XGBoost, EBM), but lack comparisons with recent interpretable neural models, such as prototype-based networks or concept bottleneck models. Including such comparisons would provide more insight.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6334036802768758
       },
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-76-2",
@@ -2504,14 +1451,6 @@
   {
     "paper_id": "iPAy5VpGQa",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 10,
-      "num_candidate_pairs": 45,
-      "mean_cosine_similarity": 0.3384725450284228,
-      "std_cosine_similarity": 0.08836145994700194,
-      "min_cosine_similarity": 0.13367985764187632,
-      "max_cosine_similarity": 0.5360741044319384
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-712-1",
@@ -2551,14 +1490,6 @@
   {
     "paper_id": "NYUxN6plEh",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 25,
-      "num_candidate_pairs": 300,
-      "mean_cosine_similarity": 0.35131372309146114,
-      "std_cosine_similarity": 0.12112997483243483,
-      "min_cosine_similarity": 0.12476810499108128,
-      "max_cosine_similarity": 0.6849345537788334
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1567-4",
@@ -2618,168 +1549,8 @@
     ]
   },
   {
-    "paper_id": "mIYGiBf9Pm",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 20,
-      "num_candidate_pairs": 190,
-      "mean_cosine_similarity": 0.35539596915775723,
-      "std_cosine_similarity": 0.11723324600948908,
-      "min_cosine_similarity": 0.08814256482070205,
-      "max_cosine_similarity": 0.6752778933949697
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-542-1",
-        "text_a": "In Table 10 (Appendix D.3.2), it is surprising that Gemini-2.5-Pro achieves better performance on the hard set than on the medium set. I am curious about the reason for this observation, as only ATLAS exhibits such an uncommon pattern.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-543-4",
-        "text_b": "What is the relationship between the multi-agent design and the CSP formalization?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.12141395360050568
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-542-0",
-        "text_a": "The framework appears to require considerable manual effort to design suitable prompts for different agents in each specific scenario, which may limit ATLAS’s generalization and scalability to other domains or broader real-world applications.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-545-2",
-        "text_b": "I am not entirely clear about how the checker component operates in practice. Is it based purely on LLM self-verification, or does it adopt an 'LLM-modulo' style approach that incorporates additional symbolic verification tools?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.22437946128940203
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-544-0",
-        "text_a": "Although ATLAS demonstrates strong performance, it is important to show why the method works or fails. The reviewer recommends analyzing the success rate of each subtask within ATLAS, and how failures in specific stages contribute to the overall failure. There may even be cases where later stages compensate for earlier failures. Additionally, understanding which models excel at which components would help guide future research into multi-agent workflows.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-545-3",
-        "text_b": "Could the proposed method be generalized to first-order logic, particularly regarding how constraint extraction and verification could be generalized to first-order logic?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2646773063065085
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-544-1",
-        "text_a": "Although the authors note their problem scope differs from Hao et al. [1], a comparison with this or other sandbox-based frameworks is still needed. Even if [1] operates in a sandbox-based setup, it remains a strong tool achieving top performance. The authors could, for example, disable ATLAS’s search component or provide the same searched data to [1] and compare outputs.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-544-2",
-        "text_b": "The authors claim ATLAS is efficient due to information reuse, but a cost analysis (such as API cost comparison with a single-model baseline) would strengthen this claim.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5304561388394013
-      }
-    ]
-  },
-  {
-    "paper_id": "SJL09XqcX1",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 14,
-      "num_candidate_pairs": 91,
-      "mean_cosine_similarity": 0.3917554163206112,
-      "std_cosine_similarity": 0.11905459933812294,
-      "min_cosine_similarity": 0.14979788382510148,
-      "max_cosine_similarity": 0.626408872210434
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1308-1",
-        "text_a": "The naming and organization of datasets in the paper can lead to confusion when reading the methodology and experimental setups.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1310-0",
-        "text_b": "The authors compare their method to some unnamed but presumably simplistic technique for data augmentation. It would be better to compare to several existing techniques, such as classic backtranslation. The observed results might be explained by data augmentation itself, not by language diversity.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.29373120815563447
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1308-0",
-        "text_a": "The evaluation is somewhat limited in scope; including results on multilingual benchmarks such as MGSM and PolyMath would further strengthen the validation of the proposed approach.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1311-1",
-        "text_b": "While the reduction in inference tokens is claimed, detailed breakdowns of token savings versus accuracy trade-offs (for example, across languages and varying lengths) are not sufficiently discussed.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4485704050490135
-      }
-    ]
-  },
-  {
-    "paper_id": "PSx10YdkYB",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 18,
-      "num_candidate_pairs": 153,
-      "mean_cosine_similarity": 0.37124563499618557,
-      "std_cosine_similarity": 0.09844895953188966,
-      "min_cosine_similarity": 0.15598633977199677,
-      "max_cosine_similarity": 0.6831594762575832
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1468-4",
-        "text_a": "Does there exist a generalizable way to tune $\u0005lambda_{fair}$ across datasets or tasks, and how sensitive is the model’s performance to $\u0005lambda_{fair}$?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1470-5",
-        "text_b": "There is no included code with the submission; only pseudocode is provided. This is an acceptable but not exceptional standard of reproducibility.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.19594494131989695
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1468-2",
-        "text_a": "There is no ablation study on the effect of removing ELRA, view filtering, or simply maximizing spurious entropy. The contribution of each component of the objective function is not demonstrated.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1470-4",
-        "text_b": "Do you have standard deviation (std) results that can be reported? At least in the average columns, if readability is a concern.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.28708291325193247
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1468-3",
-        "text_a": "If the predefined sensitive attribute is gender but the actual spurious correlation is gender+race or race alone, is the method still effective? For example, would soft prompting still reduce the model's reliance on the true spurious factors, or might it introduce unintended distortions?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1469-2",
-        "text_b": "The current results suggest that the additional complexity in Eqs. (4) and (5) does not lead to the intended benefits, which seems to challenge the initial viewpoints presented for their design. Could you offer some additional explanation or analysis as to why these variants did not outperform the simpler S loss (Eq. 3)?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3884544931959314
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1469-1",
-        "text_a": "For the final methods FAIRTPT and FAIRTPT (MO), does the latter refer to the algorithm plus Multi-Objective Optimization engineering technique? Also, your Equation 3 and Equation 4 are actually two different designs, but for these two algorithms, did you default to choosing Equation 4 since I didn't find the specifics? I want to know what the effect of Equation 3 is. Have you ever done related experiments to try it?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1471-0",
-        "text_b": "The hyperparameter sensitivity aspect is somewhat irrelevant to the main theme of the paper, which is fairness. Although it is nice that FAIRTPT has more favorable hyperparameter sensitivity than other TTA methods, presenting it as an additional, rather than central, property would make the overall narrative more coherent.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.48919872177325685
-      }
-    ]
-  },
-  {
     "paper_id": "Rn6rzJBCfA",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 31,
-      "num_candidate_pairs": 465,
-      "mean_cosine_similarity": 0.4040049222361839,
-      "std_cosine_similarity": 0.12290072538840269,
-      "min_cosine_similarity": 0.12791335983331759,
-      "max_cosine_similarity": 0.9594105847164283
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1352-2",
@@ -2802,87 +1573,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.5517765527480778
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1352-1",
-        "text_a": "The authors appear to overstate the novelty of their approach, as the proposed model is essentially a parameterized traffic simulator rather than a fundamentally new graph learning paradigm.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1354-0",
-        "text_b": "It is important to ensure that the proposed method is significantly different from existing traffic simulation and graph flow prediction techniques, since similar ideas have been used in transfer learning and generative learning solutions for traffic prediction tasks.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6336452419296134
       }
     ]
   },
   {
     "paper_id": "JaqvespRBP",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 19,
-      "num_candidate_pairs": 171,
-      "mean_cosine_similarity": 0.36490498520300374,
-      "std_cosine_similarity": 0.09693083924015163,
-      "min_cosine_similarity": 0.11015708653508041,
-      "max_cosine_similarity": 0.6868978035368233
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1682-0",
-        "text_a": "The theoretical claims in the paper rely on smoothness and convex/monotone properties of the integrand tied to KL forms and forward-process assumptions, but it is not fully clear that these conditions generally hold.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1682-6",
-        "text_b": "Is there some easy metric or other diagnostics to determine if the used N is too small?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.11015708653508041
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1680-0",
-        "text_a": "The paper misses some closely related prior work on RL fine-tuning of diffusion language models [1, 2, 3]. In particular, I would like to see a comparison on how the SDMC compares with the variance reduction scheme from [2]. I believe a comparison to these baselines would be critical.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1682-6",
-        "text_b": "Is there some easy metric or other diagnostics to determine if the used N is too small?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2165440980594589
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1681-2",
-        "text_a": "Have the authors experimented with techniques similar to those in GSPO, such as normalizing the reward by the length of the generated sequence?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1682-6",
-        "text_b": "Is there some easy metric or other diagnostics to determine if the used N is too small?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.19683957502506408
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1679-1",
-        "text_a": "The paper does not provide a comparison between diffu-GRPO and deterministic-t methods under the same number of Monte Carlo sample times. Increasing the number of samples in diffu-GRPO could also make the algorithm more stable, and such a comparison is needed.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1682-0",
-        "text_b": "The theoretical claims in the paper rely on smoothness and convex/monotone properties of the integrand tied to KL forms and forward-process assumptions, but it is not fully clear that these conditions generally hold.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2756175707103021
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1679-0",
-        "text_a": "The authors perform too few comparisons, only with LLaDA and diffu-GRPO. There are additional related works on diffusion language model reinforcement learning, such as [1,2], that should be directly compared.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1679-1",
-        "text_b": "The paper does not provide a comparison between diffu-GRPO and deterministic-t methods under the same number of Monte Carlo sample times. Increasing the number of samples in diffu-GRPO could also make the algorithm more stable, and such a comparison is needed.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5469757669224717
-      },
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1679-1",
         "text_a": "The paper does not provide a comparison between diffu-GRPO and deterministic-t methods under the same number of Monte Carlo sample times. Increasing the number of samples in diffu-GRPO could also make the algorithm more stable, and such a comparison is needed.",
@@ -2897,111 +1594,9 @@
     ]
   },
   {
-    "paper_id": "Pr8mLPImZS",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 23,
-      "num_candidate_pairs": 253,
-      "mean_cosine_similarity": 0.4108167915248811,
-      "std_cosine_similarity": 0.11201903858966206,
-      "min_cosine_similarity": 0.13446186998868595,
-      "max_cosine_similarity": 0.750316788859624
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1451-1",
-        "text_a": "The title suggests a comprehensive investigation into LLM worst-case robustness, but the actual content mainly covers a minor technical tweak to an existing attack and a repackaged theoretical treatment of randomized smoothing. There is no holistic analysis of worst-case robustness across modalities, alignment procedures, or instruction-following behaviors, resulting in a mismatch between the scope and ambition and what is actually demonstrated.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1455-2",
-        "text_b": "While the theoretical analysis is strong, the paper does not propose any new defense mechanisms that achieve better worst-case robustness.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6508039017160234
-      }
-    ]
-  },
-  {
-    "paper_id": "1RrwTXSU4c",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 18,
-      "num_candidate_pairs": 153,
-      "mean_cosine_similarity": 0.3334842149210734,
-      "std_cosine_similarity": 0.08881828155651952,
-      "min_cosine_similarity": 0.16216785877490944,
-      "max_cosine_similarity": 0.596751431434787
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2291-0",
-        "text_a": "Training only on error-free videos (one-class classification) limits what the model can learn. The method requires dataset-specific tuning of multiple hyperparameters (s, l, β, m).",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2291-1",
-        "text_b": "While achieving 24.4 FPS, this is slower than DTGL (37.0 FPS) despite similar lightweight goals. Additionally, feature extraction time (0.0261s) is not counted as part of their method but is required for deployment.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.22695644378138002
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2291-3",
-        "text_a": "The related work section is poorly written and missing the majority of relevant work in the field, such as: [1] Xu, Mingze, et al. \"Temporal recurrent networks for online action detection.\" Proceedings of the IEEE/CVF international conference on computer vision. 2019. [2] Xu, Mingze, et al. \"Long short-term transformer for online action detection.\" Advances in Neural Information Processing Systems 34 (2021): 1086-1099. [3] Guo, Hongji, et al. \"Uncertainty-based spatial-temporal attention for online action detection.\" European Conference on Computer Vision. Cham: Springer Nature Switzerland, 2022. etc.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2291-4",
-        "text_b": "Different people can perform procedural actions in different orders; how does your method handle this when detecting errors?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2906631381833949
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2292-2",
-        "text_a": "Given that many LLM-based models for online video understanding already exist (e.g., Videollm-online[2]), is it also possible to achieve real-time detection for LLM-based online mistake detection? If so, what is the necessity of continuing to use small models? If not, could the authors provide experimental data demonstrating that LLM-based methods have significantly higher latency than non-LLM methods?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2292-4",
-        "text_b": "Compared with MistSense, I think that only taking real-time efficiency into consideration is not novel enough. I hope the author can further clarify the novelty of this paper beyond MistSense.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3721721048863643
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2293-2",
-        "text_a": "The design philosophy of SAM and TAD is not clearly motivated or justified. The modules appear somewhat arbitrary, and it is difficult to grasp a coherent conceptual rationale for how these modules interact to produce 'prediction inconsistency.'",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2294-1",
-        "text_b": "The error detection mechanism relies on a majority vote across four specific pairs of predictions. While the voting threshold is justified through ablation, the choice of these four pairs seems somewhat arbitrary. A clearer rationale for why these specific pairs are optimal for capturing inconsistencies would strengthen the paper's design principles.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4563762927611933
-      }
-    ]
-  },
-  {
     "paper_id": "9J1wikUlHY",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 13,
-      "num_candidate_pairs": 78,
-      "mean_cosine_similarity": 0.3747353914970359,
-      "std_cosine_similarity": 0.11133098186364307,
-      "min_cosine_similarity": 0.11631529424556986,
-      "max_cosine_similarity": 0.609479897709997
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2018-1",
-        "text_a": "The assumption that LLMs have stable internal representations is unchecked, which questions the soundness of using word association tasks as proxies for personality assessment. Additionally, the claim that a 5,000-item questionnaire reduces test fatigue compared to a 44-item questionnaire is not clear, especially for LLMs, since test fatigue is a human issue.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2019-3",
-        "text_b": "The authors should consider citing additional relevant works to better inform the scope of their research. Suggested references are provided.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.17677003845203929
-      },
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2017-0",
         "text_a": "The paper's central argument rests on discarding the BFI, but it fails to provide a psychometrically sound alternative. Earlier works selected the BFI not arbitrarily, but because it is a widely adopted and validated framework in human studies, believed to characterize actual, stable behavioral differences. The authors propose replacing this with a new three-dimensional O/P/N (Optimism/Pessimism/Neutrality) framework without sufficient theoretical or psychometric justification. This new framework feels arbitrary and it is not demonstrated why these dimensions are a valid, stable, or comprehensive way to characterize an LLM's behavioral tendencies.",
@@ -3029,14 +1624,6 @@
   {
     "paper_id": "9O1IpZ0F4h",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 21,
-      "num_candidate_pairs": 210,
-      "mean_cosine_similarity": 0.3988406109631745,
-      "std_cosine_similarity": 0.1032434463612975,
-      "min_cosine_similarity": 0.1883931674251173,
-      "max_cosine_similarity": 0.805340524867932
-    },
     "pairs": [
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2014-5",
@@ -3061,17 +1648,6 @@
         "cosine_similarity": 0.2534975140566825
       },
       {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2015-0",
-        "text_a": "The work is primarily an application and engineering-level adaptation of RealNVP for policy optimization, rather than a fundamental algorithmic innovation. The core stabilization technique ($s_{tanh}$) is a known trick.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2016-1",
-        "text_b": "In some tasks like MJP-PandaOpenCabinet and MJP-Go1JoystickRoughTerrain, NFPO fails to learn a good policy, which shows a limitation in the generalization ability of NFPO.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4120281019287263
-      },
-      {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2014-0",
         "text_a": "The novelty of the work is modest because, while pairing normalizing flows with on-policy RL may be new, similar ideas have been explored extensively in off-policy settings (e.g., [1-3]). Without a clearer technical distinction or theoretical contribution beyond the training stabilizations, the contribution seems incremental.",
         "unit_id_a": "",
@@ -3081,109 +1657,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.3645977448412962
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2014-3",
-        "text_a": "Please provide the state/action space definitions and concise descriptions of each evaluated environment. Also, explain why NFPO strongly outperforms PPO on G1JoyStickRoughTerrain yet underperforms on MJP-PandaOpenCabinet—what properties of these tasks favor or hinder flow policies?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2014-8",
-        "text_b": "Did you evaluate other efficient multimodal policy families (e.g., consistency models [4,5] or related diffusion variants)? How do they compare to NFPO in stability, sample efficiency, and runtime?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.594154017247927
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2016-3",
-        "text_a": "As stated in weaknesses, the theoretical analysis and mathematical proofs in this paper are limited. Can the authors provide more theoretical analysis on why NFPO can work better?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2016-5",
-        "text_b": "Can the authors provide more experiments with different hyperparameter combinations to show the robustness of NFPO?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6798932597449275
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2014-3",
-        "text_a": "Please provide the state/action space definitions and concise descriptions of each evaluated environment. Also, explain why NFPO strongly outperforms PPO on G1JoyStickRoughTerrain yet underperforms on MJP-PandaOpenCabinet—what properties of these tasks favor or hinder flow policies?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2016-1",
-        "text_b": "In some tasks like MJP-PandaOpenCabinet and MJP-Go1JoystickRoughTerrain, NFPO fails to learn a good policy, which shows a limitation in the generalization ability of NFPO.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6734843673049404
       }
     ]
   },
   {
     "paper_id": "oGio2mq5XK",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 21,
-      "num_candidate_pairs": 210,
-      "mean_cosine_similarity": 0.31915326870226174,
-      "std_cosine_similarity": 0.095589830467143,
-      "min_cosine_similarity": 0.06622901258158695,
-      "max_cosine_similarity": 0.5913403649656651
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-458-3",
-        "text_a": "Will you release your dataset?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-460-3",
-        "text_b": "In the method figure, triplanes are depicted as vanilla triplanes, but they should be shown as spherical triplanes.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.06622901258158695
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-460-3",
-        "text_a": "In the method figure, triplanes are depicted as vanilla triplanes, but they should be shown as spherical triplanes.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-461-2",
-        "text_b": "It would be great to test whether train/test mismatch explains the identity shift and to be given an explanation by the authors.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.14872746912641574
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-458-1",
-        "text_a": "It is unclear how the proposed method handles hair motion during animation, since FLAME’s LBS does not model hair dynamics and the method appears to use FLAME’s original LBS for animation.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-458-3",
-        "text_b": "Will you release your dataset?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.12102430153873399
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-458-3",
-        "text_a": "Will you release your dataset?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-459-5",
-        "text_b": "What is the effect of using a frozen SphereHead decoder and the additional loss? Does this constraint cause the triplane features to behave similarly to SphereHead, or are there additional benefits such as improved training stability or convergence speed?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.17793779203439902
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-458-3",
-        "text_a": "Will you release your dataset?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-459-4",
-        "text_b": "The pipeline seems rather convoluted, using two sets of query tokens to attend to DINOv2 features, and then extracting information from one set using the other. What is the intuition behind this design? Would using only point queries suffice, as shown in LAM (which cannot generate complete heads due to its training data)?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.280625632612074
-      },
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-458-0",
         "text_a": "The lack of supplementary videos makes it difficult to evaluate the consistency of the head reconstruction method across different viewpoints and facial expressions.",
@@ -3194,131 +1674,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.34638882225198575
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-458-1",
-        "text_a": "It is unclear how the proposed method handles hair motion during animation, since FLAME’s LBS does not model hair dynamics and the method appears to use FLAME’s original LBS for animation.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-459-0",
-        "text_b": "The authors cite LivePortrait3D and TriplaneNet but do not include them as baselines, even though these works share the same motivation as the proposed method. These methods should be considered crucial baselines and compared using the same training data to properly validate the proposed approach for single-image to 3D prediction.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3509935832219601
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-458-2",
-        "text_a": "The discussion on the influence of the training dataset is limited. Since Table 5 shows that dataset scale significantly affects model performance, the authors should provide a more detailed discussion comparing their training dataset with those used in other state-of-the-art methods.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-459-2",
-        "text_b": "The current evaluation heavily favors the proposed method, since it uses 100 subjects from the exact same training data distribution. To ensure a fair comparison, either baselines like LAM should be trained or fine-tuned on the same data, or other datasets should be used for evaluation. Otherwise, outperforming the baselines is not surprising.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5137705159267489
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-459-5",
-        "text_a": "What is the effect of using a frozen SphereHead decoder and the additional loss? Does this constraint cause the triplane features to behave similarly to SphereHead, or are there additional benefits such as improved training stability or convergence speed?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-459-7",
-        "text_b": "Why does SphereHead obtain such low numbers in Table 2? Since it was used to construct part of the dataset, it should give reasonable PTI results as shown in Figure 4. Do the low numbers relate to improper background segmentation or another issue?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4646500077733585
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-460-2",
-        "text_a": "In Table 1, Ours-Front and Ours-360 datasets are presented alongside real avatar datasets, but for this comparison to be valid, the 3D-consistency and completeness of generations should be measured, and demographic and image diversity considered. Otherwise, presenting synthetic datasets in the same table as real datasets may be misleading.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-461-0",
-        "text_b": "The biggest weakness of the paper is that in real images, the reconstruction often does not look like the person, demonstrating major identity shifts (see Fig 4).",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.45930632279461775
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-459-1",
-        "text_a": "The results on real world examples in Figure 4 show that PanoLAM suffers from identity drift, likely because real images are out-of-distribution for the generated data. The paper should include a reconstruction evaluation (not just view consistency) on a multi-view dataset such as NeRSemble. The recommended task is: use one of the 16 cameras as input and evaluate PSNR, SSIM, and LPIPS on the other 15 views.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-460-2",
-        "text_b": "In Table 1, Ours-Front and Ours-360 datasets are presented alongside real avatar datasets, but for this comparison to be valid, the 3D-consistency and completeness of generations should be measured, and demographic and image diversity considered. Otherwise, presenting synthetic datasets in the same table as real datasets may be misleading.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5033419924132085
       }
     ]
   },
   {
     "paper_id": "Au04Il6moo",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 21,
-      "num_candidate_pairs": 210,
-      "mean_cosine_similarity": 0.32892585246917055,
-      "std_cosine_similarity": 0.11214740591010862,
-      "min_cosine_similarity": 0.13004781047566624,
-      "max_cosine_similarity": 0.7828519591729391
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-7",
-        "text_a": "The motivation of the Progressive Acceptance Strategy is not sufficiently explained or justified.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-12",
-        "text_b": "Could the proposed approach be extended to general image or video generation models, beyond policy-oriented settings?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2410425352619174
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-6",
-        "text_a": "The discussion in Section 4.3 about token chunking reducing accumulated error of target sampling (Line 262) is insightful but should be introduced earlier, for example, in Section 4.2.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-11",
-        "text_b": "Why is DDIM-10 chosen as the baseline solver for diffusion sampling instead of more advanced solvers such as DPM-Solver?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2936245471655258
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-10",
-        "text_a": "How does this work compare to Accelerated Diffusion Models via Speculative Sampling [2], which also avoids training a separate draft model?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-12",
-        "text_b": "Could the proposed approach be extended to general image or video generation models, beyond policy-oriented settings?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3837078420843576
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-3",
-        "text_a": "The sequential nature of token chunking may limit parallelism. This trade-off should be discussed explicitly.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1959-0",
-        "text_b": "The paper's core idea is speculative decoding, which has already been widely adopted in large language models (LLMs). The modifications introduced in this paper for the discrete space, such as using large-stepsize-ODE as the draft model and progressive acceptance, are straightforward. Therefore, the contribution of this paper should be more explicitly discussed in comparison to prior works, including those beyond LLMs.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3699596083019282
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-0",
-        "text_a": "The assumption in Line 50 that video generation policies usually have low resolutions is questionable. Recent works such as Vidar [1] demonstrate a clear trend toward higher resolutions in this paradigm. The paper does not analyze how the proposed method is applicable under different resolutions, for example, whether it is memory-bound or compute-bound.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1958-2",
-        "text_b": "The data domain for your video generation experiments is quite constrained to robotic environments; there are no experiments on unconstrained video data such as Kinetics-700. Could this approach be viable for video generation on more diverse datasets beyond robotics?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.533561465964653
-      },
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-12",
         "text_a": "Could the proposed approach be extended to general image or video generation models, beyond policy-oriented settings?",
@@ -3340,65 +1702,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.5998316716589418
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1957-12",
-        "text_a": "Could the proposed approach be extended to general image or video generation models, beyond policy-oriented settings?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1959-3",
-        "text_b": "The experiments use AVDC as the backbone. Would the proposed strategy also apply to other video generation policy models?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.7064609810429585
       }
     ]
   },
   {
     "paper_id": "F8cje9T5r2",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 25,
-      "num_candidate_pairs": 300,
-      "mean_cosine_similarity": 0.3759302964670774,
-      "std_cosine_similarity": 0.1336467357359925,
-      "min_cosine_similarity": 0.10398549766756343,
-      "max_cosine_similarity": 0.706925547536545
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1822-0",
-        "text_a": "The manuscript is not well formatted, with issues such as improper paragraph indentation, text overlap, and various typographical errors. Specific issues include: in Figure 1, the bottom row of the 'Family' column in the right table should be 'TSFMs'; on page 2, line 82, 'stratch' should be 'scratch'; on page 4, lines 183 and 205, 'Appnedix' should be 'Appendix'; on page 6, line 283, 'XXX' is a placeholder; and on page 9, line 463, 'thedegree' should be 'the degree'.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1822-5",
-        "text_b": "The layer identification algorithm uses a hyperparameter, the decay factor α. How is this hyperparameter set in the experiments, and how does it affect the effectiveness of pruning?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.12044542611560198
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1822-0",
-        "text_a": "The manuscript is not well formatted, with issues such as improper paragraph indentation, text overlap, and various typographical errors. Specific issues include: in Figure 1, the bottom row of the 'Family' column in the right table should be 'TSFMs'; on page 2, line 82, 'stratch' should be 'scratch'; on page 4, lines 183 and 205, 'Appnedix' should be 'Appendix'; on page 6, line 283, 'XXX' is a placeholder; and on page 9, line 463, 'thedegree' should be 'the degree'.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1823-2",
-        "text_b": "The evaluation compares the full model, a randomly pruned model, and the proposed importance-based pruned model. However, this does not fully isolate the role of layer laziness. Additional controls, such as training a model from scratch with reduced depth or fine-tuning only the critical layers while freezing others, would clarify if the performance gain comes from representational dynamics or from generic shallower optimization effects.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.13030991703939654
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1822-0",
-        "text_a": "The manuscript is not well formatted, with issues such as improper paragraph indentation, text overlap, and various typographical errors. Specific issues include: in Figure 1, the bottom row of the 'Family' column in the right table should be 'TSFMs'; on page 2, line 82, 'stratch' should be 'scratch'; on page 4, lines 183 and 205, 'Appnedix' should be 'Appendix'; on page 6, line 283, 'XXX' is a placeholder; and on page 9, line 463, 'thedegree' should be 'the degree'.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1823-4",
-        "text_b": "How would the conclusions change if the model were trained from scratch with the same reduced number of layers, instead of pruning a deeper network? If such shallow models perform similarly, would that imply that large-scale parameterization is unnecessary for this time series task? If not, can the authors provide possible explanations, such as whether pretraining (especially for lazy layers) yields beneficial representation transfer?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.1449682235883665
-      },
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1822-6",
         "text_a": "In Table 7, what is the purpose of comparing the pruned models with W(full LLM)? It also appears that random pruning does not significantly decrease performance. Does this suggest that model performance is largely determined by the embedding layer, output heads, and fine-tuning process, rather than the pruned middle layers?",
@@ -3409,167 +1719,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.16700104412622377
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1824-3",
-        "text_a": "Predictive performance cannot be consistently improved, and in some cases (e.g., Table 23 on PEMS07), performance is clearly degraded.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1825-2",
-        "text_b": "The necessity of pruning is questionable, since according to Figure 2, simply reducing model size or adjusting it to a suitable size can achieve better performance. Compared to adjusting the model size, what is the advantage of pruning?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3881601047901082
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1822-7",
-        "text_a": "Is the observed 'few-layer dominance' phenomenon common in other domains such as computer vision and natural language processing, or does it reflect a limitation of the current Transformer architecture when applied to time series data?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1823-1",
-        "text_b": "Although the paper identifies the phenomenon of layer laziness, it lacks a theoretical model explaining its underlying mechanism. The analysis is mainly empirical and descriptive, relying on measures of representation similarity and distance without establishing a causal explanation. The paper does not clarify why time-series large Transformers are more susceptible to lazy representation dynamics than models in language or vision domains. Such an understanding is crucial for generalizing the findings.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6394158846092194
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1823-2",
-        "text_a": "The evaluation compares the full model, a randomly pruned model, and the proposed importance-based pruned model. However, this does not fully isolate the role of layer laziness. Additional controls, such as training a model from scratch with reduced depth or fine-tuning only the critical layers while freezing others, would clarify if the performance gain comes from representational dynamics or from generic shallower optimization effects.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1823-4",
-        "text_b": "How would the conclusions change if the model were trained from scratch with the same reduced number of layers, instead of pruning a deeper network? If such shallow models perform similarly, would that imply that large-scale parameterization is unnecessary for this time series task? If not, can the authors provide possible explanations, such as whether pretraining (especially for lazy layers) yields beneficial representation transfer?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6843903601557755
-      }
-    ]
-  },
-  {
-    "paper_id": "65s5CctH7I",
-    "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 23,
-      "num_candidate_pairs": 253,
-      "mean_cosine_similarity": 0.36712585379938234,
-      "std_cosine_similarity": 0.12536559089351515,
-      "min_cosine_similarity": 0.10541314815841966,
-      "max_cosine_similarity": 0.8476391147806193
-    },
-    "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2113-7",
-        "text_a": "The authors should revise the paper carefully and provide more evidence to support their claims.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2116-2",
-        "text_b": "In what precise way does predicting SO(3) irreducible components differ from prior equivariant GNNs like GMTNet that already operate in irreps?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.10541314815841966
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2113-1",
-        "text_a": "The property prediction block in this paper is similar to GMTNet, as both obtain tensor properties using gradients.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2116-3",
-        "text_b": "How sensitive are the results to the choice of maximum angular momentum degree ($\\ell_{max}$) and the number of channels?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.18640058003783716
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2114-1",
-        "text_a": "The introduction stresses that elastic tensors must obey properties linked to physical consistency (e.g., positive definiteness), but the experiments do not evaluate or guarantee SPD/thermodynamic admissibility of the reconstructed elasticity. Add SPD checks (eigenvalue spectra, Born stability) and compare to methods that enforce such constraints.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2115-1",
-        "text_b": "The paper is hard to follow due to unclear terminology, specifically regarding the definition of irreducible components/representations (from Line 147), which is not clearly explained or related to tensor decomposition techniques such as proper generalized decomposition. Additionally, Figure 1, which is central to understanding the method, is unclear, as the relationships between the sub-blocks and the main blocks (a and b) are ambiguous. The caption could be expanded to provide clearer and more informative descriptions.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.2950602777032532
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2113-5",
-        "text_a": "Claiming that GMTNet symmetry enforcement is a post process is inaccurate. The enforcement module is not just applied during inference, but is also part of the training.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2116-0",
-        "text_b": "The contributions of this work are incremental because computing higher-order tensor decompositions and invariant bases under SO(3)/crystal symmetries is routine and well-known; the paper mainly engineers these known tools into an ML pipeline for symmetry, rather than introducing new theory.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.38126753560557797
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2115-2",
-        "text_a": "The architectural novelty of the paper is not clear. The main innovation seems to be reducing high-order tensors into a few irreducible representations and using a neural network to predict the corresponding scalars. However, the spherical-harmonic convolutional design itself appears standard.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2116-0",
-        "text_b": "The contributions of this work are incremental because computing higher-order tensor decompositions and invariant bases under SO(3)/crystal symmetries is routine and well-known; the paper mainly engineers these known tools into an ML pipeline for symmetry, rather than introducing new theory.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5616209519009541
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2113-0",
-        "text_a": "The approach to symmetry enforcement in this paper is nearly identical to the symmetry enforcement module introduced in previous work, GMTNet, where a mask is applied to exclude channels that violate the symmetry constraints.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2113-2",
-        "text_b": "The results presented in Table 2 for GMTNet might be problematic due to the improper use of the mask-based symmetry enforcement mechanism.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.7144774204398072
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2113-4",
-        "text_a": "The symmetry enforcement of GMTNet is not approximate, and the results presented in this paper are not consistent with the results reported in the GMTNet paper. There might be some mis-implementation. GMTNet also satisfied all symmetry requirements.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2113-6",
-        "text_b": "The claim that GMTNet only approximately satisfies symmetry requirements is concerning and misleading, and there is still a high level of similarity between this work and GMTNet.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.8476391147806193
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2113-2",
-        "text_a": "The results presented in Table 2 for GMTNet might be problematic due to the improper use of the mask-based symmetry enforcement mechanism.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-2113-4",
-        "text_b": "The symmetry enforcement of GMTNet is not approximate, and the results presented in this paper are not consistent with the results reported in the GMTNet paper. There might be some mis-implementation. GMTNet also satisfied all symmetry requirements.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.8013972403471691
       }
     ]
   },
   {
     "paper_id": "mVlIKLiizr",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 26,
-      "num_candidate_pairs": 325,
-      "mean_cosine_similarity": 0.42800533234496785,
-      "std_cosine_similarity": 0.09838664962811516,
-      "min_cosine_similarity": 0.21083900391161373,
-      "max_cosine_similarity": 0.7564841570037296
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-519-0",
-        "text_a": "The core idea of NEO is highly similar to the Back-to-Shift mechanism in FOA, particularly when the source feature mean equals zero. The authors should further clarify the distinctions between NEO and existing work, and elaborate on the method’s genuine theoretical or practical contributions.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-519-2",
-        "text_b": "Although the method is claimed to be batch-size agnostic, experiments only apply test-time adaptation to a limited number of samples, and the adapted model is reused for remaining evaluations. The authors should perform full test-time adaptation on all test samples using different batch sizes (e.g., 1, 8, 64, 512), with adaptation repeated independently for each batch size, to substantiate the claim of batch-size independence.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.21083900391161373
-      },
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-519-2",
         "text_a": "Although the method is claimed to be batch-size agnostic, experiments only apply test-time adaptation to a limited number of samples, and the adapted model is reused for remaining evaluations. The authors should perform full test-time adaptation on all test samples using different batch sizes (e.g., 1, 8, 64, 512), with adaptation repeated independently for each batch size, to substantiate the claim of batch-size independence.",
@@ -3580,87 +1736,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.23292153817977565
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-519-8",
-        "text_a": "Could the authors leverage the neural collapse assumption to explain why existing entropy minimization–based test-time adaptation methods are prone to feature or classifier collapse during adaptation?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-521-4",
-        "text_b": "NEO-Continual uses an EMA parameter $\u0003b1$, contradicting the claim that the method is hyperparameter-free. There is no guidance on setting $\u0003b1$ and no sensitivity analysis, despite continual adaptation being an important contribution. The reviewer requests sensitivity analysis across $\u0003b1 \u000228 [0.01, 0.9]$ or, at minimum, explicit acknowledgment of this limitation.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.34924245709326235
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-519-7",
-        "text_a": "The paper does not provide complete hyperparameter details for some baseline methods, especially those using the same model architecture but with undisclosed configurations. The appendix should include the full hyperparameter settings for each method and model to ensure reproducibility and fair comparison.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-521-6",
-        "text_b": "The reviewer asks whether NEO has been tested on CNNs such as ResNet-50 or EfficientNet, and whether similar effectiveness would be expected if neural collapse differs in those architectures.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3281485700004788
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-519-4",
-        "text_a": "The experiments that adapt using only one batch or one class are compared solely with the 'no adaptation' baseline, without including other TTA methods. This limited comparison is insufficient to demonstrate whether NEO still outperforms existing methods under few-sample or class-restricted adaptation scenarios.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-521-6",
-        "text_b": "The reviewer asks whether NEO has been tested on CNNs such as ResNet-50 or EfficientNet, and whether similar effectiveness would be expected if neural collapse differs in those architectures.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.4495211564009107
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-519-4",
-        "text_a": "The experiments that adapt using only one batch or one class are compared solely with the 'no adaptation' baseline, without including other TTA methods. This limited comparison is insufficient to demonstrate whether NEO still outperforms existing methods under few-sample or class-restricted adaptation scenarios.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-520-4",
-        "text_b": "It would be helpful to clarify whether the method can maintain strong performance under non-i.i.d. settings, such as imbalanced label distributions.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3687240381598648
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-519-9",
-        "text_a": "Could the authors further discuss, from a theoretical perspective, whether the neural collapse assumption still holds—and whether NEO remains effective—in realistic scenarios such as those with class imbalance?",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-521-6",
-        "text_b": "The reviewer asks whether NEO has been tested on CNNs such as ResNet-50 or EfficientNet, and whether similar effectiveness would be expected if neural collapse differs in those architectures.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6689225034185627
       }
     ]
   },
   {
     "paper_id": "ilir6A52vh",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 12,
-      "num_candidate_pairs": 66,
-      "mean_cosine_similarity": 0.4037059190581062,
-      "std_cosine_similarity": 0.1119839344093158,
-      "min_cosine_similarity": 0.2144697584658752,
-      "max_cosine_similarity": 0.7595879458987773
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-708-0",
-        "text_a": "Table 5 should include a comparison of the computational cost.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-708-2",
-        "text_b": "The paper lacks discussion and comparison with several recently accepted works on long-video generation, specifically RIFLEX, FreePCA, FreeLong, and DiTCtrl.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.3068463711183305
-      },
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-709-1",
         "text_a": "The reviewer is concerned that generating long videos with MCTS could take up to 24 hours, potentially requiring 20 times more time compared to other methods.",
@@ -3671,65 +1753,13 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.5427203647440562
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-709-0",
-        "text_a": "The reviewer requests information on the time it takes to generate a 1-minute video using your MCTS method compared to without it, and asks for a quantitative comparison of the results.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-709-3",
-        "text_b": "The reviewer claims that MCTS does not have good robustness for the Process Reward Model and Outcome Reward Model.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5071716614683539
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-709-2",
-        "text_a": "The reviewer states that the model is difficult to implement, especially due to the challenge of accurately training the Process Reward Model and Outcome Reward Model. As video quality is hard to evaluate and evaluation error rates are high, any slight error in these models could lead to significant search errors.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-709-3",
-        "text_b": "The reviewer claims that MCTS does not have good robustness for the Process Reward Model and Outcome Reward Model.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.6964541928824357
       }
     ]
   },
   {
     "paper_id": "U9LUhiOaLV",
     "embedding_model": "text-embedding-3-small",
-    "statistics": {
-      "num_human_feedback": 24,
-      "num_candidate_pairs": 276,
-      "mean_cosine_similarity": 0.35666329215820763,
-      "std_cosine_similarity": 0.13348074965432274,
-      "min_cosine_similarity": 0.09136956326714096,
-      "max_cosine_similarity": 0.7720958461669316
-    },
     "pairs": [
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1241-3",
-        "text_a": "Figure 1 is too coarse and lacks clarity, making it difficult to understand without extensive cross-referencing. This does not meet presentation standards.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1243-3",
-        "text_b": "How sensitive is the fuzzy verification performance to the exact values of the window (w) and threshold (τ) parameters, given that these are empirically set?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.14902455222447256
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1241-1",
-        "text_a": "The paper evaluates only 'oblivious paraphrasing', where the paraphraser is unaware of the watermark. However, in practice, an adaptive adversary could optimize paraphrasing to evade detection by minimizing the verification score. Prior watermarking research shows such adversaries can substantially increase evasion rates, so the absence of this analysis weakens the robustness claim.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1244-4",
-        "text_b": "The paper inadequately discusses the construction and generalizability of the 'codebook.' The experiments fail to clarify whether the codebooks are manually constructed or automatically generated, nor do they test their applicability across different languages or specialized domains (e.g., medical, legal). It is recommended that the authors detail the codebook construction process and add experiments to validate the method's effectiveness when codebook resources are limited or when applied across domains.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.31683918628290536
-      },
       {
         "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1241-0",
         "text_a": "The first paragraph of the Introduction (line 29) states that the motivation is to ensure that watermarking does not degrade downstream task performance (e.g., RAG, tool invocation, or agent collaboration), but the paper presents no such experiments. The evaluation only covers verification accuracy, creating a gap between motivation and evidence.",
@@ -3740,28 +1770,6 @@
         "unit_id_b": "",
         "author_stance_b": "",
         "cosine_similarity": 0.5848966361489698
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1243-2",
-        "text_a": "The paper does not test against sophisticated paraphrasing tools or adversarial paraphrasing strategies explicitly designed to circumvent the codebook's lexical variants.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1244-2",
-        "text_b": "The robustness analysis against paraphrase attacks (Eq. 11) relies on a statistical model that may not fully account for adaptive adversaries. A stronger adversary might attempt to reverse-engineer the codebook or exploit biases in the Renderable function by observing numerous watermarked samples to forge watermarks with higher probability. It is recommended to expand the threat model to include and discuss defenses against such attacks.",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.5921875862150695
-      },
-      {
-        "unit_key_a": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1244-0",
-        "text_a": "The paper lacks implementation details for the core Renderable() function in the fuzzy verification stage. How this function determines if a paraphrased text segment is compatible with the original watermark constraint $c_{i}^{*}$ is critical to the method's robustness, and the authors should provide its specific algorithmic logic or pseudo-code.",
-        "unit_id_a": "",
-        "author_stance_a": "",
-        "unit_key_b": "iclr_2026_reviews_030426_conversation_formatted_test_parsed-thread-1244-6",
-        "text_b": "Could you provide a detailed explanation of how the $Renderable(\\hat{S}_{i}, c_{i}^{*})$ function in the fuzzy verification is implemented? What specific checks or algorithms does it use to verify a rewritten text against a codebook entry while tolerating paraphrasing?",
-        "unit_id_b": "",
-        "author_stance_b": "",
-        "cosine_similarity": 0.7002963993861198
       }
     ]
   }

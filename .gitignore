@@ -26,3 +26,4 @@ build/
 
 # Data
 data/annotation_sheet-*.csv
+data/old-*/
